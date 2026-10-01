@@ -106,12 +106,6 @@ export function WelcomePopup() {
           </Dialog.Close>
 
           <div className={styles.inner}>
-<<<<<<< HEAD
-            <span aria-hidden="true" className={styles.mark}>
-              <span />
-            </span>
-            <span className={styles.pill}>Curious What We Do!</span>
-=======
             <Image
               src="/images/brand/bmu-logo-light.png"
               alt="BMU Marketing"
@@ -119,7 +113,6 @@ export function WelcomePopup() {
               height={233}
               className={styles.logo}
             />
->>>>>>> ec9c9d3 (Updated landing page 2)
 
             <Dialog.Title className={styles.title}>Let&apos;s build your next growth move.</Dialog.Title>
             <Dialog.Description className={styles.text}>
