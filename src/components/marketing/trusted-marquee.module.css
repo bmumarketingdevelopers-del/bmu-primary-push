@@ -8,37 +8,69 @@
     padding-bottom: 2rem;
   }
 
+  /* sentence case, plain grey, as in the design */
   .heading {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.75rem;
+    padding-inline: 1.25rem;
     text-align: center;
-    font-size: var(--text-small);
-    line-height: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
+    font-size: var(--text-lede);
+    font-weight: 500;
+    line-height: 1.5;
     color: hsl(var(--muted-foreground));
   }
 
   .track {
+    /* logos scale down on phones; full size from tablet up */
+    --logo-scale: 0.72;
+
     display: flex;
     width: max-content;
+    align-items: center;
     animation: marquee 34s linear infinite;
-    gap: 4rem;
+    gap: 2.75rem;
   }
   /* Pause the scroll while the pointer is anywhere over the strip. */
   .marquee:hover .track {
     animation-play-state: paused;
   }
 
-  .name {
-    white-space: nowrap;
-    font-size: 19px;
-    color: hsl(var(--muted-foreground) / 0.7);
-    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 300ms;
+  /* Logos: grey by default, original colours on hover */
+  .logo {
+    display: block;
+    flex-shrink: 0;
+    filter: grayscale(1) opacity(0.6);
+    transition: filter 300ms cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .name:hover {
-    color: hsl(var(--foreground));
+
+  .logo img {
+    display: block;
+    height: calc(var(--logo-h) * var(--logo-scale));
+    width: auto;
+  }
+
+  .logo:hover {
+    filter: none;
+  }
+
+  /* Dark mode: lighten the grey so dark logos stay visible on the dark page;
+     single-colour dark logos (Quantela, Miles) show white on hover */
+  :global(.dark) .logo {
+    filter: grayscale(1) invert(1) opacity(0.6);
+  }
+
+  :global(.dark) .logo:hover {
+    filter: none;
+  }
+
+  :global(.dark) .logoMono:hover {
+    filter: brightness(0) invert(1);
+  }
+
+  @media (min-width: 768px) {
+    .track {
+      --logo-scale: 1;
+      gap: 4.5rem;
+    }
   }
 }
 
