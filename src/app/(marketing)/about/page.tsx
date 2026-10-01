@@ -64,7 +64,7 @@ export default function AboutPage() {
           <Reveal>
             <SectionHeading
               eyebrow="How we work"
-              title={<>Four things we<br />refuse to bend on</>}
+              title={<>Four things we<br />refuse to bends on</>}
               lede="These cost us pitches occasionally. They're also why clients stay past the first year."
             />
           </Reveal>
