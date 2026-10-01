@@ -1,19 +1,38 @@
 @layer reset, base, helpers, ui, components;
 
 @layer components {
+  /* ---- hero (wrapper only; scopes overrides to the shared PageHero) */
+
+  .hero {
+    display: contents;
+  }
+
+  .hero h1 {
+    max-width: none;
+    white-space: pre-line;
+  }
+
+  .hero h1+p {
+    max-width: 62ch;
+  }
+
   /* ---- hero stats */
 
+  /* Mobile: 2 x 2 grid, centred. */
   .stats {
     margin-top: 3rem;
     display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 2rem;
     border-top: 1px solid rgb(255 255 255 / 0.1);
     padding-top: 2.5rem;
+    text-align: center;
   }
 
   .statValue {
     font-size: clamp(24px, 2.6vw, 34px);
     line-height: 1;
+    font-variant-numeric: tabular-nums;
   }
 
   .statLabel {
@@ -34,6 +53,14 @@
   .storyGrid {
     display: grid;
     gap: 3.5rem;
+  }
+
+  .storyLede {
+    margin-top: 1.25rem;
+    max-width: 34ch;
+    font-size: 15px;
+    line-height: 1.6;
+    color: hsl(var(--muted-foreground));
   }
 
   .storyList> :not([hidden])~ :not([hidden]) {
@@ -57,11 +84,116 @@
     color: hsl(var(--muted-foreground));
   }
 
+  /* ---- agenda (dark band) */
+
+  .agenda {
+    background-image: var(--grad-hero);
+    color: #fff;
+  }
+
+  .agendaTitle {
+    font-size: clamp(26px, 2.9vw, 44px);
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+
+  /* line break only where the first line fits on one row */
+  .agendaBreak {
+    display: none;
+  }
+
+  .agendaLede {
+    margin-top: 1.25rem;
+    max-width: 54ch;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #c6d0da;
+  }
+
+  .agendaGrid {
+    margin-top: 2.5rem;
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .agendaCard {
+    height: 100%;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgb(255 255 255 / 0.08);
+    background-color: rgb(255 255 255 / 0.04);
+    padding: 1.75rem;
+  }
+
+  .agendaBar {
+    display: block;
+    height: 2px;
+    width: 22px;
+    background-color: hsl(var(--primary));
+  }
+
+  .agendaCardTitle {
+    margin-top: 1.25rem;
+    font-size: 15px;
+    line-height: 1.375;
+  }
+
+  .agendaCardBody {
+    margin-top: 0.75rem;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: #93a2b1;
+  }
+
   /* ---- values */
 
+  /* Mobile: same swipe track as the Services section — 1 card + the next
+     peeking (--per-view: 1.15), snap per card, mouse drag, dots below. */
   .valueGrid {
-    display: grid;
-    gap: 1.5rem;
+    --per-view: 1.15;
+    --gap: 0.75rem;
+    /* Bleed to the viewport edge (cancels .container padding) */
+    --bleed: 1.25rem;
+
+    position: relative;
+    display: flex;
+    gap: var(--gap);
+    margin-inline: calc(var(--bleed) * -1);
+    padding-inline: var(--bleed);
+    /* Room for the card shadow, which the scroller would otherwise clip */
+    padding-block: 0.5rem 0.75rem;
+    scroll-padding-inline: var(--bleed);
+
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x pan-y;
+
+    scrollbar-width: none;
+    cursor: grab;
+  }
+
+  .valueGrid::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* While dragging with a mouse: follow the pointer 1:1, snap on release */
+  .valueGrid.valueDragging {
+    cursor: grabbing;
+    scroll-snap-type: none;
+    scroll-behavior: auto;
+    user-select: none;
+  }
+
+  .valueSlide {
+    flex: 0 0 calc((100% - var(--gap) * (var(--per-view) - 1)) / var(--per-view));
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+
+  .valueReveal {
+    height: 100%;
   }
 
   .valueCard {
@@ -69,16 +201,51 @@
     border-radius: var(--radius-lg);
     border: 1px solid hsl(var(--border));
     background-color: hsl(var(--background));
-    padding: 2rem;
+    padding: 1.25rem;
     transition-property: all;
     transition-timing-function: var(--ease-brand);
     transition-duration: 300ms;
   }
 
-  .valueCard:hover {
-    transform: scale(1.02);
-    border-color: hsl(var(--primary));
-    box-shadow: var(--shadow-md);
+  /* Green outline when the cursor is over a card (any screen size with a
+     mouse/trackpad; skipped on touch so it doesn't stick after a tap) */
+  @media (hover: hover) {
+    .valueCard:hover {
+      border-color: hsl(var(--primary));
+    }
+  }
+
+  /* Dots (phones only) */
+  .valueDots {
+    margin-top: 0.75rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .valueDot {
+    display: block;
+    width: 6px;
+    height: 6px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background-color: hsl(var(--muted-foreground) / 0.3);
+    cursor: pointer;
+    transition:
+      width 200ms ease,
+      background-color 200ms ease,
+      opacity 200ms ease;
+  }
+
+  .valueDot:hover {
+    opacity: 0.8;
+  }
+
+  .valueDotActive {
+    width: 18px;
+    background-color: hsl(var(--primary));
   }
 
   .valueTitle {
@@ -92,69 +259,451 @@
     color: hsl(var(--muted-foreground));
   }
 
-  /* ---- timeline */
+  /* ---- our journey (timeline)
+     Mobile: vertical, dots down the left. Tablet/laptop: 4 columns, dots on
+     one horizontal line. Each step: the line grows to the next dot (400ms),
+     then that dot turns green and its text fades in. */
 
-  .timeline {
-    position: relative;
-    border-left: 1px solid hsl(var(--border));
-    padding-left: 2rem;
+  .journey {
+    --dot: 14px;
   }
 
-  .milestone {
+  .journeyItem {
     position: relative;
-    padding-bottom: 2.5rem;
+    padding-left: 2.25rem;
+    padding-bottom: 2.25rem;
   }
 
-  .milestone:last-child {
+  .journeyItem:last-child {
     padding-bottom: 0;
   }
 
-  .milestoneMarker {
+  .journeyDot {
     position: absolute;
-    left: -41px;
-    top: 0.375rem;
-    display: grid;
-    height: 1rem;
-    width: 1rem;
-    place-items: center;
-  }
-
-  .milestoneDot {
-    height: 0.625rem;
-    width: 0.625rem;
+    top: 4px;
+    left: 0;
+    height: var(--dot);
+    width: var(--dot);
     border-radius: var(--radius-pill);
+    border: 2px solid hsl(var(--border));
+    background-color: hsl(var(--background));
+    transition:
+      border-color 300ms var(--ease-brand),
+      background-color 300ms var(--ease-brand);
+  }
+
+  /* last dot: bigger and filled once reached */
+  .journeyLast .journeyDot {
+    --dot: 16px;
+    top: 3px;
+    left: -1px;
+  }
+
+  /* reached ring dots: green ring with a pale green centre */
+  .journeyReached .journeyDot {
+    border-color: hsl(var(--primary));
+    background-color: hsl(var(--primary) / 0.1);
+    transition-delay: 350ms;
+  }
+
+  .journeyLast.journeyReached .journeyDot {
     background-color: hsl(var(--primary));
-    box-shadow: 0 0 0 4px hsl(var(--background));
   }
 
-  .milestoneYear {
-    font-size: 19px;
-    color: hsl(var(--primary));
+  /* 1px grey track from this dot to the next one; the soft green fill travels along it */
+  .journeyLine {
+    position: absolute;
+    top: calc(4px + var(--dot));
+    bottom: -4px;
+    left: calc(var(--dot) / 2 - 0.5px);
+    width: 1px;
+    background-color: hsl(var(--border));
   }
 
-  .milestoneLabel {
-    margin-top: 0.375rem;
-    max-width: 54ch;
-    font-size: 15.5px;
+  /* the line past the last dot only exists on the horizontal layout */
+  .journeyTail {
+    display: none;
+  }
+
+  .journeyFill {
+    display: block;
+    height: 100%;
+    width: 100%;
+    background-color: hsl(var(--primary) / 0.5);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 400ms var(--ease-brand);
+  }
+
+  .journeyFilled {
+    transform: none;
+  }
+
+  .journeyText {
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+      opacity 300ms var(--ease-brand),
+      transform 300ms var(--ease-brand);
+  }
+
+  .journeyReached .journeyText {
+    opacity: 1;
+    transform: none;
+    transition-delay: 380ms;
+  }
+
+  /* first step is static: no delay */
+  .journeyItem:first-child .journeyText,
+  .journeyItem:first-child .journeyDot {
+    transition: none;
+  }
+
+  .journeyLabel {
+    font-size: clamp(18px, 1.6vw, 22px);
+    line-height: 1.2;
+    color: hsl(var(--foreground));
+  }
+
+  .journeyTitle {
+    margin-top: 0.5rem;
+    font-size: 14px;
+    font-weight: 600;
+    color: hsl(var(--foreground));
+  }
+
+  .journeyBody {
+    margin-top: 0.25rem;
+    max-width: 30ch;
+    font-size: 13.5px;
+    line-height: 1.55;
     color: hsl(var(--muted-foreground));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+
+    .journeyDot,
+    .journeyFill,
+    .journeyText {
+      transition: none !important;
+    }
+  }
+
+  /* ---- founder note (white band; the Team section below draws the divider) */
+
+  .founder {
+    border-top: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+  }
+
+  .founderFigure {
+    margin-top: 1.75rem;
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr);
+  }
+
+  /* big green “ in the heading font, its top lined up with the first line of the quote */
+  .founderMark {
+    margin-top: -0.15em;
+    font-size: 52px;
+    line-height: 1;
+    color: hsl(var(--primary));
+    user-select: none;
+  }
+
+  .founderQuote {
+    max-width: 900px;
+    font-size: clamp(19px, 1.9vw, 26px);
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+    color: hsl(var(--foreground));
+  }
+
+  .founderBy {
+    margin-top: 2.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  /* green rounded tile with a small dark square inside */
+  .founderAvatar {
+    display: grid;
+    flex-shrink: 0;
+    height: 40px;
+    width: 40px;
+    place-items: center;
+    border-radius: 10px;
+    background-color: hsl(var(--primary));
+  }
+
+  .founderAvatarDot {
+    height: 12px;
+    width: 12px;
+    border-radius: 3px;
+    background-color: hsl(var(--foreground));
+  }
+
+  .founderName {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: hsl(var(--foreground));
+  }
+
+  .founderRole {
+    display: block;
+    margin-top: 2px;
+    font-size: 12.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* ---- let's talk (closing band)
+     Mobile/tablet: text on top, orbit drawing below, faces centred.
+     Laptop (1024px+): text left, orbit right, faces bottom-left of the orbit.
+     Card/face positions are percentages of the drawing, traced from the design. */
+
+  .talk {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    color: #fff;
+    background:
+      radial-gradient(circle at 50% 74%, rgb(132 196 58 / 0.7), transparent 55%),
+      linear-gradient(180deg, #0e1e27 0%, #1b3530 36%, #3c7a2c 72%, #5a972b 100%);
+  }
+
+  .talkContent {
+    position: relative;
+    padding: 2rem 1.25rem 1.5rem;
+  }
+
+  .talkTitle {
+    margin-top: 0.25rem;
+    font-family: var(--font-sans-stack);
+    font-size: clamp(30px, 3.4vw, 46px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+
+  .talkBody {
+    margin-top: 1rem;
+    max-width: 46ch;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #c6d0da;
+  }
+
+  .talkActions {
+    margin-top: 1.75rem;
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .talkPrimary,
+  .talkSecondary {
+    display: flex;
+    height: 48px;
+    align-items: center;
+    border-radius: 8px;
+    padding-inline: 1.25rem;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    transition:
+      background-color 200ms var(--ease-brand),
+      border-color 200ms var(--ease-brand),
+      filter 200ms var(--ease-brand);
+  }
+
+  .talkPrimary {
+    justify-content: space-between;
+    background-color: hsl(var(--primary));
+  }
+
+  .talkPrimary:hover {
+    filter: brightness(1.08);
+  }
+
+  .talkPrimary svg {
+    height: 18px;
+    width: 18px;
+  }
+
+  .talkSecondary {
+    justify-content: center;
+    border: 1px solid rgb(255 255 255 / 0.35);
+  }
+
+  .talkSecondary:hover {
+    border-color: rgb(255 255 255 / 0.7);
+    background-color: rgb(255 255 255 / 0.06);
+  }
+
+  .talkVisual {
+    position: relative;
+    padding-bottom: 1.75rem;
+  }
+
+  .talkOrbit {
+    position: relative;
+    margin-inline: auto;
+    max-width: 560px;
+    aspect-ratio: 688 / 540;
+  }
+
+  .talkSvg {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+  }
+
+  .talkSvgDesktop {
+    display: none;
+  }
+
+  /* glass service cards */
+  .talkCard {
+    position: absolute;
+    width: 42.7%;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid rgb(255 255 255 / 0.16);
+    background-color: rgb(255 255 255 / 0.07);
+    padding: 0.45rem 0.55rem;
+    backdrop-filter: blur(2px);
+  }
+
+  .talkCard_strategy {
+    left: 4%;
+    top: 3.3%;
+  }
+
+  .talkCard_performance {
+    left: 52.6%;
+    top: 17%;
+  }
+
+  .talkCard_creative {
+    left: 4%;
+    top: 68%;
+  }
+
+  .talkCard_technology {
+    left: 52.6%;
+    top: 80%;
+  }
+
+  .talkCardIcon {
+    display: grid;
+    flex-shrink: 0;
+    height: 28px;
+    width: 28px;
+    place-items: center;
+    border-radius: 6px;
+    background-color: rgb(255 255 255 / 0.1);
+    color: hsl(79 61% 58%);
+  }
+
+  /* bolder strokes, matching the design's solid icons */
+  .talkCardIcon svg {
+    height: 16px;
+    width: 16px;
+    stroke-width: 2.4;
+  }
+
+  .talkCardTitle {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+
+  .talkCardBody {
+    display: block;
+    margin-top: 1px;
+    font-size: 10px;
+    line-height: 1.3;
+    color: rgb(255 255 255 / 0.72);
+  }
+
+  /* faces + caption */
+  .talkTeam {
+    position: relative;
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .talkFaces {
+    display: flex;
+  }
+
+  .talkFace {
+    display: grid;
+    height: 42px;
+    width: 42px;
+    place-items: center;
+    overflow: hidden;
+    border-radius: 999px;
+    border: 3px solid;
+    background-color: #eef0ec;
+  }
+
+  .talkFace + .talkFace {
+    margin-left: -8px;
+  }
+
+  .talkFace img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .talkFacePlus {
+    border-color: #eef0ec;
+    color: hsl(var(--foreground));
+  }
+
+  .talkFacePlus svg {
+    height: 18px;
+    width: 18px;
+  }
+
+  .talkTeamText {
+    margin-top: 0.75rem;
+    font-size: 13px;
+    line-height: 1.45;
+    color: rgb(255 255 255 / 0.85);
   }
 
   /* ---- team */
 
+  /* Mobile: 2 columns; avatar sits above the text so the narrow cards fit */
   .teamGrid {
     display: grid;
-    gap: 1.5rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
   }
 
   .teamCard {
     display: flex;
+    flex-direction: column;
     height: 100%;
     align-items: flex-start;
-    gap: 1rem;
+    gap: 0.75rem;
     border-radius: var(--radius-lg);
     border: 1px solid hsl(var(--border));
     background-color: hsl(var(--background));
-    padding: 1.75rem;
+    padding: 1rem;
     transition-property: all;
     transition-timing-function: var(--ease-brand);
     transition-duration: 300ms;
@@ -188,29 +737,258 @@
 
   @media (min-width: 640px) {
     .stats {
+      text-align: left;
+    }
+
+    /* let's talk: roomier text, buttons side by side */
+    .talkContent {
+      padding: 2.75rem 2.5rem 1.5rem;
+    }
+
+    .talkActions {
+      max-width: 520px;
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .timeline {
-      padding-left: 2.5rem;
-    }
-
-    .milestoneMarker {
-      left: -49px;
-    }
-
+    /* tablet and up: original card layout (avatar beside the text) */
     .teamGrid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+
+    .teamCard {
+      flex-direction: row;
+      gap: 1rem;
+      padding: 1.75rem;
     }
   }
 
   @media (min-width: 768px) {
+
+    /* paragraph fits on 2 lines on tablet and laptop */
+    .hero h1+p {
+      max-width: 105ch;
+    }
+
+    .agendaBreak {
+      display: inline;
+    }
+
+    .agendaGrid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    /* founder note: wider gutter for a bigger quote mark, as in the design */
+    .founderFigure {
+      margin-top: 2.5rem;
+      grid-template-columns: 5rem minmax(0, 1fr);
+    }
+
+    .founderMark {
+      font-size: 80px;
+    }
+
+    .founderBy {
+      margin-top: 3rem;
+    }
+
+    /* journey: 4 columns, dots on one horizontal line, line grows left → right */
+    .journey {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .journeyItem {
+      padding: 2.25rem 1.5rem 0 0;
+    }
+
+    .journeyDot {
+      top: 0;
+      left: 0;
+    }
+
+    .journeyLast .journeyDot {
+      top: -1px;
+      left: 0;
+    }
+
+    .journeyLine {
+      top: calc(var(--dot) / 2 - 0.5px);
+      bottom: auto;
+      left: var(--dot);
+      right: 0;
+      width: auto;
+      height: 1px;
+    }
+
+    .journeyTail {
+      display: block;
+    }
+
+    .journeyFill {
+      transform: scaleX(0);
+      transform-origin: left;
+    }
+
+    .journeyFilled {
+      transform: none;
+    }
+
+    /* tablet and laptop: back to the 2 x 2 grid, no swipe, no dots */
     .valueGrid {
+      display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.5rem;
+      margin-inline: 0;
+      padding: 0;
+      overflow: visible;
+      scroll-snap-type: none;
+      cursor: auto;
+    }
+
+    .valueDots {
+      display: none;
+    }
+
+    .valueCard {
+      padding: 1.5rem 2rem;
+    }
+
+    /* hover lift only on tablet/laptop (it sticks after a tap on phones) */
+    .valueCard:hover {
+      transform: scale(1.02);
+      box-shadow: var(--shadow-md);
     }
   }
 
   @media (min-width: 1024px) {
+
+    /* let's talk: text left, wide orbit right; dark navy → green glow left to right */
+    .talk {
+      display: grid;
+      grid-template-columns: minmax(0, 45fr) minmax(0, 55fr);
+      align-items: center;
+      /* colours sampled from the design: navy only in the top-left corner, olive
+         lower-left, glow behind the orbit (no blue tint in the greens) */
+      background:
+        radial-gradient(ellipse 20% 48% at 74% 66%, rgb(124 180 46 / 0.6), transparent),
+        radial-gradient(ellipse 52% 150% at 78% 52%, rgb(82 120 45 / 1), rgb(82 120 45 / 0) 72%),
+        linear-gradient(165deg, #142230 0%, #273c2f 42%, #3e5b2e 85%, #45652e 100%);
+    }
+
+    .talkContent {
+      padding: 3.5rem 1rem 3.5rem 3.5rem;
+    }
+
+    .talkTitle {
+      font-size: clamp(40px, 3.8vw, 54px);
+    }
+
+    .talkActions {
+      max-width: 575px;
+      gap: 1.2rem;
+    }
+
+    .talkVisual {
+      padding-bottom: 0;
+    }
+
+    .talkOrbit {
+      max-width: none;
+      aspect-ratio: 660 / 325;
+    }
+
+    .talkSvgDesktop {
+      display: block;
+    }
+
+    .talkSvgMobile {
+      display: none;
+    }
+
+    .talkCard {
+      gap: 0.75rem;
+      border-radius: 10px;
+      padding: 0.6rem 0.75rem;
+    }
+
+    .talkCard_strategy {
+      left: 23.8%;
+      top: 10.9%;
+      width: 27.5%;
+    }
+
+    .talkCard_performance {
+      left: 66.7%;
+      top: 21.3%;
+      width: 28%;
+    }
+
+    .talkCard_creative {
+      left: 11.8%;
+      top: 36.4%;
+      width: 26.5%;
+    }
+
+    .talkCard_technology {
+      left: 64.5%;
+      top: 59.5%;
+      width: 26%;
+    }
+
+    .talkCardIcon {
+      height: 38px;
+      width: 38px;
+      border-radius: 8px;
+    }
+
+    .talkCardIcon svg {
+      height: 22px;
+      width: 22px;
+    }
+
+    .talkCardTitle {
+      font-size: 14px;
+    }
+
+    .talkCardBody {
+      font-size: 11.5px;
+      white-space: nowrap;
+    }
+
+    /* faces sit inside the drawing, bottom-left, caption with a green dash */
+    .talkTeam {
+      position: absolute;
+      left: 16.4%;
+      top: 64.8%;
+      margin-top: 0;
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .talkFace {
+      height: 46px;
+      width: 46px;
+    }
+
+    .talkFace + .talkFace {
+      margin-left: -10px;
+    }
+
+    .talkTeamText {
+      position: relative;
+      padding-left: 1.75rem;
+    }
+
+    .talkTeamText::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.7em;
+      height: 1px;
+      width: 1.1rem;
+      background-color: hsl(var(--primary));
+    }
+
     .stats {
       grid-template-columns: repeat(4, minmax(0, 1fr));
     }
