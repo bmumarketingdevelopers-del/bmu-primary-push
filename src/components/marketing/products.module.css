@@ -1,0 +1,142 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .products {
+    background-color: var(--ink);
+    color: #fff;
+  }
+  :global(.dark) .products {
+    background-color: #0d1825;
+  }
+
+  .grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .card {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgb(255 255 255 / 0.1);
+    background-color: rgb(255 255 255 / 0.05);
+    padding: 2rem;
+    transition-property: all;
+    transition-timing-function: var(--ease-brand);
+    transition-duration: 300ms;
+  }
+
+  /* The first (flagship) product. Defined after `.card` so it wins. */
+  .lead {
+    border-color: hsl(var(--primary) / 0.3);
+    background-image: linear-gradient(to bottom right, hsl(var(--primary) / 0.15), rgb(255 255 255 / 0.04));
+  }
+
+  .card:hover {
+    transform: scale(1.02);
+    border-color: hsl(var(--primary) / 0.5);
+    background-color: rgb(255 255 255 / 0.08);
+  }
+
+  .name {
+    margin-bottom: 0.75rem;
+    margin-top: 1.25rem;
+    font-size: var(--text-h5);
+  }
+
+  .summary {
+    font-size: var(--text-body);
+    color: #b4c2cf;
+  }
+
+  .features {
+    margin-top: 1.5rem;
+    display: grid;
+    column-gap: 1.25rem;
+    row-gap: 0.625rem;
+    font-size: var(--text-body);
+    color: #c8d4df;
+  }
+
+  .featuresSingle {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  .feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.625rem;
+  }
+
+  .bullet {
+    margin-top: 0.5rem;
+    height: 5px;
+    width: 5px;
+    flex-shrink: 0;
+    border-radius: 1px;
+    background-color: hsl(var(--primary));
+  }
+
+  .footer {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 1.75rem;
+  }
+
+  .plans {
+    font-size: var(--text-small);
+    color: #8fa0b0;
+  }
+
+  .fromPrice {
+    display: block;
+    font-size: 17px;
+    line-height: 1.625;
+    color: #fff;
+  }
+
+  @media (min-width: 640px) {
+    .featuresDouble {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 768px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.tag {
+  align-self: flex-start;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+@media (min-width: 768px) {
+  /* The lead product's cell spans two columns on tablets… */
+  .leadCell {
+    grid-column: span 2 / span 2;
+  }
+}
+
+@media (min-width: 1280px) {
+  /* …and one tall column (two rows) on desktop. */
+  .leadCell {
+    grid-column: span 1 / span 1;
+    grid-row: span 2 / span 2;
+  }
+}

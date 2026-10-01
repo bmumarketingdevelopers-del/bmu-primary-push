@@ -1,0 +1,99 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .page {
+    padding: 1.25rem;
+  }
+
+  .exportGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  /* ---- export card */
+
+  .cardTop {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .cardIcon {
+    display: grid;
+    height: 2.75rem;
+    width: 2.75rem;
+    place-items: center;
+    border-radius: var(--radius-md);
+    background-color: hsl(var(--primary) / 0.1);
+    color: hsl(var(--primary));
+  }
+
+  .cardGlyph {
+    height: 1.25rem;
+    width: 1.25rem;
+  }
+
+  .cardDescription {
+    font-size: 14.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  @media (min-width: 768px) {
+    .exportGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      padding: 2rem;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .exportGrid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.warningCard {
+  border-color: hsl(var(--warning) / 0.4);
+}
+
+/* A custom font size on CardTitle also takes the inherited line-height, not the title's own. */
+.calloutTitle {
+  font-size: 15px;
+  line-height: inherit;
+}
+
+.cardTitle {
+  font-size: 16px;
+  line-height: inherit;
+}
+
+.exportCard {
+  display: flex;
+  flex-direction: column;
+  transition-property: all;
+  transition-timing-function: var(--ease-brand);
+  transition-duration: 300ms;
+}
+.exportCard:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.cardBody {
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+}
+
+.downloadButton {
+  margin-top: 1.5rem;
+  width: 100%;
+}

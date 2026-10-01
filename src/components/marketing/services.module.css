@@ -1,0 +1,455 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  /* =========================================
+     SECTION + HEADING SPACING
+     ========================================= */
+
+  .section {
+    padding-top: var(--space-section);
+    padding-bottom: var(--space-section);
+  }
+
+  .section .heading {
+    margin-bottom: var(--space-heading);
+    gap: 1.25rem;
+  }
+
+  .heading :global(.eyebrow) {
+    margin-bottom: 0.75rem;
+  }
+
+  .heading p {
+    margin-top: 0.75rem;
+  }
+
+  /* =========================================
+     CAROUSEL
+     ========================================= */
+
+  .carousel {
+    /* Fixed card width for mobile; overridden for tablet below.
+       Height follows the content, and every card in the row
+       stretches to the tallest one, so the cards stay uniform. */
+    --card-w: 280px;
+
+    width: 100%;
+    position: relative;
+  }
+
+  .grid {
+    display: flex;
+    gap: 1rem;
+
+    /* Bleed to the viewport edges (cancels .container padding) so the
+       neighbouring cards peek in from both sides */
+    margin-inline: -1.25rem;
+
+    /* Center the active card: half the free space on each side */
+    padding-inline: calc(50% + 1.25rem - var(--card-w) / 2);
+    padding-block: 0.5rem;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    touch-action: pan-x pan-y;
+    overscroll-behavior-x: contain;
+  }
+
+  .grid::-webkit-scrollbar {
+    display: none;
+  }
+
+
+  /* =========================================
+     CARD WRAPPER
+     ========================================= */
+
+  .cardWrapper {
+    flex: 0 0 var(--card-w);
+    width: var(--card-w);
+    min-width: 0;
+
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+
+  .reveal {
+    height: 100%;
+  }
+
+
+  /* =========================================
+     CARD
+     ========================================= */
+
+  .card {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    padding: 1rem;
+    box-shadow: var(--shadow-sm);
+    text-decoration: none;
+    transition-property: all;
+    transition-timing-function: var(--ease-brand);
+    transition-duration: 300ms;
+    /*
+    position: relative;
+    display: flex;
+    width: 100%;
+    min-height: 262px;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    padding: 2rem;
+    box-shadow: var(--shadow-sm);
+    text-decoration: none;
+    transition-property: all;
+    transition-timing-function: var(--ease-brand);
+    transition-duration: 300ms; */
+  }
+
+
+  /* =========================================
+     CARD HOVER
+     ========================================= */
+
+  .card:hover {
+    transform: scale(1.02);
+
+    border-color: hsl(var(--primary));
+
+    box-shadow: var(--shadow-md);
+  }
+
+
+  /* =========================================
+     GREEN TOP ACCENT
+     ========================================= */
+
+  .accent {
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    height: 3px;
+    width: 0;
+
+    background-color: hsl(var(--primary));
+
+    transition-property: all;
+    transition-timing-function: var(--ease-brand);
+    transition-duration: 500ms;
+  }
+
+  .card:hover .accent {
+    width: 100%;
+  }
+
+
+  /* =========================================
+     ICON
+     ========================================= */
+
+  .iconWrap {
+    margin-bottom: 1rem;
+    flex-shrink: 0;
+
+    display: grid;
+
+    height: 3rem;
+    width: 3rem;
+
+    place-items: center;
+
+    border-radius: var(--radius-md);
+
+    background-color: hsl(var(--primary) / 0.1);
+
+    color: hsl(var(--primary));
+  }
+
+  .icon {
+    height: 24px;
+    width: 24px;
+  }
+
+
+  /* =========================================
+     TITLE
+     ========================================= */
+
+  .title {
+    margin-bottom: 0.75rem;
+
+    font-size: var(--text-card-title);
+    line-height: 1.375;
+  }
+
+
+  /* =========================================
+     SUMMARY
+     ========================================= */
+
+  .summary {
+    font-size: var(--text-body);
+
+    line-height: 1.55;
+
+    color: hsl(var(--muted-foreground));
+
+    /* Keep text inside the fixed card size */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    overflow: hidden;
+  }
+
+
+  /* =========================================
+     EXPLORE
+     ========================================= */
+
+  /* Sits right under the summary (no longer pushed to the card bottom) */
+  .more {
+    margin-top: 0;
+
+    padding-top: 0.75rem;
+
+    font-size: var(--text-small);
+
+    font-weight: 600;
+
+    color: hsl(var(--primary));
+  }
+
+  .arrow {
+    display: inline-block;
+
+    transition-property: transform;
+    transition-timing-function: cubic-bezier(0.4,
+        0,
+        0.2,
+        1);
+    transition-duration: 300ms;
+  }
+
+  .card:hover .arrow {
+    transform: translateX(0.25rem);
+  }
+
+
+  /* =========================================
+     MOBILE DOTS
+     ========================================= */
+
+  .dots {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 6px;
+
+    margin-top: 0.75rem;
+  }
+
+  .dot {
+    display: block;
+
+    width: 6px;
+    height: 6px;
+
+    padding: 0;
+
+    border: 0;
+
+    border-radius: 999px;
+
+    background-color: hsl(var(--muted-foreground) / 0.3);
+
+    cursor: pointer;
+
+    transition:
+      width 200ms ease,
+      background-color 200ms ease,
+      opacity 200ms ease;
+  }
+
+  .dot:hover {
+    opacity: 0.8;
+  }
+
+  .activeDot {
+    width: 18px;
+
+    background-color: hsl(var(--primary));
+  }
+
+
+  /* =========================================
+     MOBILE — testimonial-style cards
+     Card starts at the left margin, next card
+     peeks in on the right, swipe with thumb.
+     ========================================= */
+
+  @media (max-width: 639px) {
+
+    /* "All services" button hidden on phones */
+    .heading .allServices {
+      display: none;
+    }
+
+    .carousel {
+      --card-w: min(300px, calc(100vw - 5rem));
+    }
+
+    .grid {
+      gap: 0.75rem;
+      padding-inline: 1.25rem;
+      padding-block: 0.25rem;
+      scroll-padding-inline: 1.25rem;
+    }
+
+    .cardWrapper {
+      scroll-snap-align: start;
+    }
+
+    .card {
+      padding: 1rem;
+      border-radius: 0.5rem;
+      border-color: hsl(var(--border));
+      box-shadow: none;
+    }
+
+    .card:hover {
+      box-shadow: none;
+    }
+
+    .accent {
+      display: none;
+    }
+
+    /* Plain icon, like the quote mark in the reference */
+    .iconWrap {
+      height: auto;
+      width: auto;
+      margin-bottom: 0.625rem;
+      place-items: start;
+      background-color: transparent;
+      border-radius: 0;
+    }
+
+    .icon {
+      height: 22px;
+      width: 22px;
+    }
+
+    .title {
+      margin-bottom: 0.5rem;
+      line-height: 1.4;
+      color: hsl(var(--foreground));
+    }
+
+    .summary {
+      line-height: 1.6;
+      color: hsl(var(--foreground) / 0.75);
+    }
+
+    .more {
+      padding-top: 0.625rem;
+      font-weight: 500;
+      color: hsl(var(--foreground));
+    }
+  }
+
+
+  /* =========================================
+     TABLET
+     ========================================= */
+
+  @media (min-width: 640px) {
+    .carousel {
+      --card-w: 360px;
+    }
+
+    .card {
+      padding: 1.5rem;
+    }
+  }
+
+
+  /* =========================================
+     DESKTOP
+     ========================================= */
+
+  @media (min-width: 1280px) {
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1.5rem;
+
+      overflow: visible;
+      scroll-snap-type: none;
+      margin-inline: 0;
+      padding: 0;
+    }
+
+    /* Desktop: 4 equal-height cards per row, sized to their content */
+    .cardWrapper {
+      width: auto;
+      flex: none;
+      min-width: 0;
+    }
+
+    .dots {
+      display: none;
+    }
+  }
+}
+
+
+/* =========================================
+   MOBILE / TABLET CAROUSEL BEHAVIOR
+   ========================================= */
+
+@media (max-width: 1279px) {
+  .grid {
+    cursor: grab;
+  }
+
+  /* While dragging with a mouse: follow the pointer 1:1, snap on release */
+  .grid.dragging {
+    cursor: grabbing;
+    scroll-snap-type: none;
+    scroll-behavior: auto;
+    user-select: none;
+  }
+
+  .grid.dragging .card,
+  .grid.dragging .card * {
+    pointer-events: none;
+  }
+
+  /* No scale-on-hover inside the carousel (it gets clipped) */
+  .card:hover {
+    transform: none;
+  }
+}

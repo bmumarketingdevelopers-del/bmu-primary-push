@@ -1,0 +1,71 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .page {
+    padding: 1.25rem;
+  }
+
+  .rolesIcon {
+    height: 18px;
+    width: 18px;
+    color: hsl(var(--primary));
+  }
+
+  /* ---- the six roles */
+
+  .roleList > :not([hidden]) ~ :not([hidden]) {
+    border-top: 1px solid hsl(var(--border));
+  }
+
+  .roleRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 0.875rem;
+    padding-bottom: 0.875rem;
+  }
+  .roleRow:first-child {
+    padding-top: 0;
+  }
+  .roleRow:last-child {
+    padding-bottom: 0;
+  }
+
+  .roleName {
+    width: 7rem;
+    flex-shrink: 0;
+  }
+
+  .roleSummary {
+    font-size: 14px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      padding: 2rem;
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.rolesTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 15px;
+  line-height: inherit;
+}
+
+.rulesTitle {
+  font-size: 15px;
+  line-height: inherit;
+}
+
+.restrictedList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}

@@ -1,0 +1,162 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+
+  /* Tighter than the global .section padding; the banner itself carries the visual weight. */
+  .section {
+    padding-top: var(--space-section);
+    padding-bottom: var(--space-section);
+  }
+
+  /* ---- dark banner */
+
+  .banner {
+    display: grid;
+    align-items: center;
+    gap: 2rem;
+    border-radius: var(--radius-lg);
+    background-image: var(--grad-hero);
+    padding: clamp(1.5rem, 4vw, 3rem);
+    color: #fff;
+    box-shadow: var(--shadow-md);
+  }
+
+  /* The title is sized from this column's width (cqi) so each line always fits it. */
+  .copy {
+    min-width: 0;
+    container-type: inline-size;
+  }
+
+  /* In Zen Dots each line is ~13.2em wide, so 7cqi keeps it at ~92% of the column; capped at 40px. */
+  .title {
+    font-size: min(7cqi, var(--text-h2));
+    line-height: 1.2;
+    color: #fff;
+  }
+
+  .line {
+    display: block;
+    white-space: nowrap;
+  }
+
+  .lede {
+    margin-top: 0.875rem;
+    max-width: 62ch;
+    font-size: var(--text-lede);
+    line-height: 1.6;
+    color: rgb(255 255 255 / 0.7);
+  }
+
+  /* ---- product tiles
+     Phones: one full-width row per product — icon, name (truncated), price.
+     640px+: 2×2 tiles — icon and price on top, name underneath. */
+
+  .grid {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .tileWrap {
+    height: 100%;
+  }
+
+  .tile {
+    display: grid;
+    height: 100%;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas: "icon name price";
+    align-items: center;
+    column-gap: 0.875rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgb(255 255 255 / 0.12);
+    background-color: rgb(255 255 255 / 0.06);
+    padding: 0.875rem 1rem;
+    transition-property: transform, border-color, background-color;
+    transition-timing-function: var(--ease-brand);
+    transition-duration: 300ms;
+  }
+
+  .tile:hover {
+    transform: translateY(-0.125rem);
+    border-color: hsl(var(--primary) / 0.7);
+    background-color: rgb(255 255 255 / 0.1);
+  }
+
+  .icon {
+    grid-area: icon;
+    display: grid;
+    height: 2.5rem;
+    width: 2.5rem;
+    place-items: center;
+    border-radius: 0.625rem;
+    background-color: hsl(var(--primary) / 0.2);
+    color: hsl(79 55% 82%);
+  }
+
+  .glyph {
+    height: 1.25rem;
+    width: 1.25rem;
+  }
+
+  .name {
+    grid-area: name;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: var(--text-body);
+    font-weight: 600;
+    line-height: 1.35;
+    color: #fff;
+  }
+
+  .price {
+    grid-area: price;
+    font-size: var(--text-small);
+    font-weight: 600;
+    color: hsl(var(--primary));
+  }
+
+  @media (min-width: 640px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .tile {
+      min-height: 7.5rem;
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto 1fr;
+      grid-template-areas:
+        "icon price"
+        "name name";
+      align-items: start;
+      row-gap: 1.25rem;
+      padding: 1rem 1.125rem;
+    }
+
+    .price {
+      justify-self: end;
+    }
+
+    .name {
+      align-self: end;
+      overflow: visible;
+      white-space: normal;
+    }
+  }
+
+  /* Tablet and up: copy on the left, 2×2 tiles on the right, as in the design. */
+  @media (min-width: 768px) {
+    .banner {
+      grid-template-columns: 1.2fr 1fr;
+      gap: clamp(2rem, 5vw, 4.5rem);
+      padding: clamp(1.75rem, 3vw, 2.5rem) clamp(1.75rem, 3.5vw, 3rem);
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.cta {
+  margin-top: 2rem;
+}

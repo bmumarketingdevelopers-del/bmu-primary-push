@@ -1,0 +1,159 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .page {
+    padding: 1.25rem;
+  }
+
+  .statGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .statLabel {
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .statValue {
+    margin-top: 0.75rem;
+    font-size: 26px;
+    line-height: 1;
+  }
+
+  .statNote {
+    margin-top: 0.5rem;
+    font-size: 12.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .detailGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .titleIcon {
+    height: 18px;
+    width: 18px;
+    color: hsl(var(--primary));
+  }
+
+  /* ---- the split */
+
+  .split > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.5rem;
+  }
+
+  .splitHead {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13.5px;
+  }
+
+  .splitLabel {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .splitIcon {
+    height: 1rem;
+    width: 1rem;
+  }
+
+  .returnedIcon {
+    color: hsl(var(--success));
+  }
+
+  .onceIcon {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .lapsedIcon {
+    color: hsl(var(--warning));
+  }
+
+  .splitCount {
+    font-weight: 600;
+  }
+
+  .average {
+    border-top: 1px solid hsl(var(--border));
+    padding-top: 1rem;
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .emphasis {
+    color: hsl(var(--foreground));
+  }
+
+  .conclusion {
+    border-top: 1px solid hsl(var(--border));
+    padding-top: 0.875rem;
+  }
+
+  @media (min-width: 640px) {
+    .statGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      padding: 2rem;
+    }
+
+    .detailGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .statGrid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.statCard {
+  padding: 1.5rem;
+}
+
+.lapsedCard {
+  border-color: hsl(var(--warning) / 0.4);
+}
+
+.headlineCard {
+  border-color: hsl(var(--primary) / 0.4);
+}
+
+/* A size on a card title replaces its tight leading; the title takes the body's. */
+.calloutTitle {
+  font-size: 15px;
+  line-height: inherit;
+}
+
+.iconTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.splitContent > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1.25rem;
+}
+
+.caveats {
+  font-size: 14px;
+  color: hsl(var(--muted-foreground));
+}
+.caveats > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 0.875rem;
+}
+
+.noteCard {
+  border-style: dashed;
+}

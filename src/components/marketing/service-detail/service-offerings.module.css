@@ -1,0 +1,150 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .section {
+    padding-top: clamp(1.5rem, 1rem + 2vw, 2.75rem);
+    padding-bottom: clamp(1.75rem, 1.25rem + 2vw, 3rem);
+  }
+
+  .grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .cardWrap {
+    height: 100%;
+  }
+
+  .card {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    border-radius: var(--radius-lg);
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    padding: 1.25rem 1.25rem 1.125rem;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.04);
+    transition:
+      transform 300ms var(--ease-brand),
+      box-shadow 300ms var(--ease-brand),
+      border-color 300ms var(--ease-brand);
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: hsl(var(--primary) / 0.5);
+    box-shadow: var(--shadow-md);
+  }
+
+  .top {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .icon {
+    display: grid;
+    height: 2.75rem;
+    width: 2.75rem;
+    place-items: center;
+    border-radius: var(--radius-md);
+    background-color: hsl(var(--primary) / 0.12);
+    color: var(--green-dark);
+  }
+
+  .icon svg {
+    height: 1.25rem;
+    width: 1.25rem;
+  }
+
+  .number {
+    font-size: 12px;
+    color: hsl(var(--muted-foreground) / 0.6);
+  }
+
+  .title {
+    font-size: var(--text-card-title);
+    font-weight: 700;
+    color: hsl(var(--foreground));
+  }
+
+  .body {
+    margin-top: 0.5rem;
+    margin-bottom: 1.125rem;
+    max-width: 48ch;
+    font-size: var(--text-body);
+    line-height: 1.6;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .footer {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-top: 1px solid hsl(var(--border));
+    padding-top: 0.875rem;
+  }
+
+  .price {
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .priceValue {
+    font-weight: 700;
+    color: hsl(var(--foreground));
+  }
+
+  .enquire {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 13px;
+    font-weight: 700;
+    color: hsl(var(--foreground));
+  }
+
+  .enquireIcon {
+    display: grid;
+    height: 1.5rem;
+    width: 1.5rem;
+    place-items: center;
+    border-radius: 50%;
+    background-color: var(--green-dark);
+    color: #fff;
+    transition: transform 300ms var(--ease-brand);
+  }
+  .card:hover .enquireIcon {
+    transform: translateX(3px);
+  }
+
+  .enquireIcon svg {
+    height: 0.875rem;
+    width: 0.875rem;
+  }
+
+  @media (min-width: 768px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.25rem;
+    }
+
+    /* Three offerings sit in one row instead of leaving an orphan */
+    .gridThree {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .card {
+      padding: 1.5rem 1.5rem 1.25rem;
+    }
+  }
+
+  /* Six offerings: two rows of three once there's room (two columns on tablets) */
+  @media (min-width: 1024px) {
+    .gridSix {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+}

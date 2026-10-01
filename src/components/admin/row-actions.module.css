@@ -1,0 +1,46 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .trigger {
+    display: grid;
+    height: 2.25rem;
+    width: 2.25rem;
+    place-items: center;
+    border-radius: var(--radius-md);
+    color: hsl(var(--muted-foreground));
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .trigger:hover {
+    background-color: hsl(var(--muted));
+    color: hsl(var(--foreground));
+  }
+
+  .triggerIcon {
+    height: 1rem;
+    width: 1rem;
+  }
+
+  .toggleButton {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 0.625rem;
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+/* The form becomes the menu item itself (asChild). */
+.toggleForm {
+  width: 100%;
+}
+
+.deleteItem {
+  color: hsl(var(--destructive));
+}
+
+.confirmDialog {
+  max-width: 28rem;
+}

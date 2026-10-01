@@ -1,0 +1,23 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  /* Final value and animated value share one grid cell, so the width never changes */
+  .root {
+    display: inline-grid;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .sizer,
+  .value {
+    grid-area: 1 / 1;
+    white-space: nowrap;
+  }
+
+  .sizer {
+    visibility: hidden;
+  }
+
+  .value {
+    text-align: left;
+  }
+}

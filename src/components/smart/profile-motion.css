@@ -1,0 +1,116 @@
+/*
+ * Entrance animations for the scan profile, in CSS rather than JavaScript.
+ *
+ * This page is opened on a phone, often on a weak connection, seconds after
+ * someone scans a code. Shipping an animation library to achieve a fade and a
+ * rise costs more than the animation is worth — these rules are under 1KB and
+ * need no runtime at all.
+ *
+ * Every animation is disabled under prefers-reduced-motion at the bottom.
+ */
+
+@keyframes bmu-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes bmu-rise-far {
+  from { opacity: 0; transform: translateY(34px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes bmu-zoom {
+  from { opacity: 0; transform: scale(.9); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes bmu-slide {
+  from { opacity: 0; transform: translateX(-28px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes bmu-pop {
+  from { opacity: 0; transform: scale(.8); }
+  60%  { transform: scale(1.04); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes bmu-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-5px); }
+}
+
+@keyframes bmu-breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.015); }
+}
+
+/* Sections start hidden and are revealed by their own animation. */
+.bmu-seq > * {
+  opacity: 0;
+  animation-duration: .45s;
+  animation-timing-function: cubic-bezier(.4, 0, .2, 1);
+  animation-fill-mode: forwards;
+}
+
+.bmu-m-subtle  > * { animation-name: bmu-rise; }
+.bmu-m-lively  > * { animation-name: bmu-pop; animation-duration: .5s; }
+.bmu-m-cascade > * { animation-name: bmu-rise-far; animation-duration: .6s; }
+.bmu-m-zoom    > * { animation-name: bmu-zoom; }
+.bmu-m-slide   > * { animation-name: bmu-slide; }
+
+/*
+ * Stagger. Nine steps covers the longest profile; anything beyond that shares
+ * the last delay rather than arriving conspicuously late.
+ */
+.bmu-seq > *:nth-child(1) { animation-delay: .05s; }
+.bmu-seq > *:nth-child(2) { animation-delay: .11s; }
+.bmu-seq > *:nth-child(3) { animation-delay: .17s; }
+.bmu-seq > *:nth-child(4) { animation-delay: .23s; }
+.bmu-seq > *:nth-child(5) { animation-delay: .29s; }
+.bmu-seq > *:nth-child(6) { animation-delay: .35s; }
+.bmu-seq > *:nth-child(7) { animation-delay: .41s; }
+.bmu-seq > *:nth-child(n+8) { animation-delay: .47s; }
+
+.bmu-m-cascade > *:nth-child(1) { animation-delay: .05s; }
+.bmu-m-cascade > *:nth-child(2) { animation-delay: .19s; }
+.bmu-m-cascade > *:nth-child(3) { animation-delay: .33s; }
+.bmu-m-cascade > *:nth-child(4) { animation-delay: .47s; }
+.bmu-m-cascade > *:nth-child(5) { animation-delay: .61s; }
+.bmu-m-cascade > *:nth-child(n+6) { animation-delay: .75s; }
+
+.bmu-logo { animation: bmu-pop .5s cubic-bezier(.4, 0, .2, 1) .06s backwards; }
+.bmu-m-lively .bmu-logo { animation: bmu-pop .5s cubic-bezier(.4,0,.2,1) .06s backwards, bmu-float 4.5s ease-in-out 1s infinite; }
+.bmu-m-lively .bmu-offer { animation: bmu-breathe 3.4s ease-in-out infinite; }
+
+/* Press feedback. On a phone this is the only confirmation a tap registered
+   before the OS switches apps. */
+.bmu-tap { transition: transform .18s cubic-bezier(.4, 0, .2, 1); }
+.bmu-tap:active { transform: scale(.96); }
+.bmu-tap-soft:active { transform: scale(.98); }
+
+@media (hover: hover) {
+  .bmu-lift { transition: transform .2s cubic-bezier(.4, 0, .2, 1); }
+  .bmu-lift:hover { transform: translateY(-2px); }
+}
+
+/* Cover image reveal. */
+.bmu-cover { animation: bmu-zoom .7s cubic-bezier(.4, 0, .2, 1) backwards; }
+
+/* Motion "off", and anyone who has asked their device for less movement. */
+.bmu-m-off > *,
+.bmu-m-off .bmu-logo,
+.bmu-m-off .bmu-cover { opacity: 1; animation: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bmu-seq > *,
+  .bmu-logo,
+  .bmu-offer,
+  .bmu-cover {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+  .bmu-tap,
+  .bmu-tap-soft,
+  .bmu-lift { transition: none; }
+}

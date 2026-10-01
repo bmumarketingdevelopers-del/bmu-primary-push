@@ -1,0 +1,178 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .content {
+    padding: 1.25rem;
+  }
+
+  .kpiGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .columns {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  /* ---- invited / in-flight rows */
+
+  .invitedItem {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    border-radius: var(--radius-md);
+    border: 1px solid hsl(var(--border));
+    padding: 0.875rem 1rem;
+  }
+
+  .activeItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .itemText {
+    min-width: 0;
+  }
+
+  .itemTitle {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+  }
+
+  .itemMeta {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .invitedFee {
+    font-size: 16px;
+  }
+
+  /* ---- rate card */
+
+  .rate {
+    font-size: 32px;
+    line-height: 1;
+  }
+
+  .rateNote {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .categories {
+    margin-top: 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  /* ---- open briefs */
+
+  .brief {
+    border-radius: var(--radius-md);
+    border: 1px solid hsl(var(--border));
+    padding: 1.25rem;
+  }
+
+  .briefHead {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .briefCampaign {
+    font-weight: 500;
+  }
+
+  .briefBrand {
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .briefFee {
+    font-size: 17px;
+  }
+
+  .briefSummary {
+    margin-top: 0.75rem;
+    font-size: 14.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .briefDeadline {
+    margin-top: 0.75rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  @media (min-width: 640px) {
+    .kpiGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .content {
+      padding: 2rem;
+    }
+
+    .columns {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .kpiGrid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.invitedCard {
+  border-color: hsl(var(--primary) / 0.4);
+}
+
+.headerRow {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.headerRow > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 0;
+}
+
+.invitedTitle {
+  font-size: 15px;
+  line-height: inherit;
+}
+
+.invitedList > :not([hidden]) ~ :not([hidden]),
+.activeList > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 0.75rem;
+}
+
+.profileButton {
+  margin-top: 1.5rem;
+}
+
+.briefList > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1rem;
+}

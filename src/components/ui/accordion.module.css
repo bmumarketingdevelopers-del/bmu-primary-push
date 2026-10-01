@@ -1,0 +1,118 @@
+@layer reset, base, helpers, ui, components;
+
+@layer ui {
+  .item {
+    border-bottom: 1px solid hsl(var(--border));
+  }
+
+  .header {
+    display: flex;
+  }
+
+  .trigger {
+    display: flex;
+    flex: 1 1 0%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    text-align: left;
+    font-size: 16.5px;
+    font-weight: 600;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  .trigger:hover,
+  .trigger[data-state="open"] {
+    color: hsl(var(--primary));
+  }
+
+  .icon {
+    display: grid;
+    height: 1.75rem;
+    width: 1.75rem;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: var(--radius-sm);
+    border: 1px solid hsl(var(--border));
+    transition-property: all;
+    transition-timing-function: var(--ease-brand);
+    transition-duration: 300ms;
+  }
+
+  .trigger[data-state="open"] .icon {
+    transform: rotate(45deg);
+    border-color: hsl(var(--primary));
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+
+  .plus {
+    height: 0.875rem;
+    width: 0.875rem;
+  }
+
+  .chevronIcon {
+    display: grid;
+    height: 1.375rem;
+    width: 1.375rem;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 9999px;
+    border: 1.5px solid currentColor;
+    transition-property: transform;
+    transition-timing-function: var(--ease-brand);
+    transition-duration: 300ms;
+  }
+
+  .trigger[data-state="open"] .chevronIcon {
+    transform: rotate(180deg);
+  }
+
+  .chevron {
+    height: 0.875rem;
+    width: 0.875rem;
+  }
+
+  .content {
+    overflow: hidden;
+  }
+
+  .content[data-state="closed"] {
+    animation: accordionUp 300ms ease-out;
+  }
+
+  .content[data-state="open"] {
+    animation: accordionDown 300ms ease-out;
+  }
+
+  .body {
+    max-width: 64ch;
+    padding-bottom: 1.5rem;
+    font-size: 15px;
+    color: hsl(var(--muted-foreground));
+  }
+}
+
+@keyframes accordionDown {
+  from {
+    height: 0;
+  }
+
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordionUp {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+
+  to {
+    height: 0;
+  }
+}

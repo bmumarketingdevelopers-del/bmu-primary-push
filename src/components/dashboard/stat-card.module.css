@@ -1,0 +1,86 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .label {
+    font-size: 13px;
+    font-weight: 500;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .iconWrap {
+    display: grid;
+    height: 2.25rem;
+    width: 2.25rem;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: var(--radius-md);
+    background-color: hsl(var(--primary) / 0.1);
+    color: hsl(var(--primary));
+  }
+
+  .icon {
+    height: 1rem;
+    width: 1rem;
+  }
+
+  .value {
+    margin-top: 1rem;
+    font-size: 28px;
+    line-height: 1;
+  }
+
+  .footer {
+    margin-top: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 13px;
+  }
+
+  .delta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    border-radius: var(--radius-pill);
+    padding: 0.125rem 0.5rem;
+    font-weight: 600;
+  }
+
+  .deltaGood {
+    background-color: hsl(var(--success) / 0.15);
+    color: hsl(var(--success));
+  }
+
+  .deltaBad {
+    background-color: hsl(var(--destructive) / 0.15);
+    color: hsl(var(--destructive));
+  }
+
+  .deltaIcon {
+    height: 0.75rem;
+    width: 0.75rem;
+  }
+
+  .sub {
+    color: hsl(var(--muted-foreground));
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.card {
+  padding: 1.5rem;
+  transition-property: all;
+  transition-timing-function: var(--ease-brand);
+  transition-duration: 300ms;
+}
+.card:hover {
+  box-shadow: var(--shadow-md);
+}

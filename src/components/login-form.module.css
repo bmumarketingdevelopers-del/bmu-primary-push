@@ -1,0 +1,179 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .root > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1.5rem;
+  }
+
+  .form > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1.25rem;
+  }
+
+  .field > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.5rem;
+  }
+
+  .error {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    border-radius: var(--radius-md);
+    background-color: hsl(var(--destructive) / 0.1);
+    padding: 0.75rem 1rem;
+    font-size: 13.5px;
+    color: hsl(var(--destructive));
+  }
+
+  .errorIcon {
+    margin-top: 0.125rem;
+    height: 1rem;
+    width: 1rem;
+    flex-shrink: 0;
+  }
+
+  /* ---- demo accounts */
+
+  .demo {
+    border-radius: var(--radius-md);
+    border: 1px dashed hsl(var(--border));
+    padding: 1.25rem;
+  }
+  .demo > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1.25rem;
+  }
+
+  .demoTitle {
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .demoNote {
+    margin-top: 0.25rem;
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  }
+
+  .group > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.5rem;
+  }
+
+  .groupHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .groupTitle {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .passwordHint {
+    font-size: 11px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .search {
+    height: 2.5rem;
+    width: 100%;
+    border-radius: var(--radius-sm);
+    border: 1px solid hsl(var(--input));
+    background-color: hsl(var(--background));
+    padding-left: 0.875rem;
+    padding-right: 0.875rem;
+    font-size: 13.5px;
+  }
+  .search:focus-visible {
+    border-color: hsl(var(--primary));
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+
+  .noMatch {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    text-align: center;
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .showAll {
+    width: 100%;
+    padding-top: 0.25rem;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: hsl(var(--primary));
+  }
+  .showAll:hover {
+    text-decoration-line: underline;
+  }
+
+  /* ---- one account */
+
+  .account {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid hsl(var(--border));
+    padding: 0.625rem 0.875rem;
+    text-align: left;
+    font-size: 13px;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .account:hover {
+    border-color: hsl(var(--primary));
+    background-color: hsl(var(--muted));
+  }
+
+  .accountText {
+    min-width: 0;
+  }
+
+  .accountEmail {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+
+  .accountLabel {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .role {
+    flex-shrink: 0;
+    border-radius: var(--radius-pill);
+    background-color: hsl(var(--muted));
+    padding: 0.25rem 0.625rem;
+    font-size: 10.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: hsl(var(--muted-foreground));
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.submit {
+  width: 100%;
+}

@@ -1,0 +1,2110 @@
+// ============================================================
+//  BMU.Marketing — Prisma schema (PostgreSQL)
+//  Setup: cp .env.example .env  ->  npm run db:push  ->  npm run db:seed
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------- enums ----------------
+
+enum Role {
+  OWNER
+  ADMIN
+  MANAGER
+  STAFF
+  CLIENT
+  CREATOR
+  BUSINESS // QR platform tenant
+}
+
+enum ProjectStatus {
+  DISCOVERY
+  IN_PROGRESS
+  REVIEW
+  LIVE
+  PAUSED
+  COMPLETED
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  SITE_VISIT
+  PROPOSAL
+  WON
+  LOST
+}
+
+enum LeadSource {
+  META_ADS
+  GOOGLE_ADS
+  ORGANIC
+  REFERRAL
+  WHATSAPP
+  QR_SCAN
+  WALK_IN
+  OTHER
+}
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  PARTIALLY_PAID
+  PAID
+  OVERDUE
+  VOID
+}
+
+enum QrType {
+  URL
+  MENU
+  GOOGLE_REVIEW
+  WHATSAPP
+  PAYMENT
+  FEEDBACK
+  CATALOGUE
+  BUSINESS_CARD
+  OFFER
+  VCARD
+}
+
+enum SubscriptionTier {
+  STARTER
+  PROFESSIONAL
+  ENTERPRISE
+}
+
+enum SubscriptionStatus {
+  TRIALING
+  ACTIVE
+  PAST_DUE
+  CANCELLED
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  WAITING_ON_CLIENT
+  RESOLVED
+  CLOSED
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  CHANGES_REQUESTED
+  REJECTED
+}
+
+enum CampaignStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  COMPLETED
+}
+
+// ---------------- identity ----------------
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String
+  phone         String?
+  image         String?
+  role          Role      @default(CLIENT)
+  passwordHash  String?
+  emailVerified DateTime?
+  lastLoginAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  clientId String?
+  client   Client? @relation(fields: [clientId], references: [id], onDelete: SetNull)
+
+  creator         Creator?
+  notifications   Notification[]
+  ticketsOpened   SupportTicket[]   @relation("TicketAuthor")
+  ticketsAssigned SupportTicket[]   @relation("TicketAssignee")
+  approvals       ContentApproval[]
+  managedProjects Project[]         @relation("ProjectManager")
+  assignedTasks   ProjectTask[]     @relation("TaskAssignee")
+  uploadedMedia   MediaAsset[]
+  accounts        Account[]
+  sessions        Session[]
+
+  @@index([clientId])
+  @@index([role])
+}
+
+model Client {
+  id              String   @id @default(cuid())
+  name            String
+  slug            String   @unique
+  industry        String
+  city            String?
+  website         String?
+  logoUrl         String?
+  contactName     String?
+  contactEmail    String?
+  contactPhone    String?
+  gstin           String?
+  monthlyRetainer Int? // paise
+  onboardedAt     DateTime @default(now())
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  users        User[]
+  projects     Project[]
+  leads        Lead[]
+  invoices     Invoice[]
+  campaigns    Campaign[]
+  qrCodes      QrCode[]
+  locations    Location[]
+  reviews      Review[]
+  reports      Report[]
+  tickets      SupportTicket[]
+  rankings     SeoRanking[]
+  subscription Subscription?
+  approvals    ContentApproval[]
+  media        MediaAsset[]
+
+  @@index([isActive])
+  @@index([createdAt])
+}
+
+model Location {
+  id         String   @id @default(cuid())
+  clientId   String
+  client     Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  name       String
+  address    String?
+  city       String?
+  lat        Float?
+  lng        Float?
+  gbpPlaceId String?
+  createdAt  DateTime @default(now())
+
+  qrCodes QrCode[]
+  reviews Review[]
+
+  @@index([clientId])
+}
+
+// ---------------- delivery ----------------
+
+model Service {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  category    String // marketing | content | design | development | automation | seo | branding | ai | realEstate
+  description String?
+  basePrice   Int? // paise
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  projects ProjectService[]
+}
+
+model Project {
+  id          String        @id @default(cuid())
+  clientId    String
+  client      Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  managerId   String?
+  manager     User?         @relation("ProjectManager", fields: [managerId], references: [id], onDelete: SetNull)
+  name        String
+  description String?
+  status      ProjectStatus @default(DISCOVERY)
+  progress    Int           @default(0)
+  budget      Int?
+  startDate   DateTime?
+  dueDate     DateTime?
+  completedAt DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  services  ProjectService[]
+  approvals ContentApproval[]
+  invoices  Invoice[]
+  media     MediaAsset[]
+  tasks     ProjectTask[]
+  updates   ProjectUpdate[]
+
+  @@index([clientId, status])
+  @@index([updatedAt])
+}
+
+/// Work items inside a project. Progress on the project is derived from
+/// these rather than typed, so a status update can't drift from the work.
+model ProjectTask {
+  id          String    @id @default(cuid())
+  projectId   String
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  title       String
+  /// Which service line it belongs to — Development, Design, Branding, etc.
+  discipline  String    @default("Delivery")
+  /// TODO | IN_PROGRESS | BLOCKED | REVIEW | DONE
+  status      String    @default("TODO")
+  assigneeId  String?
+  assignee    User?     @relation("TaskAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+  /// Rough size, used to weight progress. A one-hour task and a two-week
+  /// task counting equally is what makes percentages meaningless.
+  weight      Int       @default(1)
+  dueDate     DateTime?
+  completedAt DateTime?
+  notes       String?
+  sortOrder   Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([projectId, status])
+  @@index([assigneeId])
+}
+
+/// A dated entry on the project timeline — what actually happened and when.
+/// This is what a progress report is built from.
+model ProjectUpdate {
+  id         String   @id @default(cuid())
+  projectId  String
+  project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  authorId   String?
+  authorName String
+  /// MILESTONE | NOTE | BLOCKER | DELIVERY
+  kind       String   @default("NOTE")
+  title      String
+  body       String?
+  createdAt  DateTime @default(now())
+
+  @@index([projectId, createdAt])
+}
+
+model ProjectService {
+  id        String  @id @default(cuid())
+  projectId String
+  serviceId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, serviceId])
+}
+
+model ContentApproval {
+  id           String         @id @default(cuid())
+  clientId     String
+  client       Client         @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  projectId    String?
+  project      Project?       @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  title        String
+  type         String // reel | post | carousel | video | banner | copy
+  assetUrl     String?
+  caption      String?
+  scheduledFor DateTime?
+  status       ApprovalStatus @default(PENDING)
+  feedback     String?
+  reviewedById String?
+  reviewedBy   User?          @relation(fields: [reviewedById], references: [id], onDelete: SetNull)
+  reviewedAt   DateTime?
+  /// Bumped each time changes are requested. Three or more usually means the
+  /// brief was wrong, not the creative — that's the number worth escalating on.
+  revision     Int            @default(1)
+  /// When it was first sent to the client. Ageing is measured from here, not
+  /// from creation, because sitting in our own queue isn't the client's delay.
+  sentAt       DateTime?
+  lastNudgedAt DateTime?
+  /// Set when someone senior takes ownership of an approval that's gone cold.
+  escalatedAt  DateTime?
+  escalatedTo  String?
+
+  comments ApprovalComment[]
+
+  @@index([clientId, status])
+  @@index([status, sentAt])
+  @@index([scheduledFor])
+}
+
+/// The thread on an approval. Kept as rows rather than one feedback string so
+/// a revision cycle can be read back afterwards.
+model ApprovalComment {
+  id         String          @id @default(cuid())
+  approvalId String
+  approval   ContentApproval @relation(fields: [approvalId], references: [id], onDelete: Cascade)
+  authorId   String?
+  authorName String
+  /// CLIENT | AGENCY
+  side       String          @default("AGENCY")
+  body       String
+  /// True for the comment that accompanied a change request.
+  isDecision Boolean         @default(false)
+  createdAt  DateTime        @default(now())
+
+  @@index([approvalId, createdAt])
+}
+
+// ---------------- growth ----------------
+
+model Campaign {
+  id          String         @id @default(cuid())
+  clientId    String
+  client      Client         @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  name        String
+  platform    String // meta | google | whatsapp | influencer | email
+  status      CampaignStatus @default(DRAFT)
+  budget      Int?
+  spend       Int            @default(0)
+  impressions Int            @default(0)
+  clicks      Int            @default(0)
+  conversions Int            @default(0)
+  startDate   DateTime?
+  endDate     DateTime?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  leads    Lead[]
+  bookings CreatorBooking[]
+
+  @@index([clientId, status])
+  @@index([updatedAt])
+}
+
+model Lead {
+  id              String     @id @default(cuid())
+  clientId        String
+  client          Client     @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  campaignId      String?
+  campaign        Campaign?  @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+  name            String
+  phone           String?
+  email           String?
+  message         String?
+  source          LeadSource @default(OTHER)
+  status          LeadStatus @default(NEW)
+  score           Int        @default(0)
+  value           Int?
+  /// User ID of whoever owns this lead. Null means nobody has picked it up.
+  assignedTo      String?
+  assignedAt      DateTime?
+  lastContactedAt DateTime?
+  /// Set when the status first moves off NEW — this is the number that
+  /// actually predicts conversion, so it's stored rather than derived.
+  firstResponseAt DateTime?
+  lostReason      String?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  notes LeadNote[]
+
+  @@index([clientId, status])
+  @@index([assignedTo, status])
+  @@index([createdAt])
+}
+
+/// Every touch on a lead: notes, status moves, reassignments.
+/// Kept as one append-only trail so "what happened here" is a single query.
+model LeadNote {
+  id        String   @id @default(cuid())
+  leadId    String
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  authorId  String?
+  authorName String?
+  /// NOTE | STATUS | ASSIGN | CALL | WHATSAPP | EMAIL
+  kind      String   @default("NOTE")
+  body      String
+  createdAt DateTime @default(now())
+
+  @@index([leadId, createdAt])
+}
+
+model Creator {
+  id         String   @id @default(cuid())
+  userId     String   @unique
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  handle     String   @unique
+  city       String?
+  categories String[]
+  followers  Int      @default(0)
+  avgViews   Int      @default(0)
+  rateCard   Int?
+  isVerified Boolean  @default(false)
+  bio        String?
+  /// Payout details. Creators are usually paid by UPI; PAN is needed for TDS
+  /// once they pass the annual threshold.
+  upiId      String?
+  panNumber  String?
+  createdAt  DateTime @default(now())
+
+  bookings CreatorBooking[]
+
+  @@index([city])
+}
+
+model CreatorBooking {
+  id           String   @id @default(cuid())
+  creatorId    String
+  creator      Creator  @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  campaignId   String
+  campaign     Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  deliverables String
+  fee          Int
+  status       String   @default("BOOKED")
+  createdAt    DateTime @default(now())
+
+  @@index([campaignId])
+}
+
+// ---------------- BMU QR ----------------
+
+model QrCode {
+  id         String    @id @default(cuid())
+  clientId   String
+  client     Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  locationId String?
+  location   Location? @relation(fields: [locationId], references: [id], onDelete: SetNull)
+  slug       String    @unique
+  label      String
+  type       QrType    @default(URL)
+  target     String
+  isDynamic  Boolean   @default(true)
+  isActive   Boolean   @default(true)
+  password   String?
+  scanCount  Int       @default(0)
+  lastScanAt DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  scans ScanEvent[]
+
+  @@index([clientId, type])
+  @@index([scanCount])
+}
+
+model ScanEvent {
+  id        String   @id @default(cuid())
+  qrCodeId  String
+  qrCode    QrCode   @relation(fields: [qrCodeId], references: [id], onDelete: Cascade)
+  city      String?
+  country   String?
+  device    String?
+  referrer  String?
+  scannedAt DateTime @default(now())
+
+  @@index([qrCodeId, scannedAt])
+}
+
+model Subscription {
+  id               String             @id @default(cuid())
+  clientId         String             @unique
+  client           Client             @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  tier             SubscriptionTier   @default(STARTER)
+  status           SubscriptionStatus @default(TRIALING)
+  amount           Int
+  interval         String             @default("MONTHLY")
+  trialEndsAt      DateTime?
+  currentPeriodEnd DateTime?
+  razorpaySubId    String?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+}
+
+// ---------------- reputation & SEO ----------------
+
+model Review {
+  id          String    @id @default(cuid())
+  clientId    String
+  client      Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  locationId  String?
+  location    Location? @relation(fields: [locationId], references: [id], onDelete: SetNull)
+  rating      Int
+  comment     String?
+  authorName  String?
+  platform    String    @default("GOOGLE")
+  isPublic    Boolean   @default(true)
+  routedToOps Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+
+  @@index([clientId, rating])
+}
+
+model SeoRanking {
+  id               String   @id @default(cuid())
+  clientId         String
+  client           Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  keyword          String
+  position         Int
+  previousPosition Int?
+  volume           Int?
+  url              String?
+  checkedAt        DateTime @default(now())
+
+  @@index([clientId, checkedAt])
+}
+
+// ---------------- money ----------------
+
+model Invoice {
+  id                String        @id @default(cuid())
+  clientId          String
+  client            Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  projectId         String?
+  project           Project?      @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  number            String        @unique
+  status            InvoiceStatus @default(DRAFT)
+  subtotal          Int
+  taxRate           Float         @default(18)
+  total             Int
+  amountPaid        Int           @default(0)
+  issuedAt          DateTime      @default(now())
+  dueAt             DateTime?
+  paidAt            DateTime?
+  notes             String?
+  razorpayPaymentId String?
+
+  items InvoiceItem[]
+
+  @@index([clientId, status])
+  @@index([issuedAt])
+}
+
+model InvoiceItem {
+  id          String  @id @default(cuid())
+  invoiceId   String
+  invoice     Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  description String
+  quantity    Int     @default(1)
+  unitPrice   Int
+  amount      Int
+
+  @@index([invoiceId])
+}
+
+// ---------------- support & reporting ----------------
+
+model SupportTicket {
+  id         String       @id @default(cuid())
+  clientId   String
+  client     Client       @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  authorId   String
+  author     User         @relation("TicketAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+  assigneeId String?
+  assignee   User?        @relation("TicketAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+  subject    String
+  body       String
+  status     TicketStatus @default(OPEN)
+  priority   Priority     @default(MEDIUM)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+
+  @@index([clientId, status])
+  @@index([updatedAt])
+}
+
+model Report {
+  id          String   @id @default(cuid())
+  clientId    String
+  client      Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  title       String
+  periodStart DateTime
+  periodEnd   DateTime
+  fileUrl     String?
+  summary     String?
+  metrics     Json?
+  createdAt   DateTime @default(now())
+
+  @@index([clientId, periodEnd])
+}
+
+model MediaAsset {
+  id           String   @id @default(cuid())
+  clientId     String?
+  client       Client?  @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  projectId    String?
+  project      Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  uploadedById String?
+  uploadedBy   User?    @relation(fields: [uploadedById], references: [id], onDelete: SetNull)
+  url          String
+  key          String   @unique
+  filename     String
+  mimeType     String
+  sizeBytes    Int
+  width        Int?
+  height       Int?
+  /// Folder path like "atria-living/tower-c/drone". Stored as a string rather
+  /// than a folder table because folders here are just a naming convention —
+  /// a real tree would need moves, renames and orphan handling for no gain.
+  folder       String   @default("")
+  tags         String[]
+  /// Written on the asset so it travels with the file into a post or profile.
+  altText      String?
+  /// Archived assets stay in storage but drop out of the picker. Deleting a
+  /// file that's live on a client's site is not recoverable.
+  isArchived   Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  @@index([clientId])
+  @@index([folder])
+  @@index([isArchived, createdAt])
+}
+
+/// Per-person overrides on top of role defaults. Denials always win, so a
+/// grant can never accidentally re-open something explicitly revoked.
+/// Sub-roles built in the admin panel. A custom role inherits a base role's
+/// defaults and then adds or removes specific modules, so it can never grant
+/// more than the base role is allowed to hold.
+model CustomRole {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String?
+  /// One of the built-in roles this sits on top of.
+  baseRole    String   @default("STAFF")
+  /// { "leads": ["view","edit"], "invoices": [] }
+  permissions Json
+  memberCount Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdBy   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isActive])
+}
+
+model UserPermission {
+  id        String   @id @default(cuid())
+  userId    String
+  module    String
+  actions   String[]
+  /// GRANT adds to the role default, DENY subtracts from it.
+  kind      String   @default("GRANT")
+  grantedBy String?
+  createdAt DateTime @default(now())
+
+  @@unique([userId, module, kind])
+  @@index([userId])
+}
+
+/// Which client accounts a manager or staff member is responsible for.
+model StaffAssignment {
+  id         String   @id @default(cuid())
+  userId     String
+  clientId   String?
+  businessId String?
+  /// LEAD | SUPPORT | REVIEWER
+  duty       String   @default("LEAD")
+  note       String?
+  assignedBy String?
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, clientId, businessId])
+  @@index([userId])
+  @@index([clientId])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  body      String?
+  href      String?
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId, isRead])
+}
+
+// ---------------- public site content ----------------
+
+model PortfolioItem {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  category    String
+  clientName  String?
+  summary     String?
+  coverUrl    String?
+  isFeatured  Boolean  @default(false)
+  publishedAt DateTime @default(now())
+
+  @@index([category])
+}
+
+model CaseStudy {
+  id             String   @id @default(cuid())
+  title          String
+  slug           String   @unique
+  industry       String
+  headlineMetric String
+  summary        String
+  services       String[]
+  publishedAt    DateTime @default(now())
+}
+
+model Testimonial {
+  id         String   @id @default(cuid())
+  author     String
+  role       String?
+  company    String?
+  quote      String
+  rating     Int      @default(5)
+  isFeatured Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}
+
+model Post {
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  excerpt     String?
+  body        String
+  coverUrl    String?
+  tags        String[]
+  isPublished Boolean   @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([isPublished, publishedAt])
+}
+
+/// A creator's answer to a brief. Kept as its own model rather than a status
+/// on the brief, because a brief goes to several creators and each response
+/// has its own terms and thread.
+model BriefResponse {
+  id         String   @id @default(cuid())
+  briefId    String
+  creatorId  String
+  /// ACCEPTED | DECLINED | QUESTION
+  decision   String
+  message    String?
+  /// What they'd charge for this specific brief, in paise. Often differs from
+  /// their rate card once deliverables and usage rights are known.
+  quotedFee  Int?
+  /// When they can deliver by, if different from the brief's date.
+  proposedAt DateTime?
+  createdAt  DateTime @default(now())
+
+  @@unique([briefId, creatorId])
+  @@index([briefId])
+  @@index([creatorId, createdAt])
+}
+
+model CreatorApplication {
+  id         String   @id @default(cuid())
+  name       String
+  email      String
+  phone      String?
+  handle     String
+  platform   String   @default("INSTAGRAM")
+  city       String?
+  categories String[]
+  followers  Int      @default(0)
+  rateCard   Int? // paise per deliverable
+  portfolio  String?
+  pitch      String?
+  status     String   @default("NEW") // NEW | REVIEWING | ACCEPTED | DECLINED
+  reviewedAt DateTime?
+  createdAt  DateTime @default(now())
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+model Appointment {
+  id           String    @id @default(cuid())
+  name         String
+  email        String?
+  phone        String?
+  need         String?
+  message      String?
+  scheduledFor DateTime?
+  isHandled    Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+
+  @@index([isHandled])
+}
+
+/// Leads from the public website forms, shown in the admin portal (/admin-portal).
+/// `form` is "quick" (landing page) or "contact" (/contact page).
+model WebsiteLead {
+  id              String    @id @default(cuid())
+  form            String
+  name            String
+  phone           String
+  email           String?
+  need            String?
+  company         String?
+  budget          String?
+  message         String?
+  page            String?
+  referrer        String?
+  /// Review status: "new" | "follow_up" | "converted" | "rejected"
+  status          String    @default("new")
+  statusUpdatedAt DateTime?
+  createdAt       DateTime  @default(now())
+
+  @@index([form, createdAt])
+  @@index([status])
+}
+
+
+// ---------------- Auth.js ----------------
+// Required only if you switch from JWT sessions to the Prisma adapter,
+// or add an OAuth provider such as Google. Harmless to keep either way.
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+
+// ============================================================
+//  CMS — makes the public site editable from the admin panel
+// ============================================================
+
+model ContentBlock {
+  id        String   @id @default(cuid())
+  key       String   @unique // "home.hero", "services.index", "pricing.plans"
+  label     String
+  group     String   @default("general")
+  data      Json
+  updatedBy String?
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  @@index([group])
+}
+
+/// Any repeatable content type on the public site — services, products,
+/// portfolio, articles, store items and so on. One table, many collections,
+/// so a new content type needs a registry entry rather than a migration.
+model ContentItem {
+  id          String   @id @default(cuid())
+  collection  String // "services" | "products" | "portfolio" | ...
+  slug        String
+  title       String
+  data        Json
+  sortOrder   Int      @default(0)
+  isPublished Boolean  @default(true)
+  updatedBy   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([collection, slug])
+  @@index([collection, sortOrder])
+  @@index([collection, isPublished])
+}
+
+/// Editable industry configuration. Falls back to the code defaults in
+/// src/lib/industry-setup.ts, so an empty table still produces a working app.
+model IndustrySetting {
+  id             String   @id @default(cuid())
+  slug           String   @unique
+  name           String
+  category       String   @default("OTHER")
+  primaryActions String[]
+  modules        String[]
+  kpis           String[]
+  plan           String   @default("BUSINESS")
+  kit            String[]
+  primaryGoal    String
+  heroMetric     String
+  isActive       Boolean  @default(true)
+  sortOrder      Int      @default(0)
+  updatedBy      String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([isActive, sortOrder])
+}
+
+/// A page built in the admin panel rather than in code.
+///
+/// Sections are stored as a JSON array rather than rows, because they're
+/// always read and written together as a whole page — splitting them into a
+/// table would buy nothing and cost a join on every render.
+model CustomPage {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  /// Shown in the page header. Optional — some pages open straight into content.
+  subtitle    String?
+  sections    Json     @default("[]")
+  metaTitle   String?
+  metaDesc    String?
+  isPublished Boolean  @default(false)
+  /// Appears in the main navigation when set.
+  navLabel    String?
+  navOrder    Int      @default(100)
+  updatedBy   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isPublished])
+}
+
+model SiteSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+// ============================================================
+//  BMU QR PLATFORM — multi-tenant business operating system
+// ============================================================
+
+enum BusinessCategory {
+  RESTAURANT
+  CAFE
+  SALON
+  SPA
+  DOCTOR
+  CLINIC
+  HOSPITAL
+  GYM
+  REAL_ESTATE
+  RETAIL
+  HOTEL
+  AUTOMOBILE
+  EDUCATION
+  FREELANCER
+  AGENCY
+  PROFESSIONAL
+  OTHER
+}
+
+enum PlanTier {
+  FREE
+  STARTER
+  BUSINESS
+  PRO
+  ENTERPRISE
+}
+
+enum BusinessRole {
+  OWNER
+  MANAGER
+  STAFF
+  CASHIER
+  MARKETING
+}
+
+enum ProfileLinkType {
+  PHONE
+  WHATSAPP
+  EMAIL
+  WEBSITE
+  DIRECTIONS
+  INSTAGRAM
+  FACEBOOK
+  YOUTUBE
+  LINKEDIN
+  TWITTER
+  GOOGLE_REVIEW
+  PAYMENT
+  BOOKING
+  MENU
+  CATALOGUE
+  BROCHURE
+  CUSTOM
+}
+
+enum NfcStatus {
+  UNASSIGNED
+  ASSIGNED
+  ACTIVE
+  BLOCKED
+}
+
+enum FeedbackSentiment {
+  POSITIVE
+  NEUTRAL
+  NEGATIVE
+}
+
+enum OrderMode {
+  DINE_IN
+  TAKEAWAY
+  DELIVERY
+}
+
+enum FoodOrderStatus {
+  CART
+  PLACED
+  ACCEPTED
+  PREPARING
+  READY
+  SERVED
+  COMPLETED
+  CANCELLED
+}
+
+enum OrderChannel {
+  DINE_IN
+  TAKEAWAY
+  DELIVERY
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+/// A tenant. Every QR, profile, lead and order belongs to one.
+model Business {
+  id          String           @id @default(cuid())
+  slug        String           @unique // yourplatform.com/b/{slug}
+  name        String
+  category    BusinessCategory @default(OTHER)
+  tagline     String?
+  about       String?
+  logoUrl     String?
+  coverUrl    String?
+  phone       String?
+  whatsapp    String?
+  email       String?
+  website     String?
+  address     String?
+  city        String?
+  state       String?
+  pincode     String?
+  lat         Float?
+  lng         Float?
+  gbpPlaceId  String? // drives the Google review deep link
+  gbpMapsUrl  String? // whatever the owner pasted, kept for fallback
+
+  /**
+   * Statutory registrations displayed on the public profile.
+   *
+   * These change the sale entirely: a restaurant must display its FSSAI
+   * number where customers can see it, a pharmacy its drug licence, a
+   * developer its RERA number. That moves the purchase from marketing spend
+   * to something the business cannot legally operate without — a different
+   * budget, a shorter conversation, and far lower churn.
+   */
+  fssaiNumber   String?
+  fssaiExpiry   DateTime?
+  gstNumber     String?
+  drugLicence   String?
+  reraNumber    String?
+  clinicRegNo   String?
+  /// Free-form for anything sector-specific we haven't modelled.
+  otherLicence  String?
+  otherLicenceLabel String?
+  /// Allergen and veg/non-veg declarations are mandatory on menus.
+  showAllergens Boolean  @default(false)
+  brandColor  String           @default("#8BB72C")
+  /// Appearance — see src/lib/profile-theme.ts for the allowed values.
+  themeKey    String           @default("signature")
+  fontKey     String           @default("albert")
+  layoutKey   String           @default("classic")
+  buttonStyle String           @default("solid")
+  motionLevel String           @default("subtle")
+  headingFont String?
+  corners     String           @default("soft")
+  logoShape   String           @default("rounded")
+  bgColor     String?
+  surfaceColor String?
+  textColor   String?
+  isPublished Boolean          @default(false)
+  isVerified  Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  members       BusinessMember[]
+  profileLinks  ProfileLink[]
+  services      ProfileService[]
+  hours         BusinessHour[]
+  smartQrCodes  SmartQr[]
+  nfcCards      NfcCard[]
+  feedback      FeedbackEntry[]
+  captures      LeadCapture[]
+  contacts      BusinessContact[]
+  subscription  BusinessSubscription?
+  productOrders ProductOrder[]
+  offers        Offer[]
+  staff         BusinessStaff[]
+  bookings      Booking[]
+  menuCategories MenuCategory[]
+  tables        DiningTable[]
+  foodOrders    FoodOrder[]
+  loyalty       LoyaltyProgram?
+  outlets       BusinessLocation[]
+  staffCodes    StaffCode[]
+  arExperiences ArExperience[]
+  visitors      ScanVisitor[]
+  socialAccounts SocialAccount[]
+  socialPosts   SocialPost[]
+
+  @@index([category, city])
+  @@index([isPublished])
+}
+
+model BusinessMember {
+  id         String       @id @default(cuid())
+  businessId String
+  business   Business     @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  userId     String
+  role       BusinessRole @default(STAFF)
+  createdAt  DateTime     @default(now())
+
+  @@unique([businessId, userId])
+  @@index([userId])
+}
+
+model ProfileLink {
+  id         String          @id @default(cuid())
+  businessId String
+  business   Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  type       ProfileLinkType
+  label      String
+  value      String // phone number, url, upi id, prefilled message
+  icon       String?
+  sortOrder  Int             @default(0)
+  isActive   Boolean         @default(true)
+  clicks     Int             @default(0)
+
+  @@index([businessId, sortOrder])
+}
+
+model ProfileService {
+  id          String   @id @default(cuid())
+  businessId  String
+  business    Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  price       Int? // paise
+  priceNote   String? // "from", "per session"
+  imageUrl    String?
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+
+  @@index([businessId, sortOrder])
+}
+
+model BusinessHour {
+  id         String   @id @default(cuid())
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  dayOfWeek  Int // 0 = Sunday
+  opensAt    String? // "09:30"
+  closesAt   String? // "18:30"
+  isClosed   Boolean  @default(false)
+
+  @@unique([businessId, dayOfWeek])
+}
+
+/// Dynamic QR. The printed code never encodes the destination.
+/// An AR experience anchored to a printed image.
+///
+/// The customer points a phone camera at a flyer, card or menu and video
+/// plays locked to the print, tracking as they move. No app — it runs in the
+/// browser camera, which is the only version an Indian SMB's customer will
+/// actually use.
+model ArExperience {
+  id          String   @id @default(cuid())
+  businessId  String
+  business    Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  slug        String   @unique // reachable at /ar/{slug}
+  name        String
+  /// The printed artwork the camera looks for.
+  targetUrl   String
+  /// Compiled tracking data generated from the target image. Without this
+  /// there is nothing to track against — the raw image alone is not enough.
+  targetMindUrl String?
+  /// How confidently the image can be tracked, 0-100. Flat colour and
+  /// repeated patterns score badly and produce a jittery overlay.
+  targetQuality Int?
+  /// VIDEO | MODEL | IMAGE
+  contentType String   @default("VIDEO")
+  contentUrl  String
+  /// Aspect ratio of the content, so it sits correctly on the target.
+  contentRatio Float   @default(0.5625)
+  /// Plays with sound off first — browsers block autoplay with audio, and a
+  /// silent video that plays beats a sound-on video that doesn't.
+  autoplayMuted Boolean @default(true)
+  loop        Boolean  @default(true)
+  /// Optional button under the experience.
+  ctaLabel    String?
+  ctaUrl      String?
+  scans       Int      @default(0)
+  isPublished Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([businessId, isPublished])
+}
+
+model SmartQr {
+  id          String    @id @default(cuid())
+  businessId  String
+  business    Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  outletId    String?
+  code        String    @unique // short code -> /q/{code}
+  label       String
+  kind        String // PROFILE | REVIEW | WHATSAPP | MENU | PAYMENT | LEAD | URL | WIFI | VCARD ...
+  destination String
+  fallbackUrl String?
+  campaignId  String?
+  campaign    QrCampaign? @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+  password    String?
+  isActive    Boolean   @default(true)
+  scanCount   Int       @default(0)
+  lastScanAt  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  scans   SmartScan[]
+  nfcCard NfcCard?
+
+  @@index([businessId, kind])
+}
+
+model SmartScan {
+  id        String   @id @default(cuid())
+  qrId      String
+  qr        SmartQr  @relation(fields: [qrId], references: [id], onDelete: Cascade)
+  device    String?
+  os        String?
+  browser   String?
+  city      String?
+  country   String?
+  referrer  String?
+  isUnique  Boolean  @default(true)
+  scannedAt DateTime @default(now())
+
+  @@index([qrId, scannedAt])
+}
+
+model QrCampaign {
+  id           String    @id @default(cuid())
+  businessId   String
+  name         String
+  slug         String
+  goal         String    @default("LEADS") // LEADS | REVIEWS | ORDERS | AWARENESS
+  status       String    @default("DRAFT") // DRAFT | ACTIVE | PAUSED | ENDED
+  landingHeadline String?
+  landingBody  String?
+  offerText    String?
+  couponCode   String?
+  utmSource    String?
+  utmMedium    String?
+  utmCampaign  String?
+  utmContent   String?
+  budget       Int? // paise
+  /// Denormalised counters — a campaign card shouldn't cost five aggregates.
+  scans        Int       @default(0)
+  visitors     Int       @default(0)
+  claims       Int       @default(0)
+  leads        Int       @default(0)
+  conversions  Int       @default(0)
+  revenue      Int       @default(0)
+  startsAt     DateTime?
+  endsAt       DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  codes SmartQr[]
+
+  @@unique([businessId, slug])
+  @@index([businessId, status])
+}
+
+model NfcCard {
+  id         String    @id @default(cuid())
+  businessId String?
+  business   Business? @relation(fields: [businessId], references: [id], onDelete: SetNull)
+  serial     String    @unique
+  qrId       String?   @unique
+  qr         SmartQr?  @relation(fields: [qrId], references: [id], onDelete: SetNull)
+  holderName String?
+  status     NfcStatus @default(UNASSIGNED)
+  tapCount   Int       @default(0)
+  activatedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([businessId])
+}
+
+/// Review booster: happy customers go to Google, unhappy ones come to you.
+/// A code assigned to one person — a waiter, stylist or service advisor.
+///
+/// This is what turns reviews into something an owner can run incentives on.
+/// Once staff bonuses are wired to these codes, the platform stops being
+/// swappable: replacing it means rebuilding the incentive scheme.
+model StaffCode {
+  id         String   @id @default(cuid())
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  staffId    String?
+  /// Printed on the badge or card. Short because it goes on a lanyard.
+  code       String   @unique
+  name       String
+  role       String?
+  outletId   String?
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+
+  @@index([businessId, isActive])
+}
+
+/// A returning device, not a returning person.
+///
+/// Offline businesses have never had this number — they know how many people
+/// walked in, never how many came back. A rotating cookie identifies the
+/// device across visits; no phone number, no name, nothing that identifies a
+/// human. That matters under the DPDP Act, and it also means the number is
+/// honest about what it measures.
+model ScanVisitor {
+  id         String   @id @default(cuid())
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  /// Salted hash of the cookie value. Never the raw value, so a leaked
+  /// database row can't be replayed as someone's visitor cookie.
+  visitorKey String
+  firstSeenAt DateTime @default(now())
+  lastSeenAt  DateTime @default(now())
+  visitCount  Int      @default(1)
+  /// Which code they scanned first — tells you which placement acquires,
+  /// as opposed to which one gets scanned most.
+  firstSource String?
+  lastSource  String?
+
+  @@unique([businessId, visitorKey])
+  @@index([businessId, lastSeenAt])
+}
+
+model FeedbackEntry {
+  id           String            @id @default(cuid())
+  businessId   String
+  business     Business          @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  outletId     String?
+  /// Which staff code was scanned, if any. Nullable because counter codes
+  /// and table tents belong to nobody.
+  staffCode    String?
+  sentiment    FeedbackSentiment
+  rating       Int?
+  comment      String?
+  name         String?
+  phone        String?
+  email        String?
+  routedToGoogle Boolean         @default(false)
+  isResolved   Boolean           @default(false)
+  resolvedNote String?
+  createdAt    DateTime          @default(now())
+
+  @@index([businessId, sentiment])
+  @@index([createdAt])
+}
+
+model LeadCapture {
+  id         String   @id @default(cuid())
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  outletId   String?
+  qrCode     String?
+  name       String
+  phone      String?
+  email      String?
+  message    String?
+  source     String   @default("QR")
+  status     String   @default("NEW")
+  createdAt  DateTime @default(now())
+
+  @@index([businessId, status])
+}
+
+model BusinessContact {
+  id           String    @id @default(cuid())
+  businessId   String
+  business     Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name         String?
+  phone        String?
+  email        String?
+  tags         String[]
+  firstSeenAt  DateTime  @default(now())
+  lastSeenAt   DateTime  @default(now())
+  visits       Int       @default(1)
+  loyaltyPoints Int      @default(0)
+
+  @@index([businessId])
+}
+
+model Offer {
+  id         String    @id @default(cuid())
+  businessId String
+  business   Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  title      String
+  detail     String?
+  code       String?
+  discount   String?
+  startsAt   DateTime?
+  endsAt     DateTime?
+  isActive   Boolean   @default(true)
+  claims     Int       @default(0)
+
+  @@index([businessId, isActive])
+}
+
+model Plan {
+  id           String   @id @default(cuid())
+  tier         PlanTier @unique
+  name         String
+  priceYearly  Int // paise
+  qrLimit      Int // -1 = unlimited
+  locationLimit Int     @default(1)
+  userLimit    Int      @default(1)
+  features     String[]
+  isPopular    Boolean  @default(false)
+  sortOrder    Int      @default(0)
+}
+
+model BusinessSubscription {
+  id         String    @id @default(cuid())
+  businessId String    @unique
+  business   Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  tier       PlanTier  @default(FREE)
+  status     String    @default("ACTIVE")
+  startedAt  DateTime  @default(now())
+  renewsAt   DateTime?
+  razorpaySubId String?
+}
+
+/// Physical QR/NFC goods — the hardware side of the flywheel.
+model PhysicalProduct {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  category    String // CARD | STANDEE | STICKER | KEYCHAIN | KIT
+  tech        String // QR | NFC | BOTH
+  description String?
+  price       Int // paise
+  compareAt   Int?
+  imageUrl    String?
+  features    String[]
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+
+  items ProductOrderItem[]
+}
+
+model ProductOrder {
+  id         String      @id @default(cuid())
+  businessId String?
+  business   Business?   @relation(fields: [businessId], references: [id], onDelete: SetNull)
+  number     String      @unique
+  status     OrderStatus @default(PENDING)
+  name       String
+  phone      String
+  email      String?
+  address    String
+  city       String
+  pincode    String
+  subtotal   Int
+  shipping   Int         @default(0)
+  total      Int
+  razorpayPaymentId String?
+  createdAt  DateTime    @default(now())
+
+  items ProductOrderItem[]
+
+  @@index([status])
+}
+
+model ProductOrderItem {
+  id        String          @id @default(cuid())
+  orderId   String
+  order     ProductOrder    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   PhysicalProduct @relation(fields: [productId], references: [id])
+  quantity  Int             @default(1)
+  unitPrice Int
+  amount    Int
+
+  @@index([orderId])
+}
+
+
+// ============================================================
+//  Booking engine
+// ============================================================
+
+model BusinessStaff {
+  id         String   @id @default(cuid())
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  userId     String?
+  name       String
+  role       String? // "Senior stylist", "Dr. — Dermatology"
+  imageUrl   String?
+  bio        String?
+  /// Empty means this person can be booked for any service.
+  serviceIds String[]
+  isBookable Boolean  @default(true)
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  availability StaffAvailability[]
+  timeOff      StaffTimeOff[]
+  bookings     Booking[]
+
+  @@index([businessId, isBookable])
+}
+
+model StaffAvailability {
+  id        String        @id @default(cuid())
+  staffId   String
+  staff     BusinessStaff @relation(fields: [staffId], references: [id], onDelete: Cascade)
+  dayOfWeek Int // 0 = Sunday
+  startTime String // "09:30"
+  endTime   String // "18:30"
+  breakStart String?
+  breakEnd   String?
+
+  @@unique([staffId, dayOfWeek])
+}
+
+model StaffTimeOff {
+  id      String        @id @default(cuid())
+  staffId String
+  staff   BusinessStaff @relation(fields: [staffId], references: [id], onDelete: Cascade)
+  startsAt DateTime
+  endsAt   DateTime
+  reason  String?
+
+  @@index([staffId, startsAt])
+}
+
+model BookableService {
+  id          String   @id @default(cuid())
+  businessId  String
+  name        String
+  description String?
+  /// Minutes. Drives slot length and how far the next booking is pushed.
+  duration    Int      @default(30)
+  /// Minutes of cleanup blocked after the appointment ends.
+  bufferAfter Int      @default(0)
+  price       Int? // paise
+  depositAmount Int? // paise, if a deposit is required to hold the slot
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+
+  bookings Booking[]
+
+  @@index([businessId, isActive])
+}
+
+model Booking {
+  id            String          @id @default(cuid())
+  businessId    String
+  business      Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  outletId      String?
+  serviceId     String?
+  service       BookableService? @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+  staffId       String?
+  staff         BusinessStaff?  @relation(fields: [staffId], references: [id], onDelete: SetNull)
+  reference     String          @unique
+  customerName  String
+  customerPhone String
+  customerEmail String?
+  notes         String?
+  startsAt      DateTime
+  endsAt        DateTime
+  status        BookingStatus   @default(PENDING)
+  source        String          @default("QR")
+  depositPaid   Int             @default(0)
+  razorpayPaymentId String?
+  remindedAt    DateTime?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@index([businessId, startsAt])
+  @@index([staffId, startsAt])
+  @@index([status])
+}
+
+
+// ============================================================
+//  QR menu and ordering
+// ============================================================
+
+model FoodOrder {
+  id          String          @id @default(cuid())
+  businessId  String
+  business    Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  outletId    String?
+  tableId     String?
+  table       DiningTable?    @relation(fields: [tableId], references: [id], onDelete: SetNull)
+  number      String          @unique
+  mode        OrderMode       @default(DINE_IN)
+  status      FoodOrderStatus @default(PLACED)
+  customerName String?
+  customerPhone String?
+  address     String?
+  notes       String?
+  subtotal    Int
+  taxRate     Float           @default(5)
+  packing     Int             @default(0)
+  total       Int
+  paymentMode String          @default("PAY_AT_COUNTER") // PAY_AT_COUNTER | ONLINE | WHATSAPP
+  isPaid      Boolean         @default(false)
+  razorpayPaymentId String?
+  placedAt    DateTime        @default(now())
+  readyAt     DateTime?
+  completedAt DateTime?
+
+  lines FoodOrderLine[]
+
+  @@index([businessId, status])
+  @@index([placedAt])
+}
+
+// ============================================================
+//  QR menu and ordering
+// ============================================================
+
+model MenuCategory {
+  id         String   @id @default(cuid())
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name       String
+  description String?
+  sortOrder  Int      @default(0)
+  isActive   Boolean  @default(true)
+
+  items MenuItem[]
+
+  @@index([businessId, sortOrder])
+}
+
+model MenuItem {
+  id          String       @id @default(cuid())
+  categoryId  String
+  category    MenuCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  businessId  String
+  name        String
+  description String?
+  price       Int // paise
+  imageUrl    String?
+  /// VEG | EGG | NON_VEG — legally required labelling in India.
+  foodType    String       @default("VEG")
+  spiceLevel  Int? // 0-3
+  isAvailable Boolean      @default(true)
+  isBestseller Boolean     @default(false)
+  prepMinutes Int          @default(15)
+  sortOrder   Int          @default(0)
+
+  lines FoodOrderLine[]
+
+  @@index([businessId, isAvailable])
+  @@index([categoryId, sortOrder])
+}
+
+/// A physical table, each with its own QR code.
+model DiningTable {
+  id         String   @id @default(cuid())
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  label      String // "Table 7", "Terrace 2"
+  seats      Int      @default(4)
+  qrCode     String?  @unique
+  isActive   Boolean  @default(true)
+
+  orders FoodOrder[]
+
+  @@index([businessId])
+}
+
+model FoodOrderLine {
+  id        String    @id @default(cuid())
+  orderId   String
+  order     FoodOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  itemId    String?
+  item      MenuItem? @relation(fields: [itemId], references: [id], onDelete: SetNull)
+  name      String // snapshot, so a menu edit can't rewrite history
+  unitPrice Int
+  quantity  Int       @default(1)
+  amount    Int
+  note      String?
+
+  @@index([orderId])
+}
+
+
+// ============================================================
+//  AI layer
+// ============================================================
+
+model AiRequest {
+  id         String   @id @default(cuid())
+  businessId String?
+  userId     String?
+  kind       String // REVIEW_REPLY | OFFER | CAPTION | INSIGHT | DESCRIPTION
+  prompt     String
+  output     String?
+  provider   String   @default("template")
+  model      String?
+  tokensIn   Int      @default(0)
+  tokensOut  Int      @default(0)
+  wasAccepted Boolean @default(false)
+  createdAt  DateTime @default(now())
+
+  @@index([businessId, kind])
+  @@index([createdAt])
+}
+
+// ============================================================
+//  Loyalty
+// ============================================================
+
+enum LoyaltyMode {
+  VISITS // stamp card: 7th visit free
+  POINTS // 1 point per rupee band
+}
+
+model LoyaltyMember {
+  id         String         @id @default(cuid())
+  programId  String
+  program    LoyaltyProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
+  contactId  String?
+  name       String?
+  phone      String
+  balance    Int            @default(0)
+  lifetime   Int            @default(0)
+  redeemed   Int            @default(0)
+  lastActivityAt DateTime   @default(now())
+  createdAt  DateTime       @default(now())
+
+  transactions LoyaltyTransaction[]
+
+  @@unique([programId, phone])
+  @@index([programId])
+}
+
+model LoyaltyTransaction {
+  id        String         @id @default(cuid())
+  programId String
+  program   LoyaltyProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
+  memberId  String
+  member    LoyaltyMember  @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  /// Set on REDEEM rows so a reward's redemption history can be read back.
+  rewardId  String?
+  reward    LoyaltyReward? @relation(fields: [rewardId], references: [id], onDelete: SetNull)
+  kind      String // EARN | REDEEM | ADJUST | EXPIRE
+  amount    Int
+  note      String?
+  staffName String?
+  createdAt DateTime       @default(now())
+
+  @@index([memberId, createdAt])
+}
+
+// ============================================================
+//  White-label and resellers
+// ============================================================
+
+enum PartnerTier {
+  REFERRAL
+  RESELLER
+  WHITE_LABEL
+}
+
+// ============================================================
+//  Loyalty
+// ============================================================
+
+model LoyaltyProgram {
+  id             String   @id @default(cuid())
+  businessId     String   @unique
+  business       Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  isActive       Boolean  @default(true)
+  /// "POINTS" (1 point per ₹X) or "VISITS" (punch card)
+  mode           String   @default("POINTS")
+  pointsPerRupee Float    @default(0.01)
+  visitsForReward Int     @default(10)
+  expiryMonths   Int?
+  createdAt      DateTime @default(now())
+
+  rewards      LoyaltyReward[]
+  members      LoyaltyMember[]
+  transactions LoyaltyTransaction[]
+}
+
+model LoyaltyReward {
+  id          String         @id @default(cuid())
+  programId   String
+  program     LoyaltyProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  pointsCost  Int
+  isActive    Boolean        @default(true)
+  redeemed    Int            @default(0)
+  sortOrder   Int            @default(0)
+
+  transactions LoyaltyTransaction[]
+}
+
+// ============================================================
+//  White label and resellers
+// ============================================================
+
+enum PartnerType {
+  AGENCY
+  RESELLER
+  FRANCHISE
+}
+
+model Partner {
+  id             String      @id @default(cuid())
+  slug           String      @unique
+  name           String
+  type           PartnerType @default(AGENCY)
+  contactName    String?
+  contactEmail   String?
+  contactPhone   String?
+  city           String?
+  /// White-label settings
+  brandName      String?
+  logoUrl        String?
+  primaryColor   String      @default("#8BB72C")
+  customDomain   String?     @unique
+  hideBmuBranding Boolean    @default(false)
+  /// Commercials
+  commissionPct  Float       @default(20)
+  wholesaleDiscountPct Float  @default(30)
+  isActive       Boolean     @default(true)
+  createdAt      DateTime    @default(now())
+
+  clients   PartnerClient[]
+  payouts   PartnerPayout[]
+}
+
+model PartnerClient {
+  id         String   @id @default(cuid())
+  partnerId  String
+  partner    Partner  @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  businessId String   @unique
+  addedAt    DateTime @default(now())
+
+  @@index([partnerId])
+}
+
+model PartnerPayout {
+  id         String   @id @default(cuid())
+  partnerId  String
+  partner    Partner  @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  period     String // "2026-07"
+  gross      Int // paise
+  commission Int
+  status     String   @default("PENDING")
+  paidAt     DateTime?
+  createdAt  DateTime @default(now())
+
+  @@index([partnerId, period])
+}
+
+// ============================================================
+//  AI usage log — for cost control and rate limits
+// ============================================================
+
+model AiGeneration {
+  id         String   @id @default(cuid())
+  businessId String?
+  userId     String?
+  kind       String // REVIEW_REPLY | OFFER | CAPTION | INSIGHT | DESCRIPTION
+  prompt     String
+  output     String
+  provider   String   @default("template")
+  tokensIn   Int      @default(0)
+  tokensOut  Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  @@index([businessId, createdAt])
+  @@index([kind])
+}
+
+
+// ============================================================
+//  Multi-location
+// ============================================================
+
+/// An outlet of a Business. Chains and franchises need per-outlet numbers
+/// with a head-office roll-up, which a flat business record can't express.
+model BusinessLocation {
+  id         String   @id @default(cuid())
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  slug       String
+  name       String
+  code       String? // internal reference: "BLR-IND-01"
+  address    String?
+  city       String?
+  state      String?
+  pincode    String?
+  lat        Float?
+  lng        Float?
+  phone      String?
+  whatsapp   String?
+  gbpPlaceId String? // each outlet has its own Google listing
+  managerName String?
+  managerPhone String?
+  isHeadOffice Boolean @default(false)
+  isActive   Boolean  @default(true)
+  openedAt   DateTime?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([businessId, slug])
+  @@index([businessId, isActive])
+}
+
+
+// ============================================================
+//  Social media
+// ============================================================
+
+enum SocialPlatform {
+  INSTAGRAM
+  FACEBOOK
+  GOOGLE_BUSINESS
+  LINKEDIN
+}
+
+enum PostStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHING
+  PUBLISHED
+  FAILED
+}
+
+model SocialAccount {
+  id           String         @id @default(cuid())
+  businessId   String
+  business     Business       @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  outletId     String?
+  platform     SocialPlatform
+  handle       String
+  displayName  String?
+  avatarUrl    String?
+  externalId   String?
+  /// Tokens are provider-issued and expire; refresh before publishing rather
+  /// than at connect time, or every post fails silently after 60 days.
+  accessToken  String?
+  refreshToken String?
+  expiresAt    DateTime?
+  followers    Int            @default(0)
+  isActive     Boolean        @default(true)
+  connectedAt  DateTime       @default(now())
+
+  targets PostTarget[]
+
+  @@unique([businessId, platform, handle])
+  @@index([businessId, isActive])
+}
+
+model SocialPost {
+  id          String     @id @default(cuid())
+  businessId  String
+  business    Business   @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  caption     String
+  hashtags    String[]
+  mediaUrls   String[]
+  linkUrl     String?
+  /// Google Business posts carry a button rather than a caption link.
+  ctaType     String? // BOOK | ORDER | CALL | LEARN_MORE
+  status      PostStatus @default(DRAFT)
+  scheduledAt DateTime?
+  publishedAt DateTime?
+  aiGenerated Boolean    @default(false)
+  createdBy   String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  targets PostTarget[]
+
+  @@index([businessId, status])
+  @@index([scheduledAt])
+}
+
+/// One row per platform a post goes to. Publishing partially succeeds all the
+/// time, so status has to live per target rather than on the post.
+model PostTarget {
+  id          String        @id @default(cuid())
+  postId      String
+  post        SocialPost    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  accountId   String
+  account     SocialAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  status      PostStatus    @default(SCHEDULED)
+  externalId  String?
+  permalink   String?
+  error       String?
+  publishedAt DateTime?
+  // Denormalised engagement, refreshed on a schedule.
+  impressions Int           @default(0)
+  likes       Int           @default(0)
+  comments    Int           @default(0)
+  clicks      Int           @default(0)
+
+  @@unique([postId, accountId])
+  @@index([accountId, publishedAt])
+}

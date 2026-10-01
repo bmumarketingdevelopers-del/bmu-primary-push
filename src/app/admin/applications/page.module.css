@@ -1,0 +1,175 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .page {
+    padding: 1.25rem;
+  }
+
+  /* ---- summary figures */
+
+  .statGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .statLabel {
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .statValue {
+    margin-top: 0.75rem;
+    font-size: 26px;
+    line-height: 1;
+  }
+
+  .chartGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  /* ---- sources */
+
+  .source > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.375rem;
+  }
+
+  .sourceRow {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13.5px;
+  }
+
+  .sourceMeta {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .sourceRate {
+    color: hsl(var(--foreground));
+  }
+
+  /* ---- categories */
+
+  .categoryChip {
+    border-radius: var(--radius-pill);
+    border: 1px solid hsl(var(--border));
+    padding: 0.5rem 1rem;
+    font-size: 13.5px;
+  }
+
+  .categoryCount {
+    margin-left: 0.375rem;
+  }
+
+  /* ---- pending notice */
+
+  .pendingCount {
+    font-weight: 600;
+  }
+
+  .pendingNote {
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* ---- table */
+
+  .handle {
+    font-weight: 500;
+  }
+
+  .creatorName {
+    display: block;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .categoryBadges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+
+  @media (min-width: 640px) {
+    .statGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      padding: 2rem;
+    }
+
+    .chartGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .statGrid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.statCard {
+  padding: 1.5rem;
+}
+
+.highlightCard {
+  border-color: hsl(var(--primary) / 0.4);
+}
+
+/* A custom font size on CardTitle also takes the inherited line-height, not the title's own. */
+.calloutTitle {
+  font-size: 15px;
+  line-height: inherit;
+}
+
+.sourceList > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1rem;
+}
+
+.categoryList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+}
+
+.pendingNotice {
+  border-color: hsl(var(--primary) / 0.4);
+  padding: 1.25rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.tableCard {
+  overflow: hidden;
+}
+
+.numericHead,
+.actionCell {
+  text-align: right;
+}
+
+.mutedCell {
+  color: hsl(var(--muted-foreground));
+}
+
+.followersCell {
+  text-align: right;
+  font-weight: 500;
+}
+
+.rateCell {
+  white-space: nowrap;
+  text-align: right;
+}
+
+.dateCell {
+  white-space: nowrap;
+  color: hsl(var(--muted-foreground));
+}

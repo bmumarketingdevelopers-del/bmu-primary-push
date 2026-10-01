@@ -1,0 +1,29 @@
+@layer reset, base, helpers, ui, components;
+
+/*
+ * Everything here styles markup that recharts renders, reached through the
+ * class names recharts accepts. Unlayered, like any other override passed
+ * into a component.
+ */
+
+/*
+ * Recharts writes a white background and a grey border onto the tooltip as
+ * inline styles, so those two need !important to be replaced from a class.
+ */
+.tooltip {
+  background: hsl(var(--popover)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: 12px;
+  font-size: 13px;
+  color: hsl(var(--popover-foreground));
+}
+
+.scanChart :global(.recharts-legend-wrapper) {
+  font-size: 13px;
+  padding-top: 10px;
+}
+
+.outletChart :global(.recharts-legend-wrapper) {
+  font-size: 13px;
+  padding-top: 12px;
+}

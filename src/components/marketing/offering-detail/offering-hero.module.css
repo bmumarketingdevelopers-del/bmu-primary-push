@@ -1,0 +1,350 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .hero {
+    position: relative;
+    margin-top: -76px;
+    padding-top: 76px;
+    overflow: hidden;
+    background:
+      radial-gradient(55% 60% at 90% 100%, rgb(139 183 44 / 0.28), transparent 70%),
+      var(--grad-hero);
+    color: #fff;
+  }
+
+  .inner {
+    display: grid;
+    gap: 1.75rem;
+    padding-top: clamp(1.25rem, 1rem + 1.5vw, 2.5rem);
+    padding-bottom: clamp(2rem, 1.5rem + 2vw, 3.5rem);
+  }
+
+  .copy {
+    min-width: 0;
+  }
+
+  .breadcrumbs {
+    margin-bottom: 0.875rem;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: var(--text-small);
+    color: #8fa0b0;
+  }
+
+  .crumbLink {
+    transition: color 150ms var(--ease-brand);
+  }
+  .crumbLink:hover {
+    color: #fff;
+  }
+
+  /* Phones drop the "Services /" step to keep the trail on one line */
+  .crumbServices {
+    display: none;
+  }
+
+  /* Phones keep the trail on one line and cut a long current page short with "…" */
+  .breadcrumbs > * {
+    flex-shrink: 0;
+  }
+
+  .crumbCurrent {
+    min-width: 0;
+    flex-shrink: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #fff;
+  }
+
+  .parentPill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgb(255 255 255 / 0.16);
+    background-color: rgb(255 255 255 / 0.06);
+    padding: 0.35rem 0.8rem;
+    font-size: 12px;
+    color: #e3e9ef;
+    transition: border-color 200ms var(--ease-brand);
+  }
+  .parentPill:hover {
+    border-color: hsl(var(--primary));
+  }
+
+  .parentPill::before {
+    content: "";
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+    background-color: hsl(var(--primary));
+    box-shadow: 0 0 6px hsl(var(--primary));
+  }
+
+  .title {
+    margin-top: 1rem;
+    max-width: 12em;
+    font-size: clamp(1.9rem, 1.2rem + 2.6vw, 3.25rem);
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+  }
+
+  .lede {
+    margin-top: 0.875rem;
+    max-width: 44ch;
+    font-size: var(--text-lede);
+    line-height: 1.6;
+    color: #c6d0da;
+  }
+
+  .actions {
+    margin-top: 1.25rem;
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .button {
+    width: 100%;
+    min-height: 3rem;
+  }
+
+  .facts {
+    margin-top: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    border-top: 1px solid rgb(255 255 255 / 0.12);
+    padding-top: 1rem;
+  }
+
+  .factLabel {
+    font-size: 11px;
+    color: #8fa0b0;
+  }
+
+  .factValue {
+    margin-top: 0.25rem;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  /* ---- "What's included" card */
+
+  .card {
+    border-radius: var(--radius-lg);
+    border: 1px solid rgb(255 255 255 / 0.14);
+    background-color: rgb(255 255 255 / 0.06);
+    padding: 1.25rem;
+    backdrop-filter: blur(16px);
+    box-shadow: 0 20px 50px rgb(0 0 0 / 0.25);
+  }
+
+  .cardHead {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    border-bottom: 1px solid rgb(255 255 255 / 0.12);
+    padding-bottom: 1rem;
+  }
+
+  .cardIcon {
+    display: grid;
+    height: 3rem;
+    width: 3rem;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: var(--radius-md);
+    background-color: hsl(var(--primary));
+    color: var(--ink);
+  }
+
+  .cardIcon svg {
+    height: 1.375rem;
+    width: 1.375rem;
+  }
+
+  /* Phones show the price beside the icon instead of the name (the name is the page title) */
+  .cardName {
+    display: none;
+  }
+
+  .cardTitle {
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .cardParent {
+    margin-top: 0.125rem;
+    font-size: 12px;
+    color: #a9b8c6;
+  }
+
+  .cardPrice {
+    display: grid;
+    gap: 0.125rem;
+  }
+
+  .cardPriceLabel {
+    font-size: 10.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: hsl(var(--primary));
+  }
+
+  .cardPriceValue {
+    font-size: clamp(1.5rem, 1.2rem + 1vw, 1.9rem);
+    line-height: 1.1;
+    color: hsl(var(--primary));
+  }
+
+  .cardEyebrow {
+    margin-top: 1rem;
+    font-size: 10.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #a9b8c6;
+  }
+
+  .cardList {
+    margin-top: 0.875rem;
+    display: grid;
+    gap: 0.875rem;
+  }
+
+  .cardItem {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .cardCheck {
+    display: grid;
+    height: 1.25rem;
+    width: 1.25rem;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 50%;
+    background-color: hsl(var(--primary));
+    color: #fff;
+  }
+
+  .cardCheck svg {
+    height: 0.75rem;
+    width: 0.75rem;
+    stroke-width: 3;
+  }
+
+  .cardItemTitle {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .cardItemBody {
+    display: block;
+    margin-top: 0.125rem;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #a9b8c6;
+  }
+
+  .cardFoot {
+    margin-top: 1.125rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-top: 1px solid rgb(255 255 255 / 0.12);
+    padding-top: 0.875rem;
+  }
+
+  .cardReply {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 12px;
+    color: #a9b8c6;
+  }
+
+  .cardReply::before {
+    content: "";
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+    background-color: hsl(var(--primary));
+  }
+
+  .cardLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 12px;
+    font-weight: 600;
+    color: hsl(var(--primary));
+  }
+
+  .cardLink svg {
+    height: 0.875rem;
+    width: 0.875rem;
+    transition: transform 300ms var(--ease-brand);
+  }
+  .cardLink:hover svg {
+    transform: translateX(3px);
+  }
+
+  /* ---- tablet */
+
+  @media (min-width: 640px) {
+    .crumbServices {
+      display: inline;
+    }
+
+    .breadcrumbs {
+      flex-wrap: wrap;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .button {
+      width: auto;
+    }
+
+    .facts {
+      max-width: 30rem;
+    }
+
+    /* Wider card: name beside the icon, price pushed to the right */
+    .cardName {
+      display: block;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .cardPrice {
+      text-align: right;
+    }
+  }
+
+  /* ---- desktop */
+
+  @media (min-width: 1024px) {
+    .inner {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .card {
+      padding: 1.5rem;
+    }
+  }
+}

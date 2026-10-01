@@ -1,0 +1,72 @@
+@layer reset, base, helpers, ui, components;
+
+/*
+ * Colours, borders and corners come from the profile theme: the --p-* custom
+ * properties are set on the ProfileView root (see themeVars in lib/profile-theme).
+ */
+@layer components {
+  .strip {
+    margin-top: 2.25rem;
+  }
+
+  .title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--p-muted);
+  }
+
+  .list {
+    margin-top: 0.75rem;
+    overflow: hidden;
+    background: var(--p-surface);
+    border: 1px solid var(--p-border);
+    border-radius: var(--p-radius);
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.875rem 1.25rem;
+  }
+
+  .itemDivided {
+    border-top: 1px solid var(--p-border);
+  }
+
+  .label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 13.5px;
+    color: var(--p-muted);
+  }
+
+  .labelIcon {
+    height: 1rem;
+    width: 1rem;
+    flex-shrink: 0;
+    color: var(--p-accent);
+  }
+
+  .value {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: right;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 13px;
+  }
+
+  .verify {
+    color: var(--p-accent);
+  }
+
+  .verifyIcon {
+    height: 0.875rem;
+    width: 0.875rem;
+  }
+}

@@ -1,0 +1,70 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .content {
+    padding: 1.25rem;
+  }
+
+  .reportGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .reportIcon {
+    margin-bottom: 0.75rem;
+    display: grid;
+    height: 2.75rem;
+    width: 2.75rem;
+    place-items: center;
+    border-radius: var(--radius-md);
+    background-color: hsl(var(--primary) / 0.1);
+    color: hsl(var(--primary));
+  }
+
+  .reportGlyph {
+    height: 1.25rem;
+    width: 1.25rem;
+  }
+
+  .reportPeriod {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .reportSummary {
+    margin-bottom: 1.5rem;
+    font-size: 14.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  @media (min-width: 1024px) {
+    .content {
+      padding: 2rem;
+    }
+
+    .reportGrid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.reportCard {
+  transition-property: all;
+  transition-timing-function: var(--ease-brand);
+  transition-duration: 300ms;
+}
+.reportCard:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.reportTitle {
+  font-size: 16px;
+  line-height: inherit;
+}
+
+.downloadButton {
+  width: 100%;
+}

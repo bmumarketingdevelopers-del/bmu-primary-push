@@ -1,0 +1,147 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .page {
+    padding: 1.25rem;
+  }
+
+  /* ---- stats */
+
+  .statGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .statLabel {
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .statValue {
+    margin-top: 0.75rem;
+    font-size: 26px;
+    line-height: 1;
+  }
+
+  /* ---- industry cards */
+
+  .industryGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .industryHead {
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .industryIcon {
+    display: grid;
+    height: 2.5rem;
+    width: 2.5rem;
+    place-items: center;
+    border-radius: var(--radius-md);
+    background-color: hsl(var(--primary) / 0.1);
+    color: hsl(var(--primary));
+  }
+
+  .industryIconGlyph {
+    height: 18px;
+    width: 18px;
+  }
+
+  .industryMeta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .industryArrow {
+    height: 1rem;
+    width: 1rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .actionList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+
+  .moduleSummary {
+    margin-top: 1rem;
+    font-size: 12.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  @media (min-width: 640px) {
+    .statGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 768px) {
+    .industryGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      padding: 2rem;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .statGrid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .industryGrid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.statCard {
+  padding: 1.5rem;
+}
+
+.cardDanger {
+  border-color: hsl(var(--destructive) / 0.4);
+}
+
+.cardPrimary {
+  border-color: hsl(var(--primary) / 0.4);
+}
+
+.calloutTitle {
+  font-size: 15px;
+  line-height: inherit;
+}
+
+.industryCard {
+  height: 100%;
+  transition-property: all;
+  transition-timing-function: var(--ease-brand);
+  transition-duration: 300ms;
+}
+.industryCard:hover {
+  border-color: hsl(var(--primary));
+  box-shadow: var(--shadow-md);
+}
+
+.industryTitle {
+  font-size: 15.5px;
+  line-height: inherit;
+}
+
+.actionBadge {
+  font-size: 10.5px;
+  line-height: inherit;
+}

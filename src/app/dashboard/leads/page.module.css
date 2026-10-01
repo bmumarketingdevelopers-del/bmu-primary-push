@@ -1,0 +1,13 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .content {
+    padding: 1.25rem;
+  }
+
+  @media (min-width: 1024px) {
+    .content {
+      padding: 2rem;
+    }
+  }
+}

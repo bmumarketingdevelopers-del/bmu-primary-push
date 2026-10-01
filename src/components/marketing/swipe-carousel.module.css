@@ -1,0 +1,117 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  /* =========================================
+     TRACK — phones & tablets: swipeable strip
+     ========================================= */
+
+  .track {
+    /* How much of the next card shows at the right edge (plus the page gutter) */
+    --peek: 2.5rem;
+    --gap: 1rem;
+
+    display: flex;
+    gap: var(--gap);
+
+    /* Run to the screen edges (cancels .container padding) so cards slide off-screen */
+    margin-inline: -1.25rem;
+    padding-inline: 1.25rem;
+    scroll-padding-inline: 1.25rem;
+
+    /* Room for the card shadows, which overflow would otherwise clip */
+    padding-block: 0.25rem 1.5rem;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .track::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Phones: one full card, the next one peeking */
+  .slide {
+    flex: 0 0 calc(100% - var(--peek));
+    min-width: 0;
+    display: flex;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  /* Card inside fills the slide so every card in a row has the same height */
+  .slide > * {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* =========================================
+     DOTS
+     ========================================= */
+
+  .dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    /* the track's bottom padding already spaces the dots from the cards */
+    margin-top: -0.25rem;
+  }
+
+  .dot {
+    display: block;
+    width: 6px;
+    height: 6px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background-color: hsl(var(--muted-foreground) / 0.3);
+    cursor: pointer;
+    transition:
+      width 200ms ease,
+      background-color 200ms ease;
+  }
+
+  .dotActive {
+    width: 18px;
+    background-color: hsl(var(--primary));
+  }
+
+  /* =========================================
+     TABLET: two full cards, the third peeking
+     ========================================= */
+
+  @media (min-width: 640px) {
+    .track {
+      --peek: 3rem;
+      --gap: 1.25rem;
+    }
+
+    .slide {
+      flex-basis: calc((100% - var(--gap) - var(--peek)) / 2);
+    }
+  }
+
+  /* =========================================
+     DESKTOP: plain 3-column grid, no dots
+     ========================================= */
+
+  @media (min-width: 1024px) {
+    .track {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.5rem;
+      margin-inline: 0;
+      padding: 0;
+      overflow: visible;
+      scroll-snap-type: none;
+    }
+
+    .dots {
+      display: none;
+    }
+  }
+}

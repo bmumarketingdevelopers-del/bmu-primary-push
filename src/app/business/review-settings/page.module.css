@@ -1,0 +1,125 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .page {
+    padding: 1.25rem;
+  }
+
+  .alertRow {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .alertIcon {
+    display: grid;
+    height: 2.5rem;
+    width: 2.5rem;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: var(--radius-md);
+    background-color: hsl(var(--warning) / 0.15);
+    color: hsl(var(--warning));
+  }
+
+  .alertGlyph {
+    height: 18px;
+    width: 18px;
+  }
+
+  .settingsGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .field > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.5rem;
+  }
+
+  .keywords {
+    width: 100%;
+    border-radius: var(--radius-md);
+    border: 1px solid hsl(var(--input));
+    background-color: hsl(var(--background));
+    padding: 0.75rem 1rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 14px;
+  }
+  .keywords:focus-visible {
+    border-color: hsl(var(--primary));
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+
+  .fieldHint {
+    font-size: 12.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .titleIcon {
+    height: 18px;
+    width: 18px;
+    color: hsl(var(--primary));
+  }
+
+  .suggestion {
+    border-radius: var(--radius-md);
+    background-color: hsl(var(--muted));
+    padding: 1rem 1.25rem;
+    font-size: 14.5px;
+    line-height: 1.625;
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      padding: 2rem;
+    }
+
+    .settingsGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.guidelineCard {
+  border-color: hsl(var(--warning) / 0.4);
+}
+
+/* A size on a card title replaces its tight leading; the title takes the body's. */
+.calloutTitle {
+  font-size: 15px;
+  line-height: inherit;
+}
+
+.alertDescription {
+  margin-top: 0.375rem;
+}
+
+.cardTitle {
+  font-size: 16px;
+  line-height: inherit;
+}
+
+.previewTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 16px;
+  line-height: inherit;
+}
+
+.settingsContent > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1.25rem;
+}
+
+.previewList > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 0.75rem;
+}
+
+.voiceList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}

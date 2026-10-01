@@ -1,0 +1,110 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .page {
+    padding: 1.25rem;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  /* ---- members table */
+
+  .member {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .memberName {
+    font-weight: 500;
+  }
+
+  .memberEmail {
+    display: block;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* ---- role summary */
+
+  .rolesHead {
+    margin-bottom: 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .rolesTitle {
+    font-size: 16px;
+  }
+
+  .roleList {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+  .roleList > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.875rem;
+  }
+
+  .roleRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .roleName {
+    width: 6rem;
+    flex-shrink: 0;
+  }
+
+  .roleNote {
+    color: hsl(var(--muted-foreground));
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      padding: 2rem;
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.tableCard {
+  overflow: hidden;
+}
+
+.accountsHead {
+  text-align: right;
+}
+
+.avatar {
+  height: 2.25rem;
+  width: 2.25rem;
+}
+
+.avatarInitials {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.accountsCell {
+  text-align: right;
+  font-weight: 500;
+}
+
+.actionsCell {
+  text-align: right;
+}
+
+.rolesCard {
+  padding: 1.75rem;
+}

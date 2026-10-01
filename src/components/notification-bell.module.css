@@ -1,0 +1,115 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .trigger {
+    position: relative;
+    display: grid;
+    height: 2.5rem;
+    width: 2.5rem;
+    place-items: center;
+    border-radius: var(--radius-pill);
+    border: 1px solid hsl(var(--border));
+    color: hsl(var(--muted-foreground));
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .trigger:hover {
+    color: hsl(var(--foreground));
+  }
+
+  .bellIcon {
+    height: 1rem;
+    width: 1rem;
+  }
+
+  .count {
+    position: absolute;
+    right: -0.125rem;
+    top: -0.125rem;
+    display: grid;
+    height: 18px;
+    min-width: 18px;
+    place-items: center;
+    border-radius: var(--radius-pill);
+    background-color: hsl(var(--primary));
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    font-size: 10px;
+    font-weight: 700;
+    color: hsl(var(--primary-foreground));
+    box-shadow: 0 0 0 2px hsl(var(--background));
+  }
+
+  .newCount {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 400;
+    color: hsl(var(--primary));
+  }
+
+  .empty {
+    padding: 1.5rem 0.75rem;
+    text-align: center;
+    font-size: 13.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* ---- one notification */
+
+  .entry {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.125rem;
+  }
+
+  .entryHead {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .unreadDot {
+    margin-top: 0.375rem;
+    height: 0.375rem;
+    width: 0.375rem;
+    flex-shrink: 0;
+    border-radius: var(--radius-pill);
+    background-color: hsl(var(--primary));
+  }
+
+  .entryTitle {
+    font-size: 13.5px;
+    line-height: 1.375;
+  }
+
+  .entryTitleUnread {
+    font-weight: 500;
+  }
+
+  .entryMeta {
+    padding-left: 0.875rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: hsl(var(--muted-foreground));
+  }
+}
+
+/* Overrides passed into the dropdown primitives via `className`. */
+
+.menu {
+  width: 336px;
+}
+
+.menuLabel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.menuItem {
+  align-items: flex-start;
+}

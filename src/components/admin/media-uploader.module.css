@@ -1,0 +1,140 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .dropzone {
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-lg);
+    border-width: 2px;
+    border-style: dashed;
+    padding: 3.5rem 1.5rem;
+    text-align: center;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+  }
+
+  .dropzoneActive {
+    border-color: hsl(var(--primary));
+    background-color: hsl(var(--primary) / 0.05);
+  }
+
+  .dropzoneIdle {
+    border-color: hsl(var(--border));
+  }
+
+  .dropIcon {
+    display: grid;
+    height: 3rem;
+    width: 3rem;
+    place-items: center;
+    border-radius: var(--radius-md);
+    background-color: hsl(var(--primary) / 0.1);
+    color: hsl(var(--primary));
+  }
+
+  .dropIconSvg {
+    height: 1.25rem;
+    width: 1.25rem;
+  }
+
+  .dropTitle {
+    margin-top: 1.25rem;
+    font-weight: 500;
+  }
+
+  .dropHint {
+    margin-top: 0.375rem;
+    font-size: 13.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* ---- upload list */
+
+  .list {
+    margin-top: 1.5rem;
+  }
+  .list > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.5rem;
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-radius: var(--radius-md);
+    border: 1px solid hsl(var(--border));
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+
+  .statusIcon {
+    height: 1rem;
+    width: 1rem;
+    flex-shrink: 0;
+  }
+
+  .statusUploading {
+    animation: spin 1s linear infinite;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .statusDone {
+    color: hsl(var(--success));
+  }
+
+  .statusError {
+    color: hsl(var(--destructive));
+  }
+
+  .itemBody {
+    min-width: 0;
+    flex: 1 1 0%;
+  }
+
+  .itemName {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+
+  .itemMessage {
+    display: block;
+    font-size: 12.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .itemUrl {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 12.5px;
+    color: hsl(var(--primary));
+  }
+  .itemUrl:hover {
+    text-decoration-line: underline;
+  }
+
+  .itemSize {
+    flex-shrink: 0;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: hsl(var(--muted-foreground));
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.chooseButton {
+  margin-top: 1.25rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

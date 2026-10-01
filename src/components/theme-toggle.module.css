@@ -1,0 +1,26 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .toggle {
+    display: grid;
+    height: 2.5rem;
+    width: 2.5rem;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: var(--radius-pill);
+    border: 1px solid hsl(var(--border));
+    color: hsl(var(--muted-foreground));
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: var(--ease-brand);
+    transition-duration: 300ms;
+  }
+  .toggle:hover {
+    border-color: hsl(var(--foreground));
+    color: hsl(var(--foreground));
+  }
+
+  .icon {
+    height: 1rem;
+    width: 1rem;
+  }
+}

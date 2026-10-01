@@ -1,0 +1,29 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .content {
+    padding: 1.25rem;
+  }
+
+  @media (min-width: 1024px) {
+    .content {
+      padding: 2rem;
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.tableCard {
+  overflow: hidden;
+}
+
+.ticketCell {
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.updatedCell {
+  white-space: nowrap;
+  color: hsl(var(--muted-foreground));
+}

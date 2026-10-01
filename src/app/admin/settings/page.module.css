@@ -1,0 +1,125 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .page {
+    padding: 1.25rem;
+  }
+
+  /* ---- business details */
+
+  .field > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.5rem;
+  }
+
+  /* ---- services catalogue */
+
+  .serviceList > :not([hidden]) ~ :not([hidden]) {
+    border-top: 1px solid hsl(var(--border));
+  }
+
+  .serviceRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  .serviceRow:first-child {
+    padding-top: 0;
+  }
+  .serviceRow:last-child {
+    padding-bottom: 0;
+  }
+
+  .serviceInfo {
+    min-width: 0;
+  }
+
+  .serviceTitle {
+    font-weight: 500;
+  }
+
+  .servicePath {
+    font-size: 13.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .serviceActions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  /* ---- integrations */
+
+  .integrationRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .integrationInfo {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .statusIcon {
+    margin-top: 0.125rem;
+    height: 18px;
+    width: 18px;
+    flex-shrink: 0;
+  }
+
+  .statusConnected {
+    color: hsl(var(--success));
+  }
+
+  .statusDisconnected {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .integrationName {
+    font-weight: 500;
+  }
+
+  .integrationDetail {
+    font-size: 13.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  @media (min-width: 640px) {
+    .fullRow {
+      grid-column: span 2 / span 2;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      padding: 2rem;
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.detailsForm {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.integrationList > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 0.25rem;
+}
+
+@media (min-width: 640px) {
+  .detailsForm {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

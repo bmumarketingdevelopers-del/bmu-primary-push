@@ -1,0 +1,35 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .heading {
+    margin-bottom: var(--space-heading);
+  }
+
+  /* Title on the left, action button in the right-hand corner, vertically centred on the title */
+  .titleRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+  }
+
+  .action {
+    flex-shrink: 0;
+  }
+
+  .titleInverted {
+    color: #fff;
+  }
+
+  .lede {
+    margin-top: 0.75rem;
+    max-width: 56ch;
+    font-size: var(--text-lede);
+    color: hsl(var(--muted-foreground));
+  }
+
+  .ledeInverted {
+    color: #a9b8c6;
+  }
+}

@@ -1,0 +1,127 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .page {
+    padding: 1.25rem;
+  }
+
+  .statGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .statLabel {
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .statValue {
+    margin-top: 0.75rem;
+    font-size: 26px;
+    line-height: 1;
+  }
+
+  .dayGroup > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.75rem;
+  }
+
+  .dayTitle {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-size: 16px;
+  }
+
+  .dayIcon {
+    height: 18px;
+    width: 18px;
+    color: hsl(var(--primary));
+  }
+
+  .time {
+    font-weight: 600;
+  }
+
+  .customer {
+    font-weight: 500;
+  }
+
+  .subline {
+    display: block;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .reference {
+    display: block;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  @media (min-width: 640px) {
+    .statGrid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      padding: 2rem;
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.statCard {
+  padding: 1.5rem;
+}
+
+.noShowCard {
+  border-color: hsl(var(--destructive) / 0.4);
+}
+
+.depositCard {
+  border-color: hsl(var(--warning) / 0.4);
+}
+
+/* A size on a card title replaces its tight leading; the title takes the body's. */
+.depositTitle {
+  font-size: 15px;
+  line-height: inherit;
+}
+
+.tableCard {
+  overflow: hidden;
+}
+
+.timeCell {
+  white-space: nowrap;
+}
+
+.mutedCell {
+  color: hsl(var(--muted-foreground));
+}
+
+.staffCell,
+.whenCell {
+  white-space: nowrap;
+  color: hsl(var(--muted-foreground));
+}
+
+.actionsCell {
+  white-space: nowrap;
+  text-align: right;
+}
+
+.referenceCell {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 13px;
+}
+
+.customerCell {
+  font-weight: 500;
+}

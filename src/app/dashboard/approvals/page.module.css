@@ -1,0 +1,64 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .content {
+    padding: 1.25rem;
+  }
+
+  .approvalGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .approvalMeta {
+    margin-top: 0.25rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .preview {
+    margin-bottom: 1.25rem;
+    display: grid;
+    aspect-ratio: 16 / 9;
+    place-items: center;
+    border-radius: var(--radius-md);
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--muted));
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 1024px) {
+    .content {
+      padding: 2rem;
+    }
+
+    .approvalGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.approvalHeader {
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.approvalHeader > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 0;
+}
+
+.approvalTitle {
+  font-size: 16px;
+  line-height: inherit;
+}

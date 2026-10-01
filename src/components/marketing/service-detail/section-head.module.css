@@ -1,0 +1,35 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .head {
+    margin-bottom: clamp(1rem, 0.75rem + 1vw, 1.5rem);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem 2.5rem;
+  }
+
+  .eyebrow {
+    margin-bottom: 0.375rem;
+    font-size: 10.5px;
+  }
+
+  .title {
+    font-size: var(--text-h2);
+    line-height: 1.15;
+  }
+
+  .aside {
+    display: none;
+    max-width: 38ch;
+    font-size: var(--text-body);
+    line-height: 1.6;
+    color: hsl(var(--muted-foreground));
+  }
+
+  @media (min-width: 768px) {
+    .aside {
+      display: block;
+    }
+  }
+}

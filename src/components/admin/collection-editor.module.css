@@ -1,0 +1,44 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .form > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 2rem;
+  }
+
+  .result {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1rem;
+    font-size: 13.5px;
+  }
+
+  .resultOk {
+    background-color: hsl(var(--success) / 0.1);
+    color: hsl(var(--success));
+  }
+
+  .resultError {
+    background-color: hsl(var(--destructive) / 0.1);
+    color: hsl(var(--destructive));
+  }
+
+  .resultIcon {
+    margin-top: 0.125rem;
+    height: 1rem;
+    width: 1rem;
+    flex-shrink: 0;
+  }
+
+  .saveBar {
+    position: sticky;
+    bottom: 0;
+    margin-left: -0.25rem;
+    margin-right: -0.25rem;
+    border-top: 1px solid hsl(var(--border));
+    background-color: hsl(var(--background) / 0.9);
+    padding: 1rem 0.25rem;
+    backdrop-filter: blur(8px);
+  }
+}

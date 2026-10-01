@@ -1,0 +1,11 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .draftBanner {
+    background-color: hsl(var(--warning) / 0.1);
+    padding: 0.625rem 1.25rem;
+    text-align: center;
+    font-size: 13px;
+    color: hsl(var(--warning));
+  }
+}

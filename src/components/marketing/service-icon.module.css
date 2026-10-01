@@ -1,0 +1,21 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  /* Size comes from the className passed in (same as the old SVG icons) */
+  .img {
+    display: block;
+    flex-shrink: 0;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+
+    /* Black lines stay black; any white background blends away */
+    mix-blend-mode: multiply;
+  }
+
+  /* Dark mode: flip to white lines; any black background blends away */
+  :global(.dark) .img {
+    filter: invert(1);
+    mix-blend-mode: screen;
+  }
+}

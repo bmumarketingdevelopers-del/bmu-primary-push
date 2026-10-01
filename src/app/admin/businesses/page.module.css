@@ -1,0 +1,177 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .page {
+    padding: 1.25rem;
+  }
+
+  /* ---- tenants table */
+
+  .businessName {
+    font-weight: 500;
+  }
+
+  .tagline {
+    display: block;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .ratingStar {
+    height: 0.875rem;
+    width: 0.875rem;
+    fill: currentColor;
+    color: hsl(var(--warning));
+  }
+
+  .publicLink {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+  .publicLink:hover {
+    color: hsl(var(--primary));
+  }
+
+  /* ---- QR types */
+
+  .kindGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .kindIcon {
+    margin-bottom: 0.75rem;
+    display: grid;
+    height: 2.5rem;
+    width: 2.5rem;
+    place-items: center;
+    border-radius: var(--radius-md);
+    background-color: hsl(var(--primary) / 0.1);
+    color: hsl(var(--primary));
+  }
+
+  .kindGlyph {
+    height: 18px;
+    width: 18px;
+  }
+
+  .kindList > :not([hidden]) ~ :not([hidden]) {
+    border-top-width: 1px;
+    border-color: hsl(var(--border));
+  }
+
+  .kindItem {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+  .kindItem:first-child {
+    padding-top: 0;
+  }
+  .kindItem:last-child {
+    padding-bottom: 0;
+  }
+
+  .kindLabel,
+  .templateLabel {
+    font-size: 14.5px;
+    font-weight: 500;
+  }
+
+  .kindHelp {
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* ---- industry templates */
+
+  .template {
+    border-radius: var(--radius-md);
+    border: 1px solid hsl(var(--border));
+    padding: 1rem;
+  }
+
+  .templateActions {
+    margin-top: 0.625rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      padding: 2rem;
+    }
+
+    .kindGrid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.highlightCard {
+  border-color: hsl(var(--primary) / 0.4);
+}
+
+/*
+ * A custom font size on CardTitle or Badge also takes the inherited
+ * line-height, not the component's own.
+ */
+.calloutTitle {
+  font-size: 15px;
+  line-height: inherit;
+}
+
+.kindTitle {
+  font-size: 15.5px;
+  line-height: inherit;
+}
+
+.templateBadge {
+  font-size: 10.5px;
+  line-height: inherit;
+}
+
+.tableCard {
+  overflow: hidden;
+}
+
+.numericHead {
+  text-align: right;
+}
+
+.mutedCell {
+  color: hsl(var(--muted-foreground));
+}
+
+.ratingCell,
+.actionCell {
+  white-space: nowrap;
+  text-align: right;
+}
+
+.templateGrid {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .templateGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .templateGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

@@ -1,0 +1,179 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .compiler > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1.25rem;
+  }
+
+  /* ---- picker */
+
+  .picker {
+    display: grid;
+    width: 100%;
+    place-items: center;
+    border-radius: var(--radius-lg);
+    border: 2px dashed hsl(var(--border));
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .picker:hover {
+    border-color: hsl(var(--primary));
+  }
+
+  .pickerIcon {
+    height: 1.75rem;
+    width: 1.75rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .pickerTitle {
+    margin-top: 0.75rem;
+    font-size: 14.5px;
+    font-weight: 500;
+  }
+
+  .pickerHint {
+    margin-top: 0.25rem;
+    max-width: 38ch;
+    text-align: center;
+    font-size: 12.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* ---- preview and analysis */
+
+  .previewGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .previewImage {
+    width: 100%;
+    border-radius: var(--radius-md);
+    border: 1px solid hsl(var(--border));
+    object-fit: cover;
+  }
+
+  .details > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1rem;
+  }
+
+  .panel > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.5rem;
+  }
+
+  .statusLine {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 14px;
+  }
+
+  .statusLineMuted {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .spinner {
+    height: 1rem;
+    width: 1rem;
+    animation: spin 1s linear infinite;
+  }
+
+  .qualityHeader {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .qualityLabel {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .verdict {
+    font-size: 13px;
+  }
+
+  .verdictFine {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .verdictPoor {
+    font-weight: 500;
+    color: hsl(var(--destructive));
+  }
+
+  .reasons > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.5rem;
+  }
+
+  .reason {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.625rem;
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .reasonIcon {
+    margin-top: 0.125rem;
+    height: 0.875rem;
+    width: 0.875rem;
+    flex-shrink: 0;
+    color: hsl(var(--warning));
+  }
+
+  .note {
+    font-size: 12.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .message {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1rem;
+    font-size: 13.5px;
+  }
+
+  .messageOk {
+    background-color: hsl(var(--success) / 0.1);
+    color: hsl(var(--success));
+  }
+
+  .messageError {
+    background-color: hsl(var(--destructive) / 0.1);
+    color: hsl(var(--destructive));
+  }
+
+  .messageIcon {
+    margin-top: 0.125rem;
+    height: 1rem;
+    width: 1rem;
+    flex-shrink: 0;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.625rem;
+  }
+
+  @media (min-width: 640px) {
+    .previewGrid {
+      grid-template-columns: 200px 1fr;
+    }
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,106 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .page {
+    padding: 1.25rem;
+  }
+
+  /* ---- stats */
+
+  .statGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .statLabel {
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .statValue {
+    margin-top: 0.75rem;
+    font-size: 26px;
+    line-height: 1;
+  }
+
+  /* ---- pages table */
+
+  .pageName {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-weight: 500;
+  }
+
+  .pageIcon {
+    height: 1rem;
+    width: 1rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  @media (min-width: 640px) {
+    .statGrid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      padding: 2rem;
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.statCard {
+  padding: 1.5rem;
+}
+
+.tableCard {
+  overflow: hidden;
+}
+
+.sectionsHead {
+  text-align: right;
+}
+
+.addressCell {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 13px;
+  color: hsl(var(--muted-foreground));
+}
+
+.sectionsCell {
+  text-align: right;
+}
+
+.menuCell {
+  color: hsl(var(--muted-foreground));
+}
+
+.updatedCell {
+  white-space: nowrap;
+  color: hsl(var(--muted-foreground));
+}
+
+.actionsCell {
+  white-space: nowrap;
+  text-align: right;
+}
+
+.emptyCell {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  text-align: center;
+  color: hsl(var(--muted-foreground));
+}
+
+.cardPrimary {
+  border-color: hsl(var(--primary) / 0.4);
+}
+
+.calloutTitle {
+  font-size: 15px;
+  line-height: inherit;
+}

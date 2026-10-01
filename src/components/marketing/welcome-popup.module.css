@@ -1,0 +1,329 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background-color: rgb(8 15 24 / 0.55);
+    backdrop-filter: blur(3px);
+    animation: fadeIn 250ms ease both;
+  }
+
+  /*
+   * Centred card on every screen size: green wash at the top fading to white.
+   * Phones get a compact card (~310px wide on a 375px screen) that grows with the viewport up to
+   * ~460px on tablets and desktop; spacing and type scale with it via clamp().
+   */
+  .content {
+    position: fixed;
+    z-index: 101;
+    left: 50%;
+    top: 50%;
+    width: min(clamp(18.5rem, 68vw + 3rem, 29rem), calc(100vw - 3rem));
+    max-height: calc(100dvh - 3rem);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-radius: clamp(20px, 5vw, 28px);
+    background:
+      linear-gradient(180deg, #c3e28a 0%, #d9eeb4 30%, #f6fbee 58%, #fff 72%);
+    box-shadow: 0 24px 70px rgb(0 0 0 / 0.28);
+    color: #1b2530;
+    transform: translate(-50%, -50%);
+    outline: none;
+  }
+
+  .content[data-state="open"] {
+    animation: popIn 380ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .content[data-state="closed"] {
+    animation: popOut 200ms ease both;
+  }
+
+  /* Faint outlined tiles and guide lines in the top corners, fading out downwards */
+  .decor {
+    pointer-events: none;
+    position: absolute;
+    inset: 0 0 auto;
+    height: clamp(6.5rem, 20vw, 8.5rem);
+    -webkit-mask-image: linear-gradient(#000 40%, transparent);
+    mask-image: linear-gradient(#000 40%, transparent);
+  }
+
+  .decor::before,
+  .decor::after {
+    content: "";
+    position: absolute;
+    top: clamp(1rem, 4vw, 1.5rem);
+    width: clamp(4rem, 15vw, 5.5rem);
+    height: clamp(3.75rem, 13vw, 5rem);
+    border: 1px solid rgb(255 255 255 / 0.6);
+    border-radius: 14px;
+    /* A second, offset outline for the layered-tile look */
+    box-shadow: 0 0 0 0.9rem transparent;
+    outline: 1px solid rgb(255 255 255 / 0.35);
+    outline-offset: -0.9rem;
+  }
+
+  .decor::before {
+    left: -2.75rem;
+  }
+
+  .decor::after {
+    right: -2.75rem;
+  }
+
+  .close {
+    position: absolute;
+    top: clamp(0.5rem, 2.5vw, 1rem);
+    right: clamp(0.5rem, 2.5vw, 1rem);
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: #111;
+    cursor: pointer;
+    transition:
+      color 200ms var(--ease-brand),
+      transform 200ms var(--ease-brand);
+  }
+
+  .close svg {
+    width: clamp(18px, 5vw, 22px);
+    height: clamp(18px, 5vw, 22px);
+    stroke-width: 2.5;
+  }
+
+  .close:hover {
+    transform: rotate(90deg);
+  }
+
+  .close:focus {
+    outline: none;
+  }
+
+  /* Keyboard users still get a cue, without a ring */
+  .close:focus-visible {
+    color: var(--green-dark);
+  }
+
+  .inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: clamp(2.25rem, 9vw, 3.75rem) clamp(1rem, 5vw, 3rem) clamp(1.25rem, 5vw, 2.75rem);
+    text-align: center;
+  }
+
+  /* Brand mark: green tile with a dark core */
+  .mark {
+    display: grid;
+    place-items: center;
+    width: clamp(24px, 7vw, 30px);
+    height: clamp(24px, 7vw, 30px);
+    border-radius: 7px;
+    background-color: var(--green);
+  }
+
+  .mark > span {
+    width: 40%;
+    height: 40%;
+    border-radius: 3px;
+    background-color: var(--ink);
+  }
+
+  .pill {
+    margin-top: clamp(0.75rem, 3vw, 1.25rem);
+    padding: 0.3rem 0.85rem;
+    border-radius: 999px;
+    background-color: #fff;
+    font-size: clamp(11px, 3vw, 12px);
+    font-weight: 500;
+    color: #1b2530;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.06);
+  }
+
+  .title {
+    margin-top: clamp(0.75rem, 3vw, 1.25rem);
+    max-width: 17ch;
+    font-family: var(--font-sans-stack);
+    font-size: clamp(18px, 4.2vw + 3px, 26px);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    color: #1b2530;
+  }
+
+  .text {
+    margin-top: clamp(0.5rem, 2vw, 0.85rem);
+    max-width: 36ch;
+    font-size: clamp(12.5px, 3.3vw, 14px);
+    font-weight: 500;
+    line-height: 1.6;
+    color: #6b7580;
+  }
+
+  .actions {
+    width: 100%;
+    margin-top: clamp(1rem, 4vw, 1.5rem);
+    display: grid;
+    gap: clamp(0.6rem, 2.5vw, 0.875rem);
+  }
+
+  .button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: clamp(42px, 11vw, 48px);
+    padding: 0.4rem clamp(2.5rem, 10vw, 3.25rem);
+    border-radius: 999px;
+    font-size: clamp(13.5px, 3.6vw, 15px);
+    font-weight: 600;
+    transition:
+      background-color 200ms var(--ease-brand),
+      transform 200ms var(--ease-brand),
+      box-shadow 200ms var(--ease-brand);
+  }
+
+  .button:hover {
+    transform: translateY(-1px);
+  }
+
+  .button:focus-visible {
+    outline: 2px solid var(--green-dark);
+    outline-offset: 3px;
+  }
+
+  .ghost {
+    border: 1px solid #dcdcdc;
+    background-color: #f1f1f1;
+    color: #1b2530;
+  }
+
+  .ghost:hover {
+    background-color: #e8e8e8;
+  }
+
+  .primary {
+    background-color: var(--green);
+    color: #fff;
+    box-shadow: var(--shadow-glow);
+  }
+
+  .primary:hover {
+    background-color: var(--green-dark);
+  }
+
+  /* White circle with the chevron, tucked into the right end */
+  .buttonIcon {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    display: grid;
+    place-items: center;
+    width: clamp(32px, 9vw, 38px);
+    height: clamp(32px, 9vw, 38px);
+    border-radius: 50%;
+    background-color: #fff;
+    color: #1b2530;
+    transform: translateY(-50%);
+    transition: transform 200ms var(--ease-brand);
+  }
+
+  .buttonIcon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .primary:hover .buttonIcon {
+    transform: translate(3px, -50%);
+  }
+
+  /* Wider screens: same layout, full-weight copy */
+  @media (min-width: 640px) {
+    .title {
+      max-width: none;
+    }
+
+    .text {
+      font-weight: 400;
+    }
+
+    .button {
+      font-weight: 500;
+    }
+  }
+
+  /* Short screens (landscape phones): drop the decoration and tighten the stack so it fits */
+  @media (max-height: 560px) {
+    .content {
+      max-height: calc(100dvh - 1.5rem);
+    }
+
+    .decor,
+    .mark {
+      display: none;
+    }
+
+    .inner {
+      padding-top: 1.75rem;
+      padding-bottom: 1.25rem;
+    }
+
+    .pill {
+      margin-top: 0;
+    }
+
+    .title {
+      max-width: none;
+    }
+
+    .actions {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .button {
+      padding-inline: 1.25rem;
+    }
+
+    .buttonIcon {
+      display: none;
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @keyframes popIn {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -46%) scale(0.95);
+    }
+  }
+
+  @keyframes popOut {
+    to {
+      opacity: 0;
+      transform: translate(-50%, -48%) scale(0.97);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .overlay,
+    .content {
+      animation-duration: 1ms !important;
+    }
+  }
+}

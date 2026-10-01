@@ -1,0 +1,67 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .testimonials {
+    border-block: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    padding-top: var(--space-section);
+    padding-bottom: var(--space-section);
+  }
+
+  /* ---- heading: tighter spacing, shrinking with the screen */
+
+  .testimonials .heading {
+    margin-bottom: var(--space-heading);
+  }
+
+  .heading :global(.eyebrow) {
+    margin-bottom: 0.75rem;
+  }
+
+  /* ---- cards (swipeable below 1024px, see SwipeCarousel) */
+
+  .reveal {
+    height: 100%;
+  }
+
+  .card {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    border-radius: var(--radius-lg);
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--background));
+    padding: clamp(1.25rem, 3vw, 2rem);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .mark {
+    margin-bottom: clamp(0.5rem, 1.5vw, 1rem);
+    font-size: clamp(28px, 3vw, 34px);
+    line-height: 1;
+    color: hsl(var(--primary));
+  }
+
+  .quote {
+    font-size: var(--text-body);
+    line-height: 1.625;
+  }
+
+  .author {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    padding-top: clamp(1.25rem, 2.5vw, 1.75rem);
+  }
+
+  .name {
+    display: block;
+    font-size: var(--text-body);
+  }
+
+  .role {
+    font-size: var(--text-small);
+    color: hsl(var(--muted-foreground));
+  }
+}

@@ -1,0 +1,300 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .section {
+    padding-top: clamp(2rem, 1.5rem + 2vw, 3.5rem);
+    padding-bottom: clamp(1rem, 0.75rem + 1vw, 1.75rem);
+  }
+
+  /* ---- stats: 2 × 2 on phones, one row of four from 1024px */
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-radius: var(--radius-lg);
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.04);
+  }
+
+  .stat {
+    min-width: 0;
+    padding: 1.125rem 1rem;
+  }
+
+  .stat:nth-child(even) {
+    border-left: 1px solid hsl(var(--border));
+  }
+
+  .stat:nth-child(n + 3) {
+    border-top: 1px solid hsl(var(--border));
+  }
+
+  .statIcon {
+    display: grid;
+    height: 2rem;
+    width: 2rem;
+    place-items: center;
+    border-radius: var(--radius-sm);
+    background-color: hsl(var(--primary) / 0.12);
+    color: var(--green-dark);
+  }
+
+  .statIcon svg {
+    height: 1rem;
+    width: 1rem;
+  }
+
+  /* Sized so values like "Multi-cam" stay on one line in the two-column phone layout */
+  .statValue {
+    margin-top: 0.75rem;
+    font-size: clamp(1.25rem, 0.9rem + 1.8vw, 2.25rem);
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+
+  .statLabel {
+    margin-top: 0.375rem;
+    font-size: 14px;
+    font-weight: 600;
+    color: hsl(var(--foreground));
+  }
+
+  .statBody {
+    margin-top: 0.125rem;
+    font-size: 12px;
+    line-height: 1.5;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* ---- roadmap: dark intro panel + three phases */
+
+  .roadmap {
+    margin-top: 1rem;
+    display: grid;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.04);
+  }
+
+  .panel {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(80% 70% at 100% 100%, rgb(139 183 44 / 0.35), transparent 70%),
+      linear-gradient(150deg, #13233a 0%, #22393a 55%, #3f5a28 100%);
+    padding: 1.5rem 1.25rem;
+    color: #fff;
+  }
+
+  .panel > :not(.panelRings) {
+    position: relative;
+  }
+
+  .panelRings {
+    position: absolute;
+    right: -7rem;
+    top: -7rem;
+    height: 18rem;
+    width: 18rem;
+    border-radius: 50%;
+    background: repeating-radial-gradient(circle, transparent 0 26px, rgb(255 255 255 / 0.06) 26px 27px);
+    mask-image: radial-gradient(circle, #000 35%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .panelEyebrow {
+    display: block;
+    font-size: 10.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: hsl(var(--primary));
+  }
+
+  .panelTitle {
+    margin-top: 0.5rem;
+    max-width: 11em;
+    font-size: clamp(1.35rem, 1.1rem + 1vw, 1.75rem);
+    line-height: 1.2;
+  }
+
+  .panelBody {
+    margin-top: 0.625rem;
+    max-width: 30ch;
+    font-size: var(--text-small);
+    line-height: 1.6;
+    color: #c9d3cf;
+  }
+
+  .panelLink {
+    margin-top: 1.25rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 13px;
+    font-weight: 600;
+    color: hsl(var(--primary));
+  }
+
+  .panelLink svg {
+    height: 1rem;
+    width: 1rem;
+    transition: transform 300ms var(--ease-brand);
+  }
+  .panelLink:hover svg {
+    transform: translateX(3px);
+  }
+
+  .phases {
+    display: grid;
+    padding: 0.25rem 1.25rem;
+  }
+
+  .phase {
+    padding: 1.125rem 0;
+  }
+
+  .phase + .phase {
+    border-top: 1px solid hsl(var(--border));
+  }
+
+  /* Phones: pill and title side by side */
+  .phaseHead {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .phasePill {
+    flex-shrink: 0;
+    border-radius: var(--radius-pill);
+    background-color: hsl(var(--primary) / 0.14);
+    padding: 0.3rem 0.7rem;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--green-dark);
+  }
+
+  .connector {
+    display: none;
+  }
+
+  .phaseTitle {
+    font-size: 15px;
+    font-weight: 600;
+    color: hsl(var(--foreground));
+  }
+
+  .phaseList {
+    margin-top: 0.875rem;
+    display: grid;
+    gap: 0.625rem;
+  }
+
+  .phaseItem {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: var(--text-small);
+    line-height: 1.4;
+    color: hsl(var(--foreground) / 0.8);
+  }
+
+  .phaseCheck {
+    margin-top: 0.1rem;
+    height: 0.875rem;
+    width: 0.875rem;
+    flex-shrink: 0;
+    stroke-width: 2.5;
+    color: hsl(var(--primary));
+  }
+
+  @media (min-width: 768px) {
+    .phases {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.5rem;
+      padding: 1.5rem;
+    }
+
+    .phase {
+      padding: 0;
+    }
+
+    .phase + .phase {
+      border-top: 0;
+    }
+
+    /* Pill, then a dashed arrow to the next phase, with the title underneath */
+    .phaseHead {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: center;
+      gap: 0.875rem 0.625rem;
+    }
+
+    .phaseTitle {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+
+    .connector {
+      position: relative;
+      display: block;
+      margin-right: -1.25rem;
+      border-top: 1px dashed hsl(var(--muted-foreground) / 0.45);
+    }
+
+    .connector::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: -4px;
+      height: 7px;
+      width: 7px;
+      transform: rotate(45deg);
+      border-top: 1px solid hsl(var(--muted-foreground) / 0.6);
+      border-right: 1px solid hsl(var(--muted-foreground) / 0.6);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .stats {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      padding: 1.25rem 0;
+    }
+
+    .stat {
+      padding: 0.25rem clamp(1rem, 2vw, 1.5rem);
+    }
+
+    .stat:nth-child(n + 2) {
+      border-left: 1px solid hsl(var(--border));
+    }
+
+    .stat:nth-child(n + 3) {
+      border-top: 0;
+    }
+
+    .roadmap {
+      grid-template-columns: minmax(0, 0.34fr) minmax(0, 0.66fr);
+    }
+
+    .panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 2rem 1.75rem;
+    }
+
+    .phases {
+      align-content: center;
+      padding: 1.75rem 2rem;
+      gap: 2rem;
+    }
+  }
+}

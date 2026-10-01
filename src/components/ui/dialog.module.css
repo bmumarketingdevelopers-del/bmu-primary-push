@@ -1,0 +1,124 @@
+@layer reset, base, helpers, ui, components;
+
+@layer ui {
+  .overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background-color: rgb(18 31 47 / 0.6);
+    backdrop-filter: blur(4px);
+  }
+  .overlay[data-state="open"] {
+    animation: fadeIn 150ms;
+  }
+  .overlay[data-state="closed"] {
+    animation: fadeOut 150ms;
+  }
+
+  .content {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    z-index: 50;
+    display: grid;
+    width: calc(100% - 2rem);
+    max-width: 32rem;
+    transform: translate(-50%, -50%);
+    gap: 1.25rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--background));
+    padding: 1.75rem;
+    box-shadow: var(--shadow-lg);
+    transition-duration: 300ms;
+  }
+  .content[data-state="open"] {
+    animation: zoomIn 150ms;
+  }
+  .content[data-state="closed"] {
+    animation: zoomOut 150ms;
+  }
+
+  .close {
+    position: absolute;
+    right: 1.25rem;
+    top: 1.25rem;
+    display: grid;
+    height: 2.25rem;
+    width: 2.25rem;
+    place-items: center;
+    border-radius: var(--radius-pill);
+    border: 1px solid hsl(var(--border));
+    color: hsl(var(--muted-foreground));
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .close:hover {
+    color: hsl(var(--foreground));
+  }
+
+  .closeIcon {
+    height: 1rem;
+    width: 1rem;
+  }
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    padding-right: 2.5rem;
+  }
+  .header > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.5rem;
+  }
+
+  .title {
+    font-size: 18px;
+    line-height: 1.375;
+  }
+
+  .description {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .footer {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.75rem;
+  }
+  @media (min-width: 640px) {
+    .footer {
+      flex-direction: row;
+      justify-content: flex-end;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+  }
+}
+
+/* Fade in from 95% scale. */
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale3d(0.95, 0.95, 0.95);
+  }
+}
+
+@keyframes zoomOut {
+  to {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale3d(0.95, 0.95, 0.95);
+  }
+}

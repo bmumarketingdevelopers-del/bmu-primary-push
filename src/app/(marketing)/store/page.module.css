@@ -1,0 +1,55 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .toolbar {
+    margin-bottom: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .promises {
+    display: grid;
+    flex: 1 1 0%;
+    gap: 1.5rem;
+  }
+
+  .promise {
+    display: flex;
+    gap: 0.875rem;
+  }
+
+  .promiseIconWrap {
+    display: grid;
+    height: 2.5rem;
+    width: 2.5rem;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: var(--radius-md);
+    background-color: hsl(var(--primary) / 0.1);
+    color: hsl(var(--primary));
+  }
+
+  .promiseIcon {
+    height: 18px;
+    width: 18px;
+  }
+
+  .promiseTitle {
+    font-size: 14.5px;
+    font-weight: 600;
+  }
+
+  .promiseBody {
+    margin-top: 0.25rem;
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  @media (min-width: 640px) {
+    .promises {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+}

@@ -1,0 +1,468 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .hero {
+    margin-top: -76px;
+    overflow: hidden;
+    background-image: var(--grad-hero);
+    padding-top: 75px;
+    color: #fff;
+  }
+
+  /*.grid {
+    display: grid;
+    align-items: center;
+    gap: 4rem;
+    padding-top: clamp(72px, 9vw, 120px);
+    padding-bottom: clamp(72px, 9vw, 120px);
+  } */
+
+  /* ---- "The Change -hp" */
+
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+    align-items: center;
+    gap: 2rem;
+    padding-top: clamp(32px, 4.5vw, 64px);
+    padding-bottom: clamp(40px, 5vw, 72px);
+  }
+
+  .grid>div {
+    min-width: 0;
+  }
+
+  /* ---- "taking on retainers" badge */
+
+  .badge {
+    margin-bottom: clamp(1rem, 2vw, 1rem);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgb(255 255 255 / 0.15);
+    background-color: rgb(255 255 255 / 0.07);
+    padding: 0.375rem 1rem 0.375rem 0.625rem;
+    font-size: 11px;
+    font-weight: 500;
+    color: #dce4ec;
+  }
+
+  .liveDot {
+    position: relative;
+    display: flex;
+    height: 0.5rem;
+    width: 0.5rem;
+  }
+
+  .liveDotPing {
+    position: absolute;
+    display: inline-flex;
+    height: 100%;
+    width: 100%;
+    animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+    border-radius: var(--radius-pill);
+    background-color: hsl(var(--primary));
+    opacity: 0.75;
+  }
+
+  .liveDotCore {
+    position: relative;
+    display: inline-flex;
+    height: 0.5rem;
+    width: 0.5rem;
+    border-radius: var(--radius-pill);
+    background-color: hsl(var(--primary));
+  }
+
+  /* ---- heading */
+
+  .title {
+    font-size: 50px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    max-width: 100%;
+  }
+
+
+
+  /*Updating -hp */
+
+  .rotator {
+
+    display: inline-grid;
+    width: 100%;
+    min-height: 1.1em;
+    vertical-align: bottom;
+    overflow: visible;
+  }
+
+  /*
+  .rotator {
+    display: inline-grid;
+    vertical-align: bottom;
+  } */
+
+  /* updte -hp */
+
+  .rotation {
+    grid-column: 1;
+    grid-row: 1;
+    white-space: nowrap;
+    display: inline-block;
+    transform-origin: left;
+    color: hsl(var(--primary));
+    font-size: 0.92em;
+  }
+
+  /*
+  .rotation {
+    grid-column-start: 1;
+    grid-row-start: 1;
+    white-space: nowrap;
+    color: hsl(var(--primary));
+  } */
+
+  .lede {
+    margin-top: 0.75rem;
+    max-width: 60ch;
+    font-size: 16px;
+    line-height: 1.625;
+    color: #c6d0da;
+  }
+
+  .pills {
+    margin-top: clamp(1rem, 2vw, 1.5rem);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .pill {
+    border-radius: var(--radius-pill);
+    border: 1px solid rgb(255 255 255 / 0.15);
+    padding: 0.375rem 0.875rem;
+    font-size: var(--text-small);
+    font-weight: 500;
+    color: #b9c5d1;
+  }
+
+  .actions {
+    margin-top: clamp(1.25rem, 2.5vw, 2rem);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.875rem;
+  }
+
+  /* ---- stats */
+
+  .stats {
+    margin-top: clamp(1.75rem, 3.5vw, 2.75rem);
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: clamp(26px, 4vw, 52px);
+    row-gap: 1.5rem;
+  }
+
+  .statValue {
+    font-size: clamp(24px, 2.6vw, 34px);
+    line-height: 1;
+  }
+
+  .statLabel {
+    margin-top: 0.5rem;
+    font-size: var(--text-small);
+    color: #93a2b1;
+  }
+
+  /* ---- dot matrix + floating cards */
+
+
+  /* Updating-hp*/
+  .visual {
+    position: relative;
+    width: min(100%, 520px);
+    aspect-ratio: 1 / 1;
+    margin-inline: auto;
+    flex-shrink: 0;
+  }
+
+  /*
+  
+  .visual {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    max-width: 520px;
+  }  */
+
+  .floatCard {
+    position: absolute;
+    animation: float 7s ease-in-out infinite;
+    border-radius: var(--radius-md);
+    border: 1px solid rgb(255 255 255 / 0.15);
+    background-color: rgb(255 255 255 / 0.06);
+    padding: 0.875rem 1rem;
+    box-shadow: var(--shadow-lg);
+    backdrop-filter: blur(24px);
+  }
+
+  .floatValue {
+    display: block;
+    font-size: 19px;
+    line-height: 1.25;
+  }
+
+  .floatLabel {
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #a9b7c4;
+  }
+
+  /* ---- scroll hint */
+
+  .scrollHint {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-bottom: clamp(1.25rem, 2.5vw, 2rem);
+    font-size: 0.75rem;
+    line-height: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: #8496a6;
+  }
+
+  .scrollTrack {
+    position: relative;
+    display: block;
+    height: 1px;
+    width: 2.25rem;
+    overflow: hidden;
+    background-color: #41556a;
+  }
+
+  .scrollBar {
+    position: absolute;
+    inset: 0;
+    animation: marquee 2.2s linear infinite;
+    background-color: hsl(var(--primary));
+  }
+
+  /* "removed  this -hp */
+  /*@media (min-width: 1024px) {
+    .grid {
+      grid-template-columns: 1.05fr 0.95fr;
+    }
+  } */
+}
+
+/* Positions passed into the local <FloatCard> via `className`. */
+
+.floatLeads {
+  left: 0;
+  top: 16%;
+}
+
+.floatScans {
+  bottom: 19%;
+  right: 0;
+  animation-delay: 1.6s;
+}
+
+
+@media (min-width: 1440px) {}
+
+@media (min-width: 640px) {
+  .floatLeads {
+    left: -6%;
+  }
+
+  .floatScans {
+    right: -4%;
+  }
+}
+
+@keyframes ping {
+
+  75%,
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-11px);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Laptop */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .grid {
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+    gap: 2.5rem;
+  }
+
+  .rotation {
+    font-size: 0.88em;
+    white-space: nowrap;
+  }
+
+  .visual {
+    width: min(100%, 480px);
+  }
+}
+
+/* Tablet + mobile: stats in a 2-column grid */
+@media (max-width: 1023px) {
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    text-align: center;
+  }
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .grid {
+    grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.8fr);
+    gap: 1.5rem;
+  }
+
+  .title {
+    font-size: clamp(38px, 4.5vw, 56px);
+  }
+
+  .rotation {
+    font-size: 0.78em;
+    white-space: nowrap;
+  }
+
+  .lede {
+    max-width: 48ch;
+  }
+
+  .visual {
+    width: min(100%, 400px);
+  }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .hero {
+    padding-top: 95px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding-top: 16px;
+  }
+
+  /* Mobile */
+  @media (max-width: 767px) {
+    .badge {
+      font-size: 11.5px;
+      /* was 9.5px — too small to read */
+      padding: 0.25rem 0.75rem 0.25rem 0.5rem;
+      /* was 0.375rem 1rem 0.375rem 0.625rem */
+      gap: 0.5rem;
+      /* was 0.625rem */
+      margin-bottom: 0.75rem;
+      /* was 1.75rem, this closes the gap above the headline */
+    }
+  }
+
+  /* Mobile */
+  @media (max-width: 767px) {
+    .lede {
+      text-align: justify;
+      hyphens: auto;
+      max-width: 100%;
+    }
+  }
+
+  .title {
+    font-size: clamp(20px, 6.3vw, 44px);
+    line-height: 1.5;
+  }
+
+  .rotation {
+    font-size: 0.95em;
+    white-space: nowrap;
+  }
+
+  /* Mobile */
+
+  .actions>a:nth-child(2) {
+    display: none;
+  }
+
+  /* Pills: one swipeable row, bleeding to the screen edges past the container padding */
+  .pills {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: 1.25rem;
+    margin-inline: -1.25rem;
+    padding-inline: 1.25rem;
+    scrollbar-width: none;
+  }
+
+  .pills::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pill {
+    flex-shrink: 0;
+    white-space: nowrap;
+    scroll-snap-align: start;
+  }
+
+
+  .visual {
+    display: none;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 420px) {
+  .title {
+    font-size: clamp(20px, 6.3vw, 32px);
+  }
+  .lede {
+    max-width: 36ch;
+    font-size: 14px;
+  }
+
+  .rotation {
+    font-size: 0.95em;
+    white-space: nowrap;
+  }
+
+  .visual {
+    width: min(100%, 360px);
+  }
+}

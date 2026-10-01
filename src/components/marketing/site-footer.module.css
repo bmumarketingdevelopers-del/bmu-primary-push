@@ -1,0 +1,140 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .footer {
+    background-color: var(--ink);
+    padding-top: clamp(56px, 5vw, 72px);
+    color: #fff;
+  }
+  :global(.dark) .footer {
+    background-color: #0d1825;
+  }
+
+  .grid {
+    display: grid;
+    gap: 2.75rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .about {
+    margin-top: 1.25rem;
+    max-width: 36ch;
+    font-size: 14.5px;
+    color: #93a2b1;
+  }
+
+  /* ---- address / email / phone */
+
+  .contact {
+    margin-top: 1.5rem;
+    font-size: 14px;
+    color: #b4c2cf;
+  }
+  .contact > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.625rem;
+  }
+
+  .contactItem {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+  }
+
+  .contactIcon {
+    height: 1rem;
+    width: 1rem;
+    flex-shrink: 0;
+    color: hsl(var(--primary));
+  }
+
+  /* ---- social icons */
+
+  .social {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 0.625rem;
+  }
+
+  .socialLink {
+    display: grid;
+    height: 2.25rem;
+    width: 2.25rem;
+    place-items: center;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgb(255 255 255 / 0.15);
+    color: #b4c2cf;
+    transition-property: all;
+    transition-timing-function: var(--ease-brand);
+    transition-duration: 300ms;
+  }
+  .socialLink:hover {
+    border-color: hsl(var(--primary));
+    background-color: hsl(var(--primary));
+    color: #fff;
+  }
+
+  .socialIcon {
+    height: 1rem;
+    width: 1rem;
+  }
+
+  /* ---- link columns */
+
+  .colTitle {
+    margin-bottom: 1.25rem;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: hsl(var(--primary));
+  }
+
+  .links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    font-size: 14.5px;
+  }
+
+  .link {
+    color: #b4c2cf;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .link:hover {
+    color: #fff;
+  }
+
+  /* ---- bottom bar */
+
+  .bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1.25rem;
+    border-top: 1px solid rgb(255 255 255 / 0.1);
+    padding-top: 1.75rem;
+    padding-bottom: 1.75rem;
+    font-size: 13.5px;
+    color: #8496a6;
+  }
+
+  @media (min-width: 640px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .grid {
+      grid-template-columns: 1.5fr 1fr 1fr 1.1fr;
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.logo {
+  color: #fff;
+}

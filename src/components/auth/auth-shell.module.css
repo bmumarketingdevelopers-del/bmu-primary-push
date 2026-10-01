@@ -1,0 +1,180 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  /* =========================================
+     PHONES (< 640px): full-bleed, stacked
+     ========================================= */
+
+  .page {
+    min-height: 100dvh;
+    background-color: #fff;
+    color: #1b2530;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+    background-color: #fff;
+  }
+
+  /* Illustration panel; the background matches the illustration's own (#f4f9ec) so its edges vanish */
+  .brand {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.25rem 1.25rem 1.5rem;
+    border-radius: 0 0 24px 24px;
+    background-color: #f4f9ec;
+    text-align: center;
+  }
+
+  .logo {
+    align-self: flex-start;
+    font-size: 17px;
+    color: #1b2530;
+  }
+
+  .illustration {
+    display: block;
+    width: 100%;
+    max-width: 340px;
+    height: auto;
+    margin-top: 0.25rem;
+    /* The halo in the artwork touches its top edge; fade it so there's no hard line */
+    -webkit-mask-image: linear-gradient(transparent, #000 9%);
+    mask-image: linear-gradient(transparent, #000 9%);
+  }
+
+  .caption {
+    margin-top: 0.25rem;
+  }
+
+  .captionTitle {
+    font-size: clamp(15px, 4vw, 17px);
+    font-weight: 700;
+    color: #1b2530;
+  }
+
+  .captionText {
+    margin-top: 0.3rem;
+    font-size: 13px;
+    color: #5f6870;
+  }
+
+  .formSide {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 1.75rem 1.25rem calc(2rem + env(safe-area-inset-bottom));
+  }
+
+  /* Container for the heading's size: it scales with the form column, not the window */
+  .formInner {
+    width: 100%;
+    max-width: 26rem;
+    container-type: inline-size;
+  }
+
+  /*
+   * Always one line. Zen Dots is very wide (this text is ~13.5em), so the size is tied to the
+   * column width: 7cqi keeps it at ~95% of the column, capped at 32px on roomy screens.
+   */
+  .title {
+    font-size: clamp(18px, 7cqi, 32px);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    color: #1b2530;
+  }
+
+  .lede {
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 14px;
+    color: #5f6870;
+  }
+
+  /* =========================================
+     TABLETS (640–1023px): stacked card on a tinted page
+     ========================================= */
+
+  @media (min-width: 640px) {
+    .page {
+      display: grid;
+      place-items: center;
+      padding: 2.5rem 1.5rem;
+      background-color: #eef4e6;
+    }
+
+    .card {
+      width: min(36rem, 100%);
+      min-height: 0;
+      overflow: hidden;
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgb(45 74 12 / 0.1);
+    }
+
+    .brand {
+      padding: 1.5rem 2rem 2rem;
+      border-radius: 0;
+    }
+
+    .illustration {
+      max-width: 380px;
+    }
+
+    .formSide {
+      padding: 2.25rem 2.5rem 2.5rem;
+    }
+  }
+
+  /* =========================================
+     DESKTOP (≥ 1024px): side-by-side card
+     ========================================= */
+
+  @media (min-width: 1024px) {
+    .page {
+      padding: 3rem 2rem;
+    }
+
+    .card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      width: min(62rem, 100%);
+      min-height: min(36rem, calc(100dvh - 6rem));
+    }
+
+    .brand {
+      justify-content: space-between;
+      padding: 2rem 2.25rem 2.5rem;
+    }
+
+    .illustration {
+      max-width: 420px;
+      margin-block: auto;
+    }
+
+    .caption {
+      margin-top: 0.5rem;
+    }
+
+    .captionTitle {
+      font-size: 17px;
+    }
+
+    .formSide {
+      align-items: center;
+      padding: 3rem clamp(2.5rem, 5vw, 4rem);
+    }
+
+    .formInner {
+      max-width: 25.5rem;
+    }
+
+    .lede {
+      margin-bottom: 2rem;
+    }
+  }
+}

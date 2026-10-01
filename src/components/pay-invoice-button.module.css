@@ -1,0 +1,36 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .root {
+    text-align: right;
+  }
+
+  .paid {
+    font-size: 13px;
+    font-weight: 600;
+    color: hsl(var(--success));
+  }
+
+  .note {
+    margin-top: 0.25rem;
+    font-size: 11.5px;
+  }
+
+  .noteMuted {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .noteError {
+    color: hsl(var(--destructive));
+  }
+
+  .spinner {
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

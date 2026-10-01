@@ -1,0 +1,137 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .page {
+    padding: 1.25rem;
+  }
+
+  .statusRow {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .statusIcon {
+    display: grid;
+    height: 2.5rem;
+    width: 2.5rem;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: var(--radius-md);
+  }
+
+  .statusIconWarning {
+    background-color: hsl(var(--warning) / 0.15);
+    color: hsl(var(--warning));
+  }
+
+  .statusIconSuccess {
+    background-color: hsl(var(--success) / 0.15);
+    color: hsl(var(--success));
+  }
+
+  .statusGlyph {
+    height: 18px;
+    width: 18px;
+  }
+
+  .scoreBlock > :not([hidden]) ~ :not([hidden]),
+  .field > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.5rem;
+  }
+
+  .scoreRow {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13.5px;
+  }
+
+  .scoreValue {
+    font-weight: 600;
+  }
+
+  .licenceForm > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1.25rem;
+  }
+
+  .fieldHead {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.625rem;
+  }
+
+  .validIcon {
+    height: 1rem;
+    width: 1rem;
+    color: hsl(var(--success));
+  }
+
+  .requirement {
+    font-size: 12.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .formatWarning {
+    font-size: 12.5px;
+    color: hsl(var(--warning));
+  }
+
+  .registerLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 12.5px;
+    color: hsl(var(--primary));
+  }
+  .registerLink:hover {
+    text-decoration-line: underline;
+  }
+
+  .registerIcon {
+    height: 0.75rem;
+    width: 0.75rem;
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      padding: 2rem;
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.warningCard {
+  border-color: hsl(var(--warning) / 0.4);
+}
+
+.successCard {
+  border-color: hsl(var(--success) / 0.4);
+}
+
+/* A size on a card title replaces its tight leading; the title takes the body's. */
+.calloutTitle {
+  font-size: 15px;
+  line-height: inherit;
+}
+
+.statusDescription {
+  margin-top: 0.375rem;
+}
+
+.formContent > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1.5rem;
+}
+
+/* The input's own focus colour still wins while it is focused. */
+.inputWarning {
+  border-color: hsl(var(--warning));
+}
+.inputWarning:focus-visible {
+  border-color: hsl(var(--primary));
+}
+
+.noteCard {
+  border-style: dashed;
+}

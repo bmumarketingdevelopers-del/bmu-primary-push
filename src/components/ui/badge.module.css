@@ -1,0 +1,64 @@
+@layer reset, base, helpers, ui, components;
+
+@layer ui {
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: var(--radius-pill);
+    border-width: 1px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 600;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  .default {
+    border-color: transparent;
+    background-color: hsl(var(--primary) / 0.15);
+    color: hsl(var(--primary));
+  }
+
+  .solid {
+    border-color: transparent;
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+
+  .secondary {
+    border-color: transparent;
+    background-color: hsl(var(--muted));
+    color: hsl(var(--muted-foreground));
+  }
+
+  .outline {
+    border-color: hsl(var(--border));
+    color: hsl(var(--muted-foreground));
+  }
+
+  .success {
+    border-color: transparent;
+    background-color: hsl(var(--success) / 0.15);
+    color: hsl(var(--success));
+  }
+
+  .warning {
+    border-color: transparent;
+    background-color: hsl(var(--warning) / 0.15);
+    color: hsl(var(--warning));
+  }
+
+  .destructive {
+    border-color: transparent;
+    background-color: hsl(var(--destructive) / 0.15);
+    color: hsl(var(--destructive));
+  }
+
+  .info {
+    border-color: transparent;
+    background-color: hsl(var(--info) / 0.15);
+    color: hsl(var(--info));
+  }
+}

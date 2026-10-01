@@ -1,0 +1,47 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .main {
+    display: grid;
+    min-height: 70vh;
+    place-items: center;
+    padding: 4rem 1.5rem;
+  }
+
+  .panel {
+    max-width: 28rem;
+    text-align: center;
+  }
+
+  .code {
+    font-size: clamp(40px, 8vw, 72px);
+    line-height: 1;
+    color: hsl(var(--primary));
+  }
+
+  .title {
+    margin-top: 1.5rem;
+    font-size: clamp(20px, 3vw, 26px);
+  }
+
+  .message {
+    margin-top: 1rem;
+    font-size: 15px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .reference {
+    margin-top: 1rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 12px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .actions {
+    margin-top: 2.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+}

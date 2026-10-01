@@ -1,0 +1,181 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .toolbar {
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .backLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 13.5px;
+    color: hsl(var(--muted-foreground));
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .backLink:hover {
+    color: hsl(var(--foreground));
+  }
+
+  .smallIcon {
+    height: 1rem;
+    width: 1rem;
+  }
+
+  .layout {
+    display: grid;
+    gap: 3rem;
+  }
+
+  /* ---- product visual */
+
+  .visual {
+    display: grid;
+    aspect-ratio: 1 / 1;
+    place-items: center;
+    border-radius: var(--radius-xl);
+    background-image: var(--grad-hero);
+  }
+
+  .visualTile {
+    display: grid;
+    height: 8rem;
+    width: 8rem;
+    place-items: center;
+    border-radius: var(--radius-xl);
+    background-color: rgb(255 255 255 / 0.07);
+    color: #fff;
+    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.15);
+  }
+
+  .visualIcon {
+    height: 3.5rem;
+    width: 3.5rem;
+  }
+
+  /* ---- details */
+
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .name {
+    margin-top: 1.25rem;
+    font-size: clamp(24px, 3.4vw, 36px);
+    line-height: 1.25;
+  }
+
+  .tagline {
+    margin-top: 0.75rem;
+    font-size: 17px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .priceRow {
+    margin-top: 1.75rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+
+  .price {
+    font-size: 32px;
+  }
+
+  .compareAt {
+    font-size: 17px;
+    color: hsl(var(--muted-foreground));
+    text-decoration-line: line-through;
+  }
+
+  .taxNote {
+    margin-top: 0.375rem;
+    font-size: 13.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .delivery {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 13.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .description {
+    margin-top: 2rem;
+    font-size: 15.5px;
+    line-height: 1.625;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .block {
+    margin-top: 2.25rem;
+  }
+
+  .blockTitle {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .features {
+    margin-top: 1rem;
+  }
+  .features > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.625rem;
+  }
+
+  .feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-size: 15px;
+  }
+
+  .featureIcon {
+    margin-top: 0.25rem;
+    height: 1rem;
+    width: 1rem;
+    flex-shrink: 0;
+    color: hsl(var(--primary));
+  }
+
+  .bestFor {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .layout {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 4rem;
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.addToCart {
+  margin-top: 1.75rem;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .addToCart {
+    width: auto;
+  }
+}

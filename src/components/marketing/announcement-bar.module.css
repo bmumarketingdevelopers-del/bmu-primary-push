@@ -1,0 +1,37 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .bar {
+    background-color: var(--ink);
+    color: #fff;
+  }
+
+  .inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    column-gap: 0.75rem;
+    row-gap: 0.25rem;
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
+    text-align: center;
+    font-size: 13.5px;
+  }
+
+  .link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-weight: 600;
+    color: hsl(var(--primary));
+  }
+  .link:hover {
+    text-decoration-line: underline;
+  }
+
+  .arrow {
+    height: 0.875rem;
+    width: 0.875rem;
+  }
+}

@@ -1,0 +1,203 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .page {
+    padding: 1.25rem;
+  }
+
+  /* ---- summary figures */
+
+  .statGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .statLabel {
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .statValue {
+    margin-top: 0.75rem;
+    font-size: 26px;
+    line-height: 1;
+  }
+
+  /* ---- revision alert */
+
+  .alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .alertIcon {
+    display: grid;
+    height: 2.5rem;
+    width: 2.5rem;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: var(--radius-md);
+    background-color: hsl(var(--destructive) / 0.1);
+    color: hsl(var(--destructive));
+  }
+
+  .alertGlyph {
+    height: 18px;
+    width: 18px;
+  }
+
+  /* ---- bottleneck by client */
+
+  .client > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.375rem;
+  }
+
+  .clientRow {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem;
+    font-size: 13.5px;
+  }
+
+  .clientName {
+    font-weight: 500;
+  }
+
+  .clientMeta {
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* ---- queue */
+
+  .queue > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1rem;
+  }
+
+  .itemHead {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .itemInfo {
+    min-width: 0;
+  }
+
+  .itemTitle {
+    font-size: 15.5px;
+    font-weight: 600;
+    line-height: 1.375;
+  }
+
+  .itemMeta {
+    margin-top: 0.25rem;
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .itemBadges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .itemFacts {
+    margin-top: 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 1.5rem;
+    row-gap: 0.5rem;
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .fact {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  .factLate {
+    font-weight: 600;
+    color: hsl(var(--warning));
+  }
+
+  .factEscalated {
+    font-weight: 500;
+    color: hsl(var(--primary));
+  }
+
+  .factIcon {
+    height: 0.875rem;
+    width: 0.875rem;
+  }
+
+  .itemActions {
+    margin-top: 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.625rem;
+    border-top: 1px solid hsl(var(--border));
+    padding-top: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .statGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      padding: 2rem;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .statGrid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.statCard {
+  padding: 1.5rem;
+}
+
+.warningCard {
+  border-color: hsl(var(--warning) / 0.4);
+}
+
+.dangerCard {
+  border-color: hsl(var(--destructive) / 0.4);
+}
+
+.noteCard {
+  border-style: dashed;
+}
+
+/* A custom font size on CardTitle also takes the inherited line-height, not the title's own. */
+.calloutTitle {
+  font-size: 15px;
+  line-height: inherit;
+}
+
+.alertBody {
+  margin-top: 0.375rem;
+}
+
+.clientList > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1rem;
+}
+
+.itemContent {
+  padding: 1.5rem;
+}

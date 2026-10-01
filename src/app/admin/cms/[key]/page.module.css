@@ -1,0 +1,38 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .page {
+    padding: 1.25rem;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      padding: 2rem;
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+/* A custom font size on Badge also takes the inherited line-height, not the badge's own. */
+.keyBadge {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 11px;
+  line-height: inherit;
+}
+
+.editorBody {
+  padding: 1.75rem;
+}
+
+@media (min-width: 1024px) {
+  .editorBody {
+    padding: 2.25rem;
+  }
+}

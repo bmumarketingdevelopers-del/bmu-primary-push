@@ -1,0 +1,128 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  /* Soft sage tint sets the FAQ apart from Pricing (ivory) above and the contact panel below */
+  .section {
+    padding-top: var(--space-section);
+    padding-bottom: var(--space-section);
+    background-color: #eef3e3;
+    border-block: 1px solid rgb(139 183 44 / 0.14);
+  }
+
+  :global(.dark) .section {
+    background-color: #16283a;
+    border-color: rgb(139 183 44 / 0.12);
+  }
+
+  /* Phones: heading → questions → help box. Desktop: heading and help box on the left, questions on the right. */
+  .grid {
+    display: grid;
+    grid-template-areas:
+      "intro"
+      "list"
+      "help";
+    row-gap: 2.5rem;
+  }
+
+  .intro {
+    grid-area: intro;
+  }
+
+  .listWrap {
+    grid-area: list;
+  }
+
+  .helpWrap {
+    grid-area: help;
+  }
+
+  .lede {
+    margin-top: 1.25rem;
+    max-width: 44ch;
+    font-size: var(--text-lede);
+    line-height: 1.55;
+    color: hsl(var(--foreground));
+  }
+
+  /* ---- questions */
+
+  .list {
+    border-top: 1px solid hsl(var(--border));
+  }
+
+  /* 16px apart on phones → 22px on desktop */
+  .trigger {
+    padding-top: clamp(1rem, 0.9rem + 0.5vw, 1.375rem);
+    padding-bottom: clamp(1rem, 0.9rem + 0.5vw, 1.375rem);
+    font-size: var(--text-lede);
+    color: hsl(var(--foreground));
+  }
+
+  /* Open question sits close to its answer: 6px on phones → 10px on desktop */
+  .trigger[data-state="open"] {
+    padding-bottom: clamp(0.375rem, 0.3rem + 0.3vw, 0.625rem);
+    color: hsl(var(--foreground));
+  }
+
+  .answer {
+    padding-bottom: clamp(1rem, 0.9rem + 0.5vw, 1.375rem);
+    font-size: var(--text-body);
+    line-height: 1.65;
+  }
+
+  .trigger:hover {
+    color: hsl(var(--primary));
+  }
+
+  /* ---- "Still have questions?" box */
+
+  /* Text and "Contact Us" stay side by side on every screen size; the text wraps if needed */
+  .help {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    border-radius: 12px;
+    justify-content: space-between;
+    gap: clamp(0.75rem, 2vw, 1.5rem);
+    max-width: 30rem;
+    background-color: hsl(var(--card));
+    box-shadow: var(--shadow-sm);
+    padding: 1.5rem 1.25rem;
+  }
+
+  /* The text column can shrink and wrap; the button never does */
+  .help > div {
+    min-width: 0;
+  }
+
+  .helpTitle {
+    font-size: var(--text-card-title);
+    line-height: 1.3;
+    color: hsl(var(--foreground));
+  }
+
+  .helpText {
+    margin-top: 0.25rem;
+    font-size: var(--text-body);
+    color: hsl(var(--foreground));
+  }
+
+  @media (min-width: 1024px) {
+    .grid {
+      grid-template-columns: 0.85fr 1.15fr;
+      grid-template-rows: auto 1fr;
+      grid-template-areas:
+        "intro list"
+        "help  list";
+      column-gap: 4rem;
+      row-gap: 2.5rem;
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.helpButton {
+  min-width: 6.25rem;
+  flex-shrink: 0;
+}

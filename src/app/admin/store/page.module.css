@@ -1,0 +1,190 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .page {
+    padding: 1.25rem;
+  }
+
+  /* ---- stats */
+
+  .statGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .statLabel {
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .statValue {
+    margin-top: 0.75rem;
+    font-size: 26px;
+    line-height: 1;
+  }
+
+  /* ---- revenue and best sellers */
+
+  .chartGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .seller {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 13.5px;
+  }
+
+  .sellerName {
+    min-width: 0;
+    flex: 1 1 0%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .sellerUnits {
+    flex-shrink: 0;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .sellerRevenue {
+    width: 6rem;
+    flex-shrink: 0;
+    text-align: right;
+    font-weight: 600;
+  }
+
+  /* ---- hardware to subscription */
+
+  .conversion > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.5rem;
+  }
+
+  .conversionLabels {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem;
+    font-size: 13.5px;
+  }
+
+  .conversionFigure {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .conversionRate {
+    color: hsl(var(--foreground));
+  }
+
+  /* ---- tables */
+
+  .titleIcon {
+    height: 18px;
+    width: 18px;
+    color: hsl(var(--primary));
+  }
+
+  .primaryText {
+    font-weight: 500;
+  }
+
+  .secondaryText {
+    display: block;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .productPath {
+    display: block;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  @media (min-width: 640px) {
+    .statGrid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      padding: 2rem;
+    }
+
+    .chartGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.statCard {
+  padding: 1.5rem;
+}
+
+.cardWarning {
+  border-color: hsl(var(--warning) / 0.4);
+}
+
+.cardPrimary {
+  border-color: hsl(var(--primary) / 0.4);
+}
+
+.bestSellers > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1rem;
+}
+
+.conversionList > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1.25rem;
+}
+
+.tableCard {
+  overflow: hidden;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.numericHead {
+  text-align: right;
+}
+
+.orderCell {
+  white-space: nowrap;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 13px;
+}
+
+.mutedCell {
+  color: hsl(var(--muted-foreground));
+}
+
+.numericCell {
+  text-align: right;
+}
+
+.moneyCell {
+  white-space: nowrap;
+  text-align: right;
+  font-weight: 500;
+}
+
+.mutedNowrapCell {
+  white-space: nowrap;
+  color: hsl(var(--muted-foreground));
+}
+
+.actionsCell {
+  text-align: right;
+}

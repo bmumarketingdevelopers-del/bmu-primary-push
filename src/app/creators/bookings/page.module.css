@@ -1,0 +1,75 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .content {
+    padding: 1.25rem;
+  }
+
+  .statGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .statLabel {
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .statValue {
+    margin-top: 0.75rem;
+    font-size: 26px;
+    line-height: 1;
+  }
+
+  .campaign {
+    font-weight: 500;
+  }
+
+  .bookingId {
+    display: block;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  @media (min-width: 640px) {
+    .statGrid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .content {
+      padding: 2rem;
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.statCard {
+  padding: 1.5rem;
+}
+
+.tableCard {
+  overflow: hidden;
+}
+
+.feeHead {
+  text-align: right;
+}
+
+.deliverablesCell {
+  color: hsl(var(--muted-foreground));
+}
+
+.feeCell {
+  white-space: nowrap;
+  text-align: right;
+  font-weight: 500;
+}
+
+.dueCell {
+  white-space: nowrap;
+  color: hsl(var(--muted-foreground));
+}

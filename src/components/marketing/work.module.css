@@ -1,0 +1,576 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+
+  /* =========================================================
+     SECTION
+     ========================================================= */
+
+  /*
+   * One spacing scale for the whole section, shrinking smoothly
+   * from desktop (max) to mobile (min):
+   *   --work-pad    section top/bottom padding
+   *   --work-gap    heading → filters → cards
+   *   --work-gap-sm cards → dots
+   */
+  .work {
+    --work-pad: var(--space-section);
+    --work-gap: var(--space-heading);
+    --work-gap-sm: clamp(0.75rem, 1.5vw, 1.25rem);
+
+    border-block: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    overflow: hidden;
+    padding-top: var(--work-pad);
+    padding-bottom: var(--work-pad);
+  }
+
+
+  /* =========================================================
+     HEADING
+     ========================================================= */
+
+  .work .heading {
+    margin-bottom: var(--work-gap);
+    gap: 1.25rem;
+  }
+
+  .heading :global(.eyebrow) {
+    margin-bottom: 0.75rem;
+  }
+
+  .heading p {
+    margin-top: 0.75rem;
+  }
+
+
+  /* =========================================================
+     CATEGORY FILTERS
+     ========================================================= */
+
+  .filters {
+    margin-top: 0;
+    margin-bottom: var(--work-gap);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    gap: 0.5rem;
+  }
+
+  .filter {
+    border-radius: var(--radius-pill);
+    border-width: 1px;
+    padding: 0.5rem 1rem;
+    font-size: var(--text-button);
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      all 300ms var(--ease-brand);
+  }
+
+  .filterActive {
+    border-color:
+      hsl(var(--secondary));
+
+    background-color:
+      hsl(var(--secondary));
+
+    color:
+      hsl(var(--secondary-foreground));
+  }
+
+  :global(.dark) .filterActive {
+    border-color:
+      hsl(var(--primary));
+
+    background-color:
+      hsl(var(--primary));
+  }
+
+  .filterIdle {
+    border-color:
+      hsl(var(--border));
+
+    background: transparent;
+
+    color:
+      hsl(var(--muted-foreground));
+  }
+
+  .filterIdle:hover {
+    border-color:
+      hsl(var(--foreground));
+
+    color:
+      hsl(var(--foreground));
+  }
+
+
+  /* =========================================================
+     CAROUSEL WRAPPER
+     ========================================================= */
+
+  /*
+   * Only a little taller than the card (room for its shadow),
+   * so there is no dead space above/below the cards.
+   */
+  .carouselWrapper {
+    position: relative;
+    width: 100%;
+    height: 380px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    perspective: 1400px;
+    touch-action: pan-y;
+    user-select: none;
+  }
+
+
+  /* =========================================================
+     CAROUSEL
+     ========================================================= */
+
+  .carousel {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    transform-style: preserve-3d;
+  }
+
+
+  /* =========================================================
+     CARD
+     ========================================================= */
+
+  .card {
+    position: absolute;
+
+    /*
+     * Desktop:
+     *
+     * Every card has exactly the same dimensions.
+     */
+    width: min(440px, 42vw);
+
+    height: 350px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: flex-end;
+
+    overflow: hidden;
+
+    border-radius: 16px;
+
+    border: 1px solid hsl(var(--border));
+
+    padding: 1.75rem;
+
+    color: #fff;
+
+    cursor: pointer;
+
+    user-select: none;
+
+    touch-action: pan-y;
+
+    transform-origin: center center;
+
+    box-shadow:
+      0 20px 50px rgb(0 0 0 / 0.25);
+
+    /*
+     * Helps browser optimize the
+     * carousel animation.
+     */
+    will-change:
+      transform,
+      opacity;
+
+    transition:
+      box-shadow 300ms var(--ease-brand);
+  }
+
+
+  /* =========================================================
+     CENTER CARD
+     ========================================================= */
+
+  .cardActive {
+    cursor: default;
+
+    box-shadow:
+      0 30px 70px rgb(0 0 0 / 0.40);
+  }
+
+
+  /* =========================================================
+     PROJECT ART / GRADIENT
+     ========================================================= */
+
+  .art {
+    position: absolute;
+
+    inset: 0;
+
+    /* One brand-green gradient for every project card */
+    background: var(--grad-green);
+  }
+
+
+  /* =========================================================
+     DARK SHADE
+     ========================================================= */
+
+  .shade {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+      linear-gradient(to top,
+        rgb(22 36 6 / 0.9),
+        rgb(22 36 6 / 0.45) 45%,
+        rgb(22 36 6 / 0) 100%);
+
+    pointer-events: none;
+  }
+
+
+  /* =========================================================
+     CARD CONTENT
+     ========================================================= */
+
+  .caption {
+    position: relative;
+
+    z-index: 2;
+
+    width: 100%;
+  }
+
+  .category {
+    margin: 0;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.14em;
+
+    /* light lime: brand green would vanish on the green card */
+    color: #e3f2b8;
+  }
+
+
+  /* =========================================================
+     TITLE
+     ========================================================= */
+  .title {
+    margin-top: 0.5rem;
+    margin-bottom: 0.375rem;
+    min-height: 50px;
+    font-size: var(--text-card-title);
+    line-height: 1.375;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+  }
+
+
+  /* =========================================================
+     SUMMARY
+     ========================================================= */
+  .summary {
+    margin: 0;
+    min-height: 42px;
+    font-size: var(--text-body);
+    line-height: 1.55;
+    color: #b6c3cf;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+  }
+
+  /* =========================================================
+     NAVIGATION ARROWS
+     ========================================================= */
+
+  .navigationButton {
+    position: absolute;
+
+    top: 50%;
+
+    transform:
+      translateY(-50%);
+
+    z-index: 100;
+
+    width: 46px;
+
+    height: 46px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    border:
+      1px solid hsl(var(--border));
+
+    background:
+      hsl(var(--background) / 0.9);
+
+    color:
+      hsl(var(--foreground));
+
+    backdrop-filter: blur(10px);
+
+    cursor: pointer;
+
+    /*
+     * Prevent browser touch gestures
+     * from interfering with the button.
+     */
+    touch-action: manipulation;
+
+    transition:
+      transform 200ms ease,
+      background-color 200ms ease,
+      border-color 200ms ease;
+  }
+
+  .navigationButton:hover {
+    transform:
+      translateY(-50%) scale(1.08);
+
+    border-color:
+      hsl(var(--foreground));
+
+    background:
+      hsl(var(--background));
+  }
+
+  .navigationLeft {
+    left: 1rem;
+  }
+
+  .navigationRight {
+    right: 1rem;
+  }
+
+
+  /* =========================================================
+     DOTS
+     ========================================================= */
+
+  .dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    margin-top: var(--work-gap-sm);
+  }
+
+  .dot {
+    width: 7px;
+
+    height: 7px;
+
+    padding: 0;
+
+    border: 0;
+
+    border-radius: 50%;
+
+    background:
+      hsl(var(--muted-foreground) / 0.35);
+
+    cursor: pointer;
+
+    transition:
+      width 250ms ease,
+      background-color 250ms ease;
+  }
+
+  .dotActive {
+    width: 22px;
+
+    border-radius: 999px;
+
+    background:
+      hsl(var(--primary));
+  }
+
+
+  /* =========================================================
+     TABLET
+     ========================================================= */
+
+  @media (max-width: 1023px) {
+    .carouselWrapper {
+      height: 350px;
+    }
+
+    .card {
+      width: min(400px, 48vw);
+      height: 320px;
+    }
+
+    .navigationLeft {
+      left: 0.5rem;
+    }
+
+    .navigationRight {
+      right: 0.5rem;
+    }
+  }
+
+
+  /* =========================================================
+     MOBILE
+     ========================================================= */
+  @media (max-width: 639px) {
+    /* =========================================
+     MOBILE WORK SECTION
+     ========================================= */
+
+    .heading p {
+      font-size: 15px;
+    }
+
+    /* =========================================
+     CATEGORY FILTERS
+     Single swipeable row that runs to the
+     screen edges (cancels .container padding).
+     ========================================= */
+
+    .filters {
+      justify-content: flex-start;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      margin-inline: -1.25rem;
+      padding-inline: 1.25rem;
+      scroll-padding-inline: 1.25rem;
+      scrollbar-width: none;
+    }
+
+    .filters::-webkit-scrollbar {
+      display: none;
+    }
+
+    .filter {
+      flex: 0 0 auto;
+    }
+
+    /* =========================================
+     MOBILE CAROUSEL
+     ========================================= */
+
+    .carouselWrapper {
+      height: 310px;
+      margin-inline: auto;
+      overflow: visible;
+      padding: 0;
+    }
+
+    /* =========================================
+     MOBILE CARD
+     ========================================= */
+
+    .card {
+      width: min(82vw, 340px);
+      height: 290px;
+      padding: 1.35rem;
+      border-radius: 14px;
+    }
+
+    /* =========================================
+     HIDE ARROWS ON MOBILE
+     ========================================= */
+
+    .navigationButton {
+      display: none;
+    }
+
+    /* =========================================
+     MOBILE TITLE
+     ========================================= */
+
+    .title {
+      min-height: 48px;
+    }
+
+    /* =========================================
+     MOBILE SUMMARY
+     ========================================= */
+
+    .summary {
+      min-height: 40px;
+    }
+
+    /* =========================================
+     SIDE CARDS
+     ========================================= */
+
+    .cardSide {
+      pointer-events: auto;
+    }
+  }
+
+  /* =========================================================
+     VERY SMALL MOBILE
+     ========================================================= */
+
+  @media (max-width: 400px) {
+
+    .carouselWrapper {
+      height: 290px;
+    }
+
+    .card {
+      width: 78vw;
+
+      height: 270px;
+
+      padding: 1.15rem;
+    }
+
+    .navigationButton {
+      width: 36px;
+
+      height: 36px;
+    }
+
+    .navigationLeft {
+      left: -2px;
+    }
+
+    .navigationRight {
+      right: -2px;
+    }
+  }
+}

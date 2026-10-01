@@ -1,0 +1,40 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .page {
+    padding: 1.25rem;
+  }
+
+  .envSnippet {
+    overflow-x: auto;
+    border-radius: var(--radius-md);
+    background-color: hsl(var(--muted));
+    padding: 1rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 12.5px;
+    line-height: 1.625;
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      padding: 2rem;
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.cardWarning {
+  border-color: hsl(var(--warning) / 0.4);
+}
+
+.calloutTitle {
+  font-size: 15px;
+  line-height: inherit;
+}
+
+.typeList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}

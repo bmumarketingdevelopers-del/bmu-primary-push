@@ -1,0 +1,35 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .advanceForm {
+    width: 100%;
+  }
+
+  .advanceError {
+    margin-top: 0.375rem;
+    font-size: 12px;
+    color: hsl(var(--destructive));
+  }
+
+  .cancelError {
+    font-size: 12px;
+    color: hsl(var(--destructive));
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.advanceButton {
+  width: 100%;
+}
+
+/*
+ * Red at rest; the ghost button's hover colour still takes over on hover,
+ * as it did before (the hover rule was the more specific one).
+ */
+.cancelButton {
+  color: hsl(var(--destructive));
+}
+.cancelButton:hover {
+  color: hsl(var(--foreground));
+}

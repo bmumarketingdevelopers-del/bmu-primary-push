@@ -1,0 +1,104 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .page {
+    padding: 1.25rem;
+  }
+
+  .offerGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .offerIntro {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .offerIcon {
+    display: grid;
+    height: 2.5rem;
+    width: 2.5rem;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: var(--radius-md);
+    background-color: hsl(var(--primary) / 0.1);
+    color: hsl(var(--primary));
+  }
+
+  .offerGlyph {
+    height: 18px;
+    width: 18px;
+  }
+
+  .offerDetail {
+    margin-top: 0.25rem;
+    font-size: 13.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .offerStats {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 1.5rem;
+    row-gap: 0.5rem;
+    border-top: 1px solid hsl(var(--border));
+    padding-top: 1.25rem;
+    font-size: 13.5px;
+  }
+
+  .stat {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-weight: 600;
+    color: hsl(var(--foreground));
+  }
+
+  .claims {
+    font-weight: 600;
+    color: hsl(var(--foreground));
+  }
+
+  .offerActions {
+    margin-top: 1.25rem;
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      padding: 2rem;
+    }
+
+    .offerGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.activeCard {
+  border-color: hsl(var(--primary) / 0.4);
+}
+
+.offerHeader {
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.offerHeader > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 0;
+}
+
+/* A size on a card title replaces its tight leading; the title takes the body's. */
+.offerTitle {
+  font-size: 16px;
+  line-height: inherit;
+}

@@ -1,0 +1,122 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .page {
+    padding: 1.25rem;
+  }
+
+  .statGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .statLabel {
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .statValue {
+    margin-top: 0.75rem;
+    font-size: 28px;
+    line-height: 1;
+  }
+
+  .positiveValue {
+    color: hsl(var(--success));
+  }
+
+  /* ---- feedback list */
+
+  .feedbackList > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1rem;
+  }
+
+  .feedbackRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .feedbackMain {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .sentimentIcon {
+    display: grid;
+    height: 2.5rem;
+    width: 2.5rem;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: var(--radius-md);
+    background-color: hsl(var(--muted));
+  }
+
+  .sentimentGlyph {
+    height: 1.25rem;
+    width: 1.25rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .feedbackBody {
+    min-width: 0;
+  }
+
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.625rem;
+  }
+
+  .comment {
+    margin-top: 0.75rem;
+    font-size: 15px;
+    line-height: 1.625;
+  }
+
+  .noComment {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .byline {
+    margin-top: 0.625rem;
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  @media (min-width: 640px) {
+    .statGrid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      padding: 2rem;
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.statCard {
+  padding: 1.5rem;
+}
+
+.waitingCard {
+  border-color: hsl(var(--destructive) / 0.4);
+}
+
+/* A size on a card title replaces its tight leading; the title takes the body's. */
+.calloutTitle {
+  font-size: 15px;
+  line-height: inherit;
+}
+
+.feedbackContent {
+  padding: 1.5rem;
+}

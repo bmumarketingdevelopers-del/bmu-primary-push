@@ -1,0 +1,185 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .page {
+    padding: 1.25rem;
+  }
+
+  .kpiGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .alertGrid,
+  .chartGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  /* ---- profile checklist */
+
+  .checklist {
+    font-size: 13.5px;
+  }
+  .checklist > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.375rem;
+  }
+
+  .checklistItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .checklistDot {
+    height: 0.375rem;
+    width: 0.375rem;
+    border-radius: var(--radius-pill);
+    background-color: hsl(var(--warning));
+  }
+
+  /* ---- action split legend */
+
+  .legend {
+    margin-top: 1rem;
+  }
+  .legend > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.625rem;
+  }
+
+  .legendItem {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+
+  /* `--swatch` is the chart colour for the row, set from the data. */
+  .legendSwatch {
+    height: 0.625rem;
+    width: 0.625rem;
+    border-radius: 3px;
+    background: var(--swatch);
+  }
+
+  .legendName {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .legendValue {
+    margin-left: auto;
+    font-weight: 600;
+  }
+
+  /* ---- latest leads */
+
+  .leadRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    border-radius: var(--radius-md);
+    border: 1px solid hsl(var(--border));
+    padding: 0.875rem 1rem;
+  }
+
+  .leadText {
+    min-width: 0;
+  }
+
+  .leadName {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+  }
+
+  .leadMessage {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .leadMeta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .leadDate {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  @media (min-width: 640px) {
+    .kpiGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      padding: 2rem;
+    }
+
+    .alertGrid,
+    .chartGrid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .kpiGrid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.unhappyCard {
+  border-color: hsl(var(--destructive) / 0.4);
+}
+
+.newLeadsCard {
+  border-color: hsl(var(--primary) / 0.4);
+}
+
+/* A size on a card title replaces its tight leading; the title takes the body's. */
+.alertTitle {
+  font-size: 15px;
+  line-height: inherit;
+}
+
+.fullWidthButton {
+  width: 100%;
+}
+
+.profileContent > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1rem;
+}
+
+.leadsHeader {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.leadsHeader > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 0;
+}
+
+.leadList > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 0.75rem;
+}
+
+@media (min-width: 1024px) {
+  .scanCard {
+    grid-column: span 2 / span 2;
+  }
+}

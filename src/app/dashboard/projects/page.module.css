@@ -1,0 +1,94 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .content {
+    padding: 1.25rem;
+  }
+
+  .projectGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .projectMeta {
+    margin-top: 0.25rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .progressBlock > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.5rem;
+  }
+
+  .progressHead {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+  }
+
+  .progressLabel {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .progressValue {
+    font-weight: 600;
+  }
+
+  .services {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .due {
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  @media (min-width: 1024px) {
+    .content {
+      padding: 2rem;
+    }
+
+    .projectGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .projectGrid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.projectCard {
+  transition-property: all;
+  transition-timing-function: var(--ease-brand);
+  transition-duration: 300ms;
+}
+.projectCard:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.projectHeader {
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.projectHeader > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 0;
+}
+
+.projectTitle {
+  font-size: 16px;
+  line-height: inherit;
+}
+
+.projectBody > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1.25rem;
+}

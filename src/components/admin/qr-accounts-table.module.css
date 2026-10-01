@@ -1,0 +1,164 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .wrapper > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1rem;
+  }
+
+  /* ---- sortable headers */
+
+  .sortButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .sortButton:hover,
+  .sortButtonActive {
+    color: hsl(var(--foreground));
+  }
+
+  .sortIcon {
+    height: 0.75rem;
+    width: 0.75rem;
+  }
+
+  /* ---- filters */
+
+  .filterGrid {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .searchBox {
+    position: relative;
+  }
+
+  .searchIcon {
+    position: absolute;
+    left: 0.875rem;
+    top: 50%;
+    height: 1rem;
+    width: 1rem;
+    transform: translateY(-50%);
+    color: hsl(var(--muted-foreground));
+  }
+
+  .select {
+    height: 3rem;
+    border-radius: var(--radius-md);
+    border: 1px solid hsl(var(--input));
+    background-color: hsl(var(--background));
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    font-size: 13.5px;
+  }
+  .select:focus-visible {
+    border-color: hsl(var(--primary));
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+
+  .dateRange {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .dateInput {
+    height: 3rem;
+    width: 100%;
+    border-radius: var(--radius-md);
+    border: 1px solid hsl(var(--input));
+    background-color: hsl(var(--background));
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    font-size: 12.5px;
+  }
+  .dateInput:focus-visible {
+    border-color: hsl(var(--primary));
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+
+  .count {
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .countValue {
+    color: hsl(var(--foreground));
+  }
+
+  /* ---- rows */
+
+  .businessName {
+    font-weight: 500;
+  }
+
+  .businessSlug {
+    display: block;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .country {
+    display: block;
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .filterGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .filterGrid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .searchBox {
+      grid-column: span 2 / span 2;
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.filters {
+  padding: 1.25rem;
+}
+.filters > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1rem;
+}
+
+.searchInput {
+  padding-left: 2.5rem;
+}
+
+.tableCard {
+  overflow: hidden;
+}
+
+.alignRight {
+  text-align: right;
+}
+
+.mutedCell {
+  white-space: nowrap;
+  color: hsl(var(--muted-foreground));
+}
+
+.scansCell {
+  text-align: right;
+  font-weight: 500;
+}
+
+.emptyCell {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  text-align: center;
+  color: hsl(var(--muted-foreground));
+}

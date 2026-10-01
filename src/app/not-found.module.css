@@ -1,0 +1,37 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .main {
+    display: grid;
+    min-height: 100vh;
+    place-items: center;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    text-align: center;
+  }
+
+  .code {
+    font-size: clamp(48px, 10vw, 96px);
+    line-height: 1;
+    color: hsl(var(--primary));
+  }
+
+  .title {
+    margin-top: 1.5rem;
+    font-size: clamp(20px, 3vw, 28px);
+  }
+
+  .message {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1rem;
+    max-width: 44ch;
+    color: hsl(var(--muted-foreground));
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.homeButton {
+  margin-top: 2rem;
+}

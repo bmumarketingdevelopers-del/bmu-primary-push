@@ -1,0 +1,160 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    display: flex;
+    height: 4rem;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 1px solid hsl(var(--border));
+    background-color: hsl(var(--background) / 0.85);
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    backdrop-filter: blur(24px);
+  }
+
+  .menuButton {
+    display: grid;
+    height: 2.5rem;
+    width: 2.5rem;
+    place-items: center;
+    border-radius: var(--radius-pill);
+    border: 1px solid hsl(var(--border));
+    color: hsl(var(--muted-foreground));
+  }
+
+  .menuIcon {
+    height: 18px;
+    width: 18px;
+  }
+
+  .title {
+    font-size: 17px;
+    letter-spacing: -0.025em;
+  }
+
+  .actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+  }
+
+  /* ---- search */
+
+  .search {
+    position: relative;
+    display: none;
+  }
+
+  .searchIcon {
+    pointer-events: none;
+    position: absolute;
+    left: 0.875rem;
+    top: 50%;
+    height: 1rem;
+    width: 1rem;
+    transform: translateY(-50%);
+    color: hsl(var(--muted-foreground));
+  }
+
+  .searchInput {
+    height: 2.5rem;
+    width: 16rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    padding-left: 2.5rem;
+    padding-right: 1rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+  .searchInput::placeholder {
+    color: hsl(var(--muted-foreground));
+  }
+  .searchInput:focus-visible {
+    border-color: hsl(var(--primary));
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+
+  /* ---- account menu */
+
+  .account {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid hsl(var(--border));
+    padding: 0.25rem 0.875rem 0.25rem 0.25rem;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .account:hover {
+    border-color: hsl(var(--foreground));
+  }
+
+  .accountName {
+    display: none;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+  }
+
+  .accountEmail {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 400;
+    color: hsl(var(--muted-foreground));
+  }
+
+  @media (min-width: 640px) {
+    .accountName {
+      display: block;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .search {
+      display: block;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .topbar {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+
+    .menuButton {
+      display: none;
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.sheet {
+  background-color: var(--ink);
+  padding: 1.5rem;
+  color: #fff;
+}
+
+.avatar {
+  height: 2rem;
+  width: 2rem;
+}
+
+.avatarInitials {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.accountLabel {
+  display: flex;
+  flex-direction: column;
+}

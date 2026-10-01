@@ -1,0 +1,15 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .status {
+    font-size: 12.5px;
+  }
+
+  .statusOk {
+    color: hsl(var(--success));
+  }
+
+  .statusError {
+    color: hsl(var(--destructive));
+  }
+}

@@ -1,0 +1,464 @@
+@layer reset, base, helpers, ui, components;
+
+/*
+ * --brand is the business's own colour and --food the veg / egg / non-veg
+ * marker colour from lib/menu. Both are set inline, everything else lives here.
+ */
+@layer components {
+  /* ---- confirmed */
+
+  .confirmed {
+    display: grid;
+    min-height: 70vh;
+    place-items: center;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    text-align: center;
+  }
+
+  .confirmIcon {
+    margin-left: auto;
+    margin-right: auto;
+    height: 3.5rem;
+    width: 3.5rem;
+    color: var(--brand);
+  }
+
+  .confirmTitle {
+    margin-top: 1.75rem;
+    font-size: 22px;
+  }
+
+  .reference {
+    margin-top: 1.5rem;
+    display: inline-block;
+    border-radius: var(--radius-md);
+    background-color: hsl(var(--muted));
+    padding: 0.75rem 1.25rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 17px;
+    font-weight: 600;
+  }
+
+  .confirmNote {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1.5rem;
+    max-width: 36ch;
+    font-size: 14.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* ---- page */
+
+  .menu {
+    padding-bottom: 7rem;
+  }
+
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    border-bottom: 1px solid hsl(var(--border));
+    background-color: hsl(var(--background) / 0.95);
+    padding: 1rem 1.25rem;
+    backdrop-filter: blur(8px);
+  }
+
+  .headerInner {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 32rem;
+  }
+
+  .businessName {
+    font-size: 19px;
+  }
+
+  .orderMode {
+    margin-top: 0.125rem;
+    font-size: 13.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .filters {
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .filter {
+    border-radius: var(--radius-pill);
+    border-width: 1px;
+    padding: 0.375rem 1rem;
+    font-size: 13px;
+    font-weight: 500;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  .filterIdle {
+    border-color: hsl(var(--border));
+    color: hsl(var(--muted-foreground));
+  }
+
+  .filterActive {
+    border-color: transparent;
+    color: #fff;
+    background: var(--brand);
+  }
+
+  /* ---- menu items */
+
+  .body {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 32rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .category {
+    margin-top: 2.25rem;
+  }
+
+  .categoryName {
+    font-size: 17px;
+  }
+
+  .categoryDescription {
+    margin-top: 0.25rem;
+    font-size: 13.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .items {
+    margin-top: 1.25rem;
+  }
+  .items > :not([hidden]) ~ :not([hidden]) {
+    border-top-width: 1px;
+    border-color: hsl(var(--border));
+  }
+
+  .item {
+    display: flex;
+    gap: 1rem;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .itemUnavailable {
+    opacity: 0.45;
+  }
+
+  .itemInfo {
+    min-width: 0;
+    flex: 1 1 0%;
+  }
+
+  .itemHead {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .foodMark {
+    display: grid;
+    height: 0.875rem;
+    width: 0.875rem;
+    flex-shrink: 0;
+    place-items: center;
+    border-width: 1px;
+    border-color: var(--food);
+  }
+
+  .foodDot {
+    height: 0.375rem;
+    width: 0.375rem;
+    border-radius: var(--radius-pill);
+    background: var(--food);
+  }
+
+  .itemName {
+    font-size: 15.5px;
+    font-weight: 600;
+  }
+
+  .popular {
+    border-radius: var(--radius-pill);
+    background-color: hsl(var(--warning) / 0.15);
+    padding: 0.125rem 0.5rem;
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: hsl(var(--warning));
+  }
+
+  .itemDescription {
+    margin-top: 0.375rem;
+    font-size: 13.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .itemPrice {
+    margin-top: 0.5rem;
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .soldOut {
+    margin-top: 0.25rem;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: hsl(var(--destructive));
+  }
+
+  .itemAction {
+    flex-shrink: 0;
+    align-self: center;
+  }
+
+  .add {
+    border-radius: var(--radius-md);
+    border: 1px solid var(--brand);
+    padding: 0.5rem 1.25rem;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--brand);
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  .stepper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-radius: var(--radius-md);
+    padding: 0.375rem 0.625rem;
+    color: #fff;
+    background: var(--brand);
+  }
+
+  .stepButton {
+    padding: 0.25rem;
+  }
+
+  .stepIcon {
+    height: 1rem;
+    width: 1rem;
+  }
+
+  .qty {
+    min-width: 1rem;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  /* ---- cart bar */
+
+  .cartBar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 30;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    width: 100%;
+    max-width: 32rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    color: #fff;
+    background: var(--brand);
+  }
+
+  .cartCount {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .cartIcon {
+    height: 1.25rem;
+    width: 1.25rem;
+  }
+
+  .cartTotal {
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  /* ---- checkout sheet */
+
+  .overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background-color: rgb(18 31 47 / 0.6);
+    backdrop-filter: blur(4px);
+  }
+
+  .sheet {
+    margin-left: auto;
+    margin-right: auto;
+    max-height: 88vh;
+    width: 100%;
+    max-width: 32rem;
+    overflow-y: auto;
+    border-top-left-radius: var(--radius-xl);
+    border-top-right-radius: var(--radius-xl);
+    background-color: hsl(var(--background));
+    padding: 1.5rem;
+  }
+
+  .sheetHeader {
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .sheetTitle {
+    font-size: 18px;
+  }
+
+  .close {
+    padding: 0.25rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .closeIcon {
+    height: 1.25rem;
+    width: 1.25rem;
+  }
+
+  .cartLines > :not([hidden]) ~ :not([hidden]) {
+    border-top-width: 1px;
+    border-color: hsl(var(--border));
+  }
+
+  .cartLine {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 0.875rem;
+    padding-bottom: 0.875rem;
+  }
+
+  .lineName {
+    min-width: 0;
+    flex: 1 1 0%;
+    font-size: 14.5px;
+  }
+
+  .lineControls {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .lineStep {
+    padding: 0.25rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .lineQty {
+    min-width: 1rem;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .lineTotal {
+    width: 5rem;
+    text-align: right;
+    font-weight: 600;
+  }
+
+  .totals {
+    margin-top: 1.25rem;
+    border-top: 1px solid hsl(var(--border));
+    padding-top: 1.25rem;
+    font-size: 14px;
+  }
+  .totals > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.5rem;
+  }
+
+  .totalRow {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .totalLabel {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .grandTotal {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid hsl(var(--border));
+    padding-top: 0.625rem;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .checkout {
+    margin-top: 1.5rem;
+  }
+  .checkout > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1rem;
+  }
+
+  .contactGrid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .field > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.5rem;
+  }
+
+  .error {
+    border-radius: var(--radius-md);
+    background-color: hsl(var(--destructive) / 0.1);
+    padding: 0.75rem 1rem;
+    font-size: 13.5px;
+    color: hsl(var(--destructive));
+  }
+
+  .payNote {
+    text-align: center;
+    font-size: 12.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  @media (min-width: 640px) {
+    .contactGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.againButton {
+  margin-top: 2rem;
+}
+
+.checkoutButton {
+  width: 100%;
+}

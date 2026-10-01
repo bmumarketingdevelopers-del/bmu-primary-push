@@ -1,0 +1,236 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .page {
+    padding: 1.25rem;
+  }
+
+  .statGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .statLabel {
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .statValue {
+    margin-top: 0.75rem;
+    font-size: 26px;
+    line-height: 1;
+  }
+
+  .leaderValue {
+    margin-top: 0.75rem;
+    font-size: 20px;
+    line-height: 1.25;
+  }
+
+  .leaderNote {
+    margin-top: 0.25rem;
+    font-size: 12.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* ---- complaints callout */
+
+  .alertRow {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .alertIcon {
+    display: grid;
+    height: 2.5rem;
+    width: 2.5rem;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: var(--radius-md);
+    background-color: hsl(var(--warning) / 0.15);
+    color: hsl(var(--warning));
+  }
+
+  .alertGlyph {
+    height: 18px;
+    width: 18px;
+  }
+
+  .titleIcon {
+    height: 18px;
+    width: 18px;
+    color: hsl(var(--primary));
+  }
+
+  /* ---- leaderboard */
+
+  .rank > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.5rem;
+  }
+
+  .rankRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    font-size: 14px;
+  }
+
+  .rankPerson {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+  }
+
+  .position {
+    display: grid;
+    height: 1.5rem;
+    width: 1.5rem;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .positionFirst {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+
+  .positionOther {
+    background-color: hsl(var(--muted));
+    color: hsl(var(--muted-foreground));
+  }
+
+  .rankName {
+    font-weight: 500;
+  }
+
+  .muted {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .positiveCount {
+    color: hsl(var(--success));
+  }
+
+  .complaintCount {
+    color: hsl(var(--warning));
+  }
+
+  /* ---- breakdown table */
+
+  .personName {
+    font-weight: 500;
+  }
+
+  .personRole {
+    display: block;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .scanCount {
+    margin-top: 0.375rem;
+    display: block;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  @media (min-width: 640px) {
+    .statGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      padding: 2rem;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .statGrid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.statCard {
+  padding: 1.5rem;
+}
+
+.complaintsCard {
+  border-color: hsl(var(--warning) / 0.4);
+}
+
+.strugglingCard {
+  border-color: hsl(var(--primary) / 0.4);
+}
+
+/* A size on a card title replaces its tight leading; the title takes the body's. */
+.calloutTitle {
+  font-size: 15px;
+  line-height: inherit;
+}
+
+.alertDescription {
+  margin-top: 0.375rem;
+}
+
+.iconTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.leaderboard > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1.25rem;
+}
+
+.tableCard {
+  overflow: hidden;
+}
+
+.scansHead {
+  min-width: 140px;
+}
+
+.numericHead,
+.numericCell {
+  text-align: right;
+}
+
+.inactiveRow {
+  opacity: 0.6;
+}
+
+/*
+ * The badge's own 12px size is replaced, not layered on: the text takes the
+ * table's line height, as it did when the classes were merged.
+ */
+.codeBadge {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 11px;
+  line-height: inherit;
+}
+
+.conversionCell {
+  text-align: right;
+  font-weight: 500;
+}
+
+.lowConversion {
+  color: hsl(var(--warning));
+}
+
+.noteCard {
+  border-style: dashed;
+}

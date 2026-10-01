@@ -1,0 +1,131 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .footer {
+    background-color: var(--ink);
+    padding-top: clamp(2rem, 1.5rem + 2vw, 3rem);
+    padding-bottom: calc(1.25rem + env(safe-area-inset-bottom));
+    color: #fff;
+  }
+
+  .brand {
+    display: inline-block;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+  }
+
+  .about {
+    margin-top: 0.75rem;
+    max-width: 40ch;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #a9b8c6;
+  }
+
+  .contact {
+    margin-top: 1rem;
+    display: grid;
+    gap: 0.25rem;
+    font-size: 13px;
+    font-style: normal;
+    color: #e3e9ef;
+  }
+
+  .contactLink:hover {
+    color: hsl(var(--primary));
+  }
+
+  /* Services | Products, then Company across the full width with its links in two columns */
+  .navGrid {
+    margin-top: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem 1rem;
+    border-top: 1px solid rgb(255 255 255 / 0.1);
+    padding-top: 1.5rem;
+  }
+
+  .company {
+    grid-column: 1 / -1;
+  }
+
+  .colTitle {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .links {
+    margin-top: 0.75rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .companyLinks {
+    grid-auto-flow: column;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(3, auto);
+    column-gap: 1rem;
+  }
+
+  .link {
+    font-size: 13px;
+    color: #a9b8c6;
+    transition: color 150ms var(--ease-brand);
+  }
+  .link:hover {
+    color: #fff;
+  }
+
+  .bottom {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    border-top: 1px solid rgb(255 255 255 / 0.1);
+    padding-top: 1rem;
+    font-size: 12px;
+    color: #8fa0b0;
+  }
+
+  /* Tablet and up: intro above (or beside) three link columns, divider only above the bottom row */
+  @media (min-width: 768px) {
+    .navGrid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .company {
+      grid-column: auto;
+    }
+
+    .companyLinks {
+      grid-auto-flow: row;
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: none;
+    }
+
+    .bottom {
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+      gap: 3rem;
+    }
+
+    .navGrid {
+      margin-top: 0;
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .bottom {
+      margin-top: 2.5rem;
+    }
+  }
+}

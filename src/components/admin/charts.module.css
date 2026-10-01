@@ -1,0 +1,22 @@
+@layer reset, base, helpers, ui, components;
+
+/*
+ * Styles markup that recharts renders, reached through the class names it
+ * accepts. Unlayered, like any other override passed into a component.
+ *
+ * `wrapperClassName` lands on the tooltip's content box, where recharts also
+ * writes a white background and grey border inline — so those two need
+ * !important to be replaced from a class.
+ */
+.tooltip {
+  background: hsl(var(--popover)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: 12px;
+  font-size: 13px;
+  color: hsl(var(--popover-foreground));
+}
+
+.revenueChart :global(.recharts-legend-wrapper) {
+  font-size: 13px;
+  padding-top: 12px;
+}

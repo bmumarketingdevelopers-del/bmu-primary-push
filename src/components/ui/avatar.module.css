@@ -1,0 +1,33 @@
+@layer reset, base, helpers, ui, components;
+
+@layer ui {
+  .avatar {
+    position: relative;
+    display: flex;
+    height: 2.5rem;
+    width: 2.5rem;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: var(--radius-pill);
+  }
+
+  .image {
+    aspect-ratio: 1 / 1;
+    height: 100%;
+    width: 100%;
+  }
+
+  .fallback {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-pill);
+    background-color: hsl(var(--secondary));
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 700;
+    color: hsl(var(--secondary-foreground));
+  }
+}

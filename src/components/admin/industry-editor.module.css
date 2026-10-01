@@ -1,0 +1,212 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .form > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1.25rem;
+  }
+
+  .field > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.5rem;
+  }
+
+  .select {
+    height: 3rem;
+    width: 100%;
+    border-radius: var(--radius-md);
+    border: 1px solid hsl(var(--input));
+    background-color: hsl(var(--background));
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+  .select:focus-visible {
+    border-color: hsl(var(--primary));
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+
+  .textarea {
+    width: 100%;
+    border-radius: var(--radius-md);
+    border: 1px solid hsl(var(--input));
+    background-color: hsl(var(--background));
+    padding: 0.75rem 1rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 14px;
+  }
+  .textarea:focus-visible {
+    border-color: hsl(var(--primary));
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+
+  /* ---- modules */
+
+  .moduleOption {
+    border-radius: var(--radius-md);
+    border-width: 1px;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-size: 14px;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  .moduleOptionOn {
+    border-color: hsl(var(--primary));
+    background-color: hsl(var(--primary) / 0.05);
+    font-weight: 500;
+  }
+
+  .moduleOptionOff {
+    border-color: hsl(var(--border));
+    color: hsl(var(--muted-foreground));
+  }
+  .moduleOptionOff:hover {
+    border-color: hsl(var(--foreground));
+  }
+
+  /* ---- dashboard cards */
+
+  .kpiHeader {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .kpiOrder {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .kpiGrid {
+    display: grid;
+    gap: 0.625rem;
+  }
+
+  .kpiOption {
+    border-radius: var(--radius-md);
+    border-width: 1px;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  .kpiOptionOn {
+    border-color: hsl(var(--primary));
+    background-color: hsl(var(--primary) / 0.05);
+  }
+
+  .kpiOptionOff {
+    border-color: hsl(var(--border));
+  }
+  .kpiOptionOff:hover {
+    border-color: hsl(var(--foreground));
+  }
+
+  .kpiLabel {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .kpiSub {
+    display: block;
+    font-size: 12.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* ---- result + save bar */
+
+  .result {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1rem;
+    font-size: 13.5px;
+  }
+
+  .resultOk {
+    background-color: hsl(var(--success) / 0.1);
+    color: hsl(var(--success));
+  }
+
+  .resultError {
+    background-color: hsl(var(--destructive) / 0.1);
+    color: hsl(var(--destructive));
+  }
+
+  .resultIcon {
+    margin-top: 0.125rem;
+    height: 1rem;
+    width: 1rem;
+    flex-shrink: 0;
+  }
+
+  .saveBar {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    border-top: 1px solid hsl(var(--border));
+    background-color: hsl(var(--background) / 0.9);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    backdrop-filter: blur(8px);
+  }
+
+  @media (min-width: 640px) {
+    .fieldWide {
+      grid-column: span 2 / span 2;
+    }
+
+    .kpiGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .kpiGrid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.basicsGrid {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.moduleGrid {
+  display: grid;
+  gap: 0.625rem;
+}
+
+.kpiBody > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1rem;
+}
+
+@media (min-width: 640px) {
+  .basicsGrid,
+  .moduleGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .moduleGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

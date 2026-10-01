@@ -1,0 +1,566 @@
+/**
+ * Global stylesheet.
+ *
+ * Every component styles itself through its own `.module.css` file next to
+ * the `.tsx`. This file only holds what genuinely belongs to the whole site:
+ * the reset, the design tokens, and a handful of shared helper classes.
+ *
+ * Cascade layers decide who wins, not load order:
+ *
+ *   reset < base < helpers < ui < components < (unlayered)
+ *
+ * - UI primitives (src/components/ui) wrap their rules in `@layer ui`.
+ * - Every other component wraps its own rules in `@layer components`.
+ * - A class a component passes *into another component* via `className` is
+ *   written outside any layer, so the override always beats the receiving
+ *   component's defaults — no matter which stylesheet the bundler emits first.
+ *
+ * Every module repeats the layer-order statement below as its first line, so
+ * the order holds even if a module happens to load before this file.
+ */
+@layer reset, base, helpers, ui, components;
+
+/* ------------------------------------------------------------------ reset */
+
+@layer reset {
+  *,
+  ::before,
+  ::after {
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+    border-color: hsl(var(--border));
+  }
+
+  html,
+  :host {
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    -moz-tab-size: 4;
+    tab-size: 4;
+    font-family: var(--font-sans), system-ui, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    margin: 0;
+    line-height: inherit;
+  }
+
+  hr {
+    height: 0;
+    color: inherit;
+    border-top-width: 1px;
+  }
+
+  abbr:where([title]) {
+    text-decoration: underline dotted;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: inherit;
+    font-weight: inherit;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: inherit;
+  }
+
+  b,
+  strong {
+    font-weight: bolder;
+  }
+
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 1em;
+  }
+
+  small {
+    font-size: 80%;
+  }
+
+  sub,
+  sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+  }
+
+  sub {
+    bottom: -0.25em;
+  }
+
+  sup {
+    top: -0.5em;
+  }
+
+  table {
+    text-indent: 0;
+    border-color: inherit;
+    border-collapse: collapse;
+  }
+
+  button,
+  input,
+  optgroup,
+  select,
+  textarea {
+    font-family: inherit;
+    font-feature-settings: inherit;
+    font-variation-settings: inherit;
+    font-size: 100%;
+    font-weight: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    margin: 0;
+    padding: 0;
+  }
+
+  button,
+  select {
+    text-transform: none;
+  }
+
+  button,
+  input:where([type="button"]),
+  input:where([type="reset"]),
+  input:where([type="submit"]) {
+    -webkit-appearance: button;
+    background-color: transparent;
+    background-image: none;
+  }
+
+  :-moz-focusring {
+    outline: auto;
+  }
+
+  :-moz-ui-invalid {
+    box-shadow: none;
+  }
+
+  progress {
+    vertical-align: baseline;
+  }
+
+  ::-webkit-inner-spin-button,
+  ::-webkit-outer-spin-button {
+    height: auto;
+  }
+
+  [type="search"] {
+    -webkit-appearance: textfield;
+    outline-offset: -2px;
+  }
+
+  ::-webkit-search-decoration {
+    -webkit-appearance: none;
+  }
+
+  ::-webkit-file-upload-button {
+    -webkit-appearance: button;
+    font: inherit;
+  }
+
+  summary {
+    display: list-item;
+  }
+
+  blockquote,
+  dl,
+  dd,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  hr,
+  figure,
+  p,
+  pre {
+    margin: 0;
+  }
+
+  fieldset {
+    margin: 0;
+    padding: 0;
+  }
+
+  legend {
+    padding: 0;
+  }
+
+  ol,
+  ul,
+  menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  dialog {
+    padding: 0;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    opacity: 1;
+    color: #9ca3af;
+  }
+
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
+
+  :disabled {
+    cursor: default;
+  }
+
+  img,
+  svg,
+  video,
+  canvas,
+  audio,
+  iframe,
+  embed,
+  object {
+    display: block;
+    vertical-align: middle;
+  }
+
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  [hidden]:where(:not([hidden="until-found"])) {
+    display: none;
+  }
+}
+
+/* ----------------------------------------------------------------- tokens */
+
+@layer base {
+  :root {
+    /* Ivory White #F8F7F4 */
+    --background: 45 22% 96%;
+    /* Charcoal Black #121F2F */
+    --foreground: 213 45% 13%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 213 45% 13%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 213 45% 13%;
+
+    /* Rich Green #8BB72C */
+    --primary: 79 61% 45%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 213 45% 13%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 45 20% 94%;
+    --muted-foreground: 210 12% 41%;
+
+    --accent: 79 61% 45%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 142 71% 36%;
+    --warning: 38 92% 50%;
+    --info: 221 83% 53%;
+
+    --border: 0 0% 93%;
+    --input: 0 0% 88%;
+    --ring: 79 61% 45%;
+
+    --radius: 12px;
+
+    /* Brand palette (raw, theme-independent) */
+    --ink: #121f2f;
+    --ink-2: #1f3b56;
+    --ink-3: #203348;
+    --green: #8bb72c;
+    --green-dark: #6d961f;
+    --ivory: #f8f7f4;
+
+    /* Shape */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-xl: 28px;
+    --radius-pill: 999px;
+
+    /* Depth */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.18);
+    --shadow-glow: 0 8px 22px rgba(139, 183, 44, 0.28);
+
+    /* Motion */
+    --ease-brand: cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Gradients */
+    --grad-hero: linear-gradient(150deg, #121f2f 0%, #1f3b56 100%);
+    --grad-cta: linear-gradient(140deg, #8bb72c 0%, #6d961f 100%);
+    --grad-premium: linear-gradient(140deg, #121f2f 0%, #8bb72c 190%);
+    /* Recent work cards + the contact form's dropdown list */
+    --grad-green: linear-gradient(140deg, #8bb72c 0%, #5f8a1a 45%, #2d4a0c 100%);
+
+    /* Type families */
+    --font-display-stack: var(--font-display), system-ui, sans-serif;
+    --font-sans-stack: var(--font-sans), system-ui, sans-serif;
+
+    /**
+     * Fluid type scale. Each size interpolates between a readable minimum on
+     * a 360px phone and the design's desktop size. Pair each with its
+     * matching line-height token.
+     */
+    --text-hero: clamp(2.25rem, 1.15rem + 5.5vw, 4.5rem);
+    --text-hero-lh: 1.08;
+    --text-hero-tracking: -0.02em;
+    --text-h1: clamp(1.95rem, 1.2rem + 3.7vw, 3.5rem);
+    --text-h1-lh: 1.15;
+    --text-h1-tracking: -0.015em;
+    --text-h2: clamp(1.6rem, 1.1rem + 2.5vw, 2.75rem);
+    --text-h2-lh: 1.2;
+    --text-h3: clamp(1.4rem, 1.05rem + 1.75vw, 2.25rem);
+    --text-h3-lh: 1.25;
+    --text-h4: clamp(1.2rem, 1rem + 1vw, 1.75rem);
+    --text-h4-lh: 1.3;
+    --text-h5: clamp(1.08rem, 0.98rem + 0.5vw, 1.375rem);
+    --text-h5-lh: 1.4;
+    --text-h6: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+    --text-h6-lh: 1.5;
+
+    /**
+     * Text scale for everything that isn't a section heading, so the same kind
+     * of text is the same size in every section. Phone (360px) → desktop.
+     */
+    --text-lede: clamp(0.9375rem, 0.88rem + 0.25vw, 1.0625rem);   /* 15 → 17px  section intro paragraph */
+    --text-body: clamp(0.875rem, 0.84rem + 0.15vw, 0.9375rem);     /* 14 → 15px  card paragraphs, quotes */
+    --text-card-title: clamp(1rem, 0.93rem + 0.3vw, 1.1875rem);    /* 16 → 19px  card headings */
+    --text-small: clamp(0.75rem, 0.73rem + 0.1vw, 0.8125rem);      /* 12 → 13px  labels, meta, notes */
+    --text-button: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);    /* 13 → 14px  buttons, pills, chips */
+
+    /* Rhythm */
+    --space-section: clamp(2.5rem, 2rem + 1.5vw, 3.5rem);          /* 40 → 56px  section top/bottom padding */
+    --space-heading: clamp(1.25rem, 1rem + 1.1vw, 2rem);           /* 20 → 32px  heading block → content */
+    --space-card: clamp(1.25rem, 0.9rem + 1.6vw, 2rem);
+    --space-gutter: clamp(1.25rem, 0.8rem + 2vw, 2.5rem);
+  }
+
+  .dark {
+    --background: 213 45% 13%;
+    --foreground: 0 0% 100%;
+
+    --card: 210 35% 17%;
+    --card-foreground: 0 0% 100%;
+    --popover: 210 35% 17%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 79 61% 45%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 209 40% 15%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 209 40% 15%;
+    --muted-foreground: 209 18% 71%;
+
+    --accent: 79 61% 45%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 209 28% 23%;
+    --input: 209 28% 23%;
+    --ring: 79 61% 45%;
+  }
+}
+
+/* ------------------------------------------------------------------- base */
+
+@layer base {
+  body {
+    background-color: hsl(var(--background));
+    font-family: var(--font-sans-stack);
+    color: hsl(var(--foreground));
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.7;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /**
+   * No blinking text cursor when clicking ordinary page text (headings, paragraphs,
+   * cards). Form fields keep theirs, so people can still see where they're typing.
+   */
+  body {
+    caret-color: transparent;
+  }
+
+  input,
+  textarea,
+  [contenteditable]:not([contenteditable="false"]) {
+    caret-color: auto;
+  }
+
+  :focus-visible {
+    border-radius: 8px;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--ring));
+  }
+
+  /**
+   * Nothing may push the page sideways.
+   *
+   * A single overflowing table or long unbroken string creates a horizontal
+   * scrollbar on the whole document, which on a phone makes every screen feel
+   * broken. Wide content scrolls inside its own box instead.
+   */
+  html,
+  body {
+    overflow-x: clip;
+  }
+
+  img,
+  video,
+  canvas,
+  svg,
+  iframe {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Long URLs, emails and slugs are the usual culprits. */
+  p,
+  li,
+  td,
+  dd {
+    overflow-wrap: anywhere;
+  }
+
+  /* Respect the notch and the home indicator on phones. */
+  body {
+    padding-left: env(safe-area-inset-left, 0);
+    padding-right: env(safe-area-inset-right, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ---------------------------------------------------------------- helpers */
+
+/**
+ * Shared helper classes, used by name (`className={cn("container", styles.x)}`).
+ * Kept global because nearly every page uses them and they must stay
+ * identical everywhere. Anything else belongs in the component's own module.
+ */
+@layer helpers {
+  .container {
+    width: 100%;
+    max-width: 1440px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 1.25rem;
+    padding-left: 1.25rem;
+  }
+
+  .section {
+    padding-top: var(--space-section);
+    padding-bottom: var(--space-section);
+  }
+
+  .eyebrow {
+    margin-bottom: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: hsl(var(--primary));
+  }
+
+  .eyebrow::before {
+    content: "";
+    display: block;
+    height: 1px;
+    width: 22px;
+    background-color: hsl(var(--primary));
+  }
+
+  .display {
+    font-family: var(--font-display-stack);
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+  }
+
+  .sec-title {
+    font-family: var(--font-display-stack);
+    letter-spacing: -0.01em;
+    font-size: var(--text-h2);
+    line-height: var(--text-h2-lh);
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  /* Thin scrollbar for dashboard panes. */
+  .scroll-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scroll-thin::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 999px;
+  }
+}

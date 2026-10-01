@@ -1,0 +1,27 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .shell > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 2rem;
+  }
+
+  .header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .title {
+    font-size: 26px;
+    line-height: 1.25;
+  }
+
+  .description {
+    margin-top: 0.5rem;
+    max-width: 60ch;
+    font-size: 14.5px;
+    color: hsl(var(--muted-foreground));
+  }
+}

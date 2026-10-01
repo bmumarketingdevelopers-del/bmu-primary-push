@@ -1,0 +1,72 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .cellIcon {
+    margin-left: auto;
+    margin-right: auto;
+    height: 1rem;
+    width: 1rem;
+  }
+
+  .cellIncluded {
+    color: hsl(var(--primary));
+  }
+
+  .cellExcluded {
+    color: hsl(var(--muted-foreground) / 0.5);
+  }
+
+  .cellText {
+    display: block;
+    text-align: center;
+  }
+
+  .comparison {
+    border-block: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+  }
+
+  .comparisonTitle {
+    margin-bottom: 3rem;
+  }
+
+  .faqGrid {
+    display: grid;
+    gap: 4rem;
+  }
+
+  @media (min-width: 1024px) {
+    .faqGrid {
+      grid-template-columns: 0.8fr 1.2fr;
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+/**
+ * The plan comparison is the one table on the marketing site that cannot
+ * shrink to a phone — four columns of feature text. It scrolls inside its
+ * own box so the page itself never moves sideways.
+ */
+.tableWrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  background-color: hsl(var(--background));
+}
+
+.featureHead {
+  width: 40%;
+}
+
+.centerHead {
+  text-align: center;
+}
+
+.featureCell {
+  font-weight: 500;
+}
+
+.faqList {
+  border-top: 1px solid hsl(var(--border));
+}

@@ -1,0 +1,169 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .skeleton {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    border-radius: var(--radius-md);
+    background-color: hsl(var(--muted));
+  }
+
+  /* ---- dashboard / table shells */
+
+  .page {
+    padding: 1.25rem;
+  }
+  .page > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 2rem;
+  }
+
+  .heading > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.75rem;
+  }
+
+  .kpiGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .chartGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .tableFrame {
+    border-radius: var(--radius-lg);
+    border: 1px solid hsl(var(--border));
+    padding: 1rem;
+  }
+
+  /* ---- marketing page shell */
+
+  .pageShell {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+  .pageShell > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1.5rem;
+  }
+
+  .cardGrid {
+    display: grid;
+    gap: 1.5rem;
+    padding-top: 2.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .kpiGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cardGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      padding: 2rem;
+    }
+
+    .chartGrid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .cardGrid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .kpiGrid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Sizes passed into <Skeleton className>. Unlayered, so they beat its defaults. */
+
+.titleBar {
+  height: 2rem;
+  width: 16rem;
+}
+
+.subtitleBar {
+  height: 1rem;
+  width: 24rem;
+  max-width: 100%;
+}
+
+.kpi {
+  height: 132px;
+  border-radius: var(--radius-lg);
+}
+
+.chart {
+  height: 380px;
+  border-radius: var(--radius-lg);
+}
+
+.tableTitleBar {
+  height: 2rem;
+  width: 14rem;
+}
+
+.tableSubtitleBar {
+  height: 1rem;
+  width: 20rem;
+  max-width: 100%;
+}
+
+.tableHeadBar {
+  margin-bottom: 1rem;
+  height: 2.25rem;
+  width: 100%;
+}
+
+.tableRowBar {
+  margin-bottom: 0.625rem;
+  height: 3rem;
+  width: 100%;
+}
+
+.eyebrowBar {
+  height: 1rem;
+  width: 8rem;
+}
+
+.headlineBar {
+  height: 3rem;
+  width: 66.666667%;
+}
+
+.ledeBar {
+  height: 1rem;
+  width: 100%;
+  max-width: 36rem;
+}
+
+.ledeBarShort {
+  height: 1rem;
+  width: 100%;
+  max-width: 28rem;
+}
+
+.card {
+  height: 14rem;
+  border-radius: var(--radius-lg);
+}
+
+@media (min-width: 1024px) {
+  .chartWide {
+    grid-column: span 2 / span 2;
+  }
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.5;
+  }
+}

@@ -1,0 +1,136 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  /* ---- featured post */
+
+  .featured {
+    display: grid;
+    overflow: hidden;
+    border-radius: var(--radius-xl);
+    border: 1px solid hsl(var(--border));
+    transition-property: all;
+    transition-timing-function: var(--ease-brand);
+    transition-duration: 300ms;
+  }
+  .featured:hover {
+    box-shadow: var(--shadow-lg);
+  }
+
+  .featuredVisual {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background-image: var(--grad-hero);
+    padding: 2.5rem;
+    color: #fff;
+  }
+
+  .featuredTitle {
+    font-size: clamp(22px, 2.8vw, 34px);
+    line-height: 1.375;
+  }
+
+  .featuredBody {
+    background-color: hsl(var(--card));
+    padding: 2.5rem;
+  }
+
+  .featuredExcerpt {
+    font-size: 15.5px;
+    line-height: 1.625;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .featuredMeta {
+    margin-top: 2rem;
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .featuredMore {
+    margin-top: 1.5rem;
+    font-size: 13px;
+    font-weight: 600;
+    color: hsl(var(--primary));
+  }
+
+  .arrow {
+    display: inline-block;
+    transition-property: transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+  }
+  .featured:hover .arrow {
+    transform: translateX(0.25rem);
+  }
+
+  /* ---- the rest */
+
+  .postGrid {
+    margin-top: 2rem;
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .postCard {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    border-radius: var(--radius-lg);
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    padding: 2rem;
+    transition-property: all;
+    transition-timing-function: var(--ease-brand);
+    transition-duration: 300ms;
+  }
+  .postCard:hover {
+    transform: scale(1.02);
+    border-color: hsl(var(--primary));
+    box-shadow: var(--shadow-md);
+  }
+
+  .postTitle {
+    margin-bottom: 0.75rem;
+    margin-top: 1.25rem;
+    font-size: 18px;
+    line-height: 1.375;
+  }
+
+  .postExcerpt {
+    font-size: 14.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .postMeta {
+    margin-top: auto;
+    padding-top: 1.75rem;
+    font-size: 12.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  @media (min-width: 768px) {
+    .postGrid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .featured {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.featuredBadge {
+  margin-bottom: 1.25rem;
+  align-self: flex-start;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.postBadge {
+  align-self: flex-start;
+}

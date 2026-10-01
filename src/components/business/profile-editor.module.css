@@ -1,0 +1,165 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .form > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1.25rem;
+  }
+
+  .field > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.5rem;
+  }
+
+  .textarea {
+    width: 100%;
+    border-radius: var(--radius-md);
+    border: 1px solid hsl(var(--input));
+    background-color: hsl(var(--background));
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    line-height: 1.625;
+  }
+  .textarea:focus-visible {
+    border-color: hsl(var(--primary));
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+
+  .mono {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  }
+
+  .help {
+    font-size: 12.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .colourRow {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  /* The colour comes from the business record, as a custom property. */
+  .brandSwatch {
+    height: 3rem;
+    width: 3rem;
+    flex-shrink: 0;
+    border-radius: var(--radius-md);
+    border: 1px solid hsl(var(--border));
+    background: var(--brand-color);
+  }
+
+  .publishToggle {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 15px;
+  }
+
+  .checkbox {
+    height: 1.25rem;
+    width: 1.25rem;
+    border-radius: var(--radius-sm);
+    accent-color: #8bb72c;
+  }
+
+  .slug {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 14px;
+  }
+
+  .previewLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: hsl(var(--primary));
+  }
+  .previewLink:hover {
+    text-decoration-line: underline;
+  }
+
+  .previewIcon {
+    height: 0.875rem;
+    width: 0.875rem;
+  }
+
+  .templateName {
+    font-size: 14.5px;
+    font-weight: 500;
+  }
+
+  .templateActions {
+    margin-top: 0.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .templateAction {
+    border-radius: var(--radius-pill);
+    border: 1px solid hsl(var(--border));
+    padding: 0.25rem 0.75rem;
+    font-size: 12.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .message {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1rem;
+    font-size: 13.5px;
+  }
+
+  .messageOk {
+    background-color: hsl(var(--success) / 0.1);
+    color: hsl(var(--success));
+  }
+
+  .messageError {
+    background-color: hsl(var(--destructive) / 0.1);
+    color: hsl(var(--destructive));
+  }
+
+  .messageIcon {
+    margin-top: 0.125rem;
+    height: 1rem;
+    width: 1rem;
+    flex-shrink: 0;
+  }
+
+  .saveBar {
+    position: sticky;
+    bottom: 0;
+    border-top: 1px solid hsl(var(--border));
+    background-color: hsl(var(--background) / 0.9);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    backdrop-filter: blur(8px);
+  }
+
+  @media (min-width: 640px) {
+    .fieldWide {
+      grid-column: span 2 / span 2;
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.fieldGrid {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.visibility > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1rem;
+}
+
+@media (min-width: 640px) {
+  .fieldGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

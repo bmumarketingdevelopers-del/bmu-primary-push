@@ -1,0 +1,129 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  /* ---- featured sectors */
+
+  .featuredTitle {
+    margin-bottom: 3rem;
+  }
+
+  .featuredGrid {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .industryCard {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    border-radius: var(--radius-lg);
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    padding: 2rem;
+    transition-property: all;
+    transition-timing-function: var(--ease-brand);
+    transition-duration: 300ms;
+  }
+  .industryCard:hover {
+    transform: scale(1.02);
+    border-color: hsl(var(--primary));
+    box-shadow: var(--shadow-md);
+  }
+
+  .industryName {
+    font-size: 20px;
+    line-height: 1.25;
+  }
+
+  .industryTagline {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.13em;
+    color: hsl(var(--primary));
+  }
+
+  .industrySummary {
+    margin-top: 1rem;
+    font-size: 14.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .industryMetric {
+    margin-top: auto;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding-top: 1.5rem;
+  }
+
+  .industryMetricValue {
+    font-size: 24px;
+    color: hsl(var(--primary));
+  }
+
+  .industryMetricLabel {
+    font-size: 12.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* ---- also served */
+
+  .otherSection {
+    border-block: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+  }
+
+  .otherLede {
+    margin-top: 1rem;
+    max-width: 60ch;
+    font-size: 15px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .otherList {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.625rem;
+  }
+
+  .otherItem {
+    border-radius: var(--radius-pill);
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--background));
+    padding: 0.625rem 1.25rem;
+    font-size: 14.5px;
+    font-weight: 500;
+    color: hsl(var(--muted-foreground));
+    transition-property: all;
+    transition-timing-function: var(--ease-brand);
+    transition-duration: 300ms;
+  }
+  .otherItem:hover {
+    transform: translateY(-0.125rem);
+    border-color: hsl(var(--primary));
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+
+  @media (min-width: 768px) {
+    .featuredGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .featuredGrid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.askButton {
+  margin-top: 2.5rem;
+}

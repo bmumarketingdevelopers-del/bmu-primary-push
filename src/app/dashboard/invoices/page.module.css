@@ -1,0 +1,73 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .content {
+    padding: 1.25rem;
+  }
+
+  .statGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .statLabel {
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .statValue {
+    margin-top: 0.75rem;
+    font-size: 28px;
+    line-height: 1;
+  }
+
+  @media (min-width: 640px) {
+    .statGrid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .content {
+      padding: 2rem;
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.statCard {
+  padding: 1.5rem;
+}
+
+.tableCard {
+  overflow: hidden;
+}
+
+.amountHead {
+  text-align: right;
+}
+
+.numberCell {
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.descriptionCell {
+  color: hsl(var(--muted-foreground));
+}
+
+.dateCell {
+  white-space: nowrap;
+  color: hsl(var(--muted-foreground));
+}
+
+.amountCell {
+  white-space: nowrap;
+  text-align: right;
+  font-weight: 500;
+}
+
+.actionCell {
+  text-align: right;
+}

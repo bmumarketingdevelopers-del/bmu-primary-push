@@ -1,0 +1,52 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .marquee {
+    overflow: hidden;
+    border-block: 1px solid hsl(var(--border));
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .heading {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-size: var(--text-small);
+    line-height: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .track {
+    display: flex;
+    width: max-content;
+    animation: marquee 34s linear infinite;
+    gap: 4rem;
+  }
+  /* Pause the scroll while the pointer is anywhere over the strip. */
+  .marquee:hover .track {
+    animation-play-state: paused;
+  }
+
+  .name {
+    white-space: nowrap;
+    font-size: 19px;
+    color: hsl(var(--muted-foreground) / 0.7);
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+  }
+  .name:hover {
+    color: hsl(var(--foreground));
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}

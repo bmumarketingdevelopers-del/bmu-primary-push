@@ -1,0 +1,134 @@
+@layer reset, base, helpers, ui, components;
+
+@layer ui {
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    border-radius: var(--radius-md);
+    font-size: var(--text-button);
+    font-weight: 600;
+    line-height: 1;
+    transition-property: all;
+    transition-timing-function: var(--ease-brand);
+    transition-duration: 300ms;
+  }
+
+  .button:focus-visible {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--ring));
+  }
+
+  .button:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  .button svg {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+  }
+
+  /* ---- variants */
+
+  .default {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    box-shadow: var(--shadow-glow);
+  }
+  .default:focus-visible {
+    box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--ring)), var(--shadow-glow);
+  }
+  .default:hover {
+    background-color: var(--green-dark);
+    transform: scale(1.03);
+  }
+
+  .secondary {
+    background-color: hsl(var(--secondary));
+    color: hsl(var(--secondary-foreground));
+  }
+  .secondary:hover {
+    background-color: var(--ink-3);
+    transform: scale(1.03);
+  }
+
+  .outline {
+    border: 1px solid hsl(var(--border));
+    background-color: transparent;
+  }
+  .outline:hover {
+    background-color: hsl(var(--foreground));
+    color: hsl(var(--background));
+    transform: scale(1.03);
+  }
+
+  .ghostLight {
+    border: 1px solid rgb(255 255 255 / 0.25);
+    color: #fff;
+  }
+  .ghostLight:hover {
+    background-color: #fff;
+    color: var(--ink);
+    transform: scale(1.03);
+  }
+
+  .ghost:hover {
+    background-color: hsl(var(--muted));
+    color: hsl(var(--foreground));
+  }
+
+  .destructive {
+    background-color: hsl(var(--destructive));
+    color: hsl(var(--destructive-foreground));
+  }
+  .destructive:hover {
+    opacity: 0.9;
+  }
+
+  .link {
+    color: hsl(var(--primary));
+    text-underline-offset: 4px;
+  }
+  .link:hover {
+    text-decoration-line: underline;
+  }
+
+  /* ---- sizes */
+
+  .sizeDefault {
+    height: clamp(2.75rem, 2.65rem + 0.35vw, 3rem);
+    padding: 0.75rem clamp(1.125rem, 1rem + 0.5vw, 1.5rem);
+  }
+
+  .sm {
+    height: 2.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-size: 13px;
+    line-height: inherit;
+  }
+
+  .lg {
+    height: 3.5rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+
+  .icon {
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: var(--radius-pill);
+  }
+
+  /* Pressed state last, so it wins over the hover grow. */
+  .button:active {
+    transform: scale(0.99);
+  }
+}

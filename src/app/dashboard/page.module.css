@@ -1,0 +1,164 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .content {
+    padding: 1.25rem;
+  }
+
+  .headerActions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .kpiGrid,
+  .trendGrid,
+  .pairGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  /* ---- channel split legend */
+
+  .channelList {
+    margin-top: 1rem;
+  }
+  .channelList > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.625rem;
+  }
+
+  .channel {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+
+  /* `--swatch` is the channel's chart colour, set from the data. */
+  .swatch {
+    height: 0.625rem;
+    width: 0.625rem;
+    border-radius: 3px;
+    background: var(--swatch);
+  }
+
+  .channelName {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .channelValue {
+    margin-left: auto;
+    font-weight: 600;
+  }
+
+  /* ---- active projects */
+
+  .project > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.5rem;
+  }
+
+  .projectHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .projectName {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+  }
+
+  .projectMeta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* ---- approvals */
+
+  .approval {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-radius: var(--radius-md);
+    border: 1px solid hsl(var(--border));
+    padding: 0.875rem 1rem;
+  }
+
+  .approvalText {
+    min-width: 0;
+  }
+
+  .approvalTitle {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+  }
+
+  .approvalMeta {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  @media (min-width: 640px) {
+    .kpiGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .content {
+      padding: 2rem;
+    }
+
+    .trendGrid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .pairGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .kpiGrid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.headerRow {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.headerRow > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 0;
+}
+
+.projectList > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1.25rem;
+}
+
+.approvalList > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 0.75rem;
+}
+
+@media (min-width: 1024px) {
+  .trendCard {
+    grid-column: span 2 / span 2;
+  }
+}

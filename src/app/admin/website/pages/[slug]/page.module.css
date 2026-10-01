@@ -1,0 +1,47 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .page {
+    padding: 1.25rem;
+  }
+
+  .dangerTitle {
+    font-weight: 600;
+  }
+
+  .dangerText {
+    margin-top: 0.25rem;
+    font-size: 13.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      padding: 2rem;
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.dangerCard {
+  border-color: hsl(var(--destructive) / 0.4);
+}
+
+.dangerZone {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.75rem;
+}
+
+.deleteButton {
+  color: hsl(var(--destructive));
+}
+/* The outline variant's hover still flips the text to the background colour,
+   as `hover:text-background` did alongside `text-destructive`. */
+.deleteButton:hover {
+  color: hsl(var(--background));
+}

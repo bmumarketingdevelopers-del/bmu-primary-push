@@ -1,0 +1,123 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .panel {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .form > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1rem;
+  }
+
+  .field > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.5rem;
+  }
+
+  .textarea,
+  .select {
+    width: 100%;
+    border-radius: var(--radius-md);
+    border: 1px solid hsl(var(--input));
+    background-color: hsl(var(--background));
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+
+  .textarea {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .select {
+    height: 3rem;
+  }
+
+  .textarea:focus-visible,
+  .select:focus-visible {
+    border-color: hsl(var(--primary));
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+
+  .spinning {
+    animation: spin 1s linear infinite;
+  }
+
+  .error {
+    border-radius: var(--radius-md);
+    background-color: hsl(var(--destructive) / 0.1);
+    padding: 0.75rem 1rem;
+    font-size: 13.5px;
+    color: hsl(var(--destructive));
+  }
+
+  .empty {
+    border-radius: var(--radius-md);
+    border: 1px dashed hsl(var(--border));
+    padding: 3.5rem 1.25rem;
+    text-align: center;
+    font-size: 14px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .output {
+    white-space: pre-line;
+    border-radius: var(--radius-md);
+    background-color: hsl(var(--muted));
+    padding: 1rem 1.25rem;
+    font-size: 15px;
+    line-height: 1.625;
+  }
+
+  @media (min-width: 1024px) {
+    .panel {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.tabs > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1.5rem;
+}
+
+.tabList {
+  flex-wrap: wrap;
+}
+
+/* A font size used to replace CardTitle's own line height too. */
+.cardTitle {
+  font-size: 16px;
+  line-height: inherit;
+}
+
+.generate {
+  width: 100%;
+}
+
+.draftCardFilled {
+  border-color: hsl(var(--primary) / 0.4);
+}
+
+.draftHeader {
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.draftHeader > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 0;
+}
+
+.copy {
+  margin-top: 1rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

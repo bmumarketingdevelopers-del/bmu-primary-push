@@ -1,0 +1,322 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .form {
+    display: grid;
+    gap: clamp(1rem, 2.4vw, 1.25rem);
+  }
+
+  .field {
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  /* Sign-in design: a looser gap above the password field and above the button row */
+  .fieldSpaced {
+    margin-top: clamp(0.5rem, 2vw, 0.75rem);
+  }
+
+  .footerSpaced {
+    margin-top: clamp(1.25rem, 5vw, 2.25rem);
+  }
+
+  .demo {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px dashed #d9ddd4;
+  }
+
+  .label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1b2530;
+  }
+
+  /* Filled input shell: icon / country code, the input, trailing button */
+  .control {
+    display: flex;
+    align-items: center;
+    min-height: clamp(44px, 11vw, 48px);
+    border: 1px solid transparent;
+    border-radius: 10px;
+    background-color: #f1f3ee;
+    transition:
+      border-color 150ms var(--ease-brand),
+      background-color 150ms var(--ease-brand),
+      box-shadow 150ms var(--ease-brand);
+  }
+
+  .control:hover {
+    background-color: #eceee8;
+  }
+
+  .control:focus-within {
+    border-color: var(--green);
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgb(139 183 44 / 0.18);
+  }
+
+  .invalid,
+  .invalid:hover {
+    border-color: #d64545;
+    background-color: #fff7f7;
+  }
+
+  .invalid:focus-within {
+    border-color: #d64545;
+    box-shadow: 0 0 0 3px rgb(214 69 69 / 0.15);
+  }
+
+  .leadIcon {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    margin-left: 0.9rem;
+    color: #8a929a;
+  }
+
+  .input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    padding: 0.7rem 0.9rem 0.7rem 0.65rem;
+    border: 0;
+    background: transparent;
+    font-size: 15px;
+    color: #1b2530;
+    outline: none;
+  }
+
+  .input::placeholder {
+    color: #9aa1a8;
+  }
+
+  .inputFlush {
+    padding-left: 0.95rem;
+  }
+
+  /* ---------- country code ---------- */
+
+  .country {
+    position: relative;
+    flex: none;
+    align-self: stretch;
+    display: flex;
+  }
+
+  /* The native select sits invisibly on top so it opens the system picker (best on phones) */
+  .countrySelect {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    opacity: 0;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .countryLabel {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0 0.6rem 0 0.95rem;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1b2530;
+    pointer-events: none;
+  }
+
+  .countryLabel svg {
+    width: 15px;
+    height: 15px;
+    color: #5f6870;
+  }
+
+  .country:focus-within .countryLabel {
+    color: var(--green-dark);
+  }
+
+  .divider {
+    flex: none;
+    width: 1px;
+    height: 22px;
+    background-color: #d9ddd4;
+  }
+
+  /* ---------- password eye ---------- */
+
+  .eye {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    align-self: stretch;
+    border: 0;
+    border-radius: 0 10px 10px 0;
+    background: transparent;
+    color: #8a929a;
+    cursor: pointer;
+    transition: color 150ms var(--ease-brand);
+  }
+
+  .eye svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .eye:hover,
+  .eye:focus-visible {
+    color: #1b2530;
+    outline: none;
+  }
+
+  /* ---------- messages ---------- */
+
+  .hint {
+    font-size: 12px;
+    color: #6b7580;
+  }
+
+  .error {
+    font-size: 12px;
+    font-weight: 500;
+    color: #c23a3a;
+  }
+
+  .formError {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 0.9rem;
+    border-radius: 10px;
+    background-color: #fdeeee;
+    font-size: 13px;
+    color: #a52f2f;
+  }
+
+  .formError svg {
+    flex: none;
+    width: 16px;
+    height: 16px;
+  }
+
+  /* ---------- submit row ---------- */
+
+  /* Phones: full-width button, sign-in link centred on the next line. 640px+: side by side. */
+  .footer {
+    display: grid;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    justify-items: center;
+  }
+
+  .submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    min-height: clamp(46px, 12vw, 50px);
+    padding: 0.6rem 2.25rem;
+    border: 0;
+    border-radius: 10px;
+    background-color: var(--green);
+    box-shadow: var(--shadow-glow);
+    font-size: 15px;
+    font-weight: 600;
+    white-space: nowrap;
+    color: #fff;
+    cursor: pointer;
+    transition:
+      background-color 200ms var(--ease-brand),
+      transform 200ms var(--ease-brand);
+  }
+
+  .submit:hover {
+    background-color: var(--green-dark);
+    transform: translateY(-1px);
+  }
+
+  .submit:focus-visible {
+    outline: 2px solid var(--green-dark);
+    outline-offset: 3px;
+  }
+
+  .submit:disabled {
+    cursor: progress;
+    opacity: 0.85;
+    transform: none;
+  }
+
+  .spinner {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    animation: spin 800ms linear infinite;
+  }
+
+  .switch {
+    font-size: 13px;
+    white-space: nowrap;
+    color: #5f6870;
+  }
+
+  .switchLink {
+    font-weight: 600;
+    color: var(--green-dark);
+  }
+
+  .switchLink:hover {
+    text-decoration: underline;
+  }
+
+  /* ---------- success ---------- */
+
+  .success {
+    display: grid;
+    justify-items: start;
+    gap: 0.6rem;
+  }
+
+  .successIcon {
+    width: 36px;
+    height: 36px;
+    color: var(--green);
+  }
+
+  .successTitle {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1b2530;
+  }
+
+  .successText {
+    margin-bottom: 0.75rem;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #5f6870;
+  }
+
+  @media (min-width: 640px) {
+    /* Button and sign-in/up link side by side; the link drops below only if it can't fit */
+    .footer {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.75rem 0.875rem;
+    }
+
+    /* Basis fits the loading label; the button grows into whatever the link leaves over,
+       so both stay on one line even in the narrower desktop form column */
+    .submit {
+      flex: 1 0 9rem;
+      width: auto;
+      padding-inline: 1rem;
+    }
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}

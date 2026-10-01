@@ -1,0 +1,24 @@
+@layer reset, base, helpers, ui, components;
+
+@layer ui {
+  .root {
+    position: relative;
+    height: 0.5rem;
+    width: 100%;
+    overflow: hidden;
+    border-radius: var(--radius-pill);
+    background-color: hsl(var(--muted));
+  }
+
+  /* `--progress` (0 to 100) is the only value set from the component. */
+  .indicator {
+    height: 100%;
+    width: 100%;
+    flex: 1 1 0%;
+    background-color: hsl(var(--primary));
+    transform: translateX(calc((var(--progress, 0) - 100) * 1%));
+    transition-property: transform;
+    transition-timing-function: var(--ease-brand);
+    transition-duration: 500ms;
+  }
+}

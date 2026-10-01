@@ -1,0 +1,86 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .page {
+    padding: 1.25rem;
+  }
+
+  .chartGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  /* ---- best performing */
+
+  .topPost > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.25rem;
+  }
+
+  .topTitle {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.375;
+  }
+
+  .topMeta {
+    font-size: 12.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .topLeads {
+    color: hsl(var(--foreground));
+  }
+
+  /* ---- table */
+
+  .postTitle {
+    font-weight: 500;
+  }
+
+  .postId {
+    display: block;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      padding: 2rem;
+    }
+
+    .chartGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.topList > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1rem;
+}
+
+.tableCard {
+  overflow: hidden;
+}
+
+.numericHead,
+.actionCell {
+  text-align: right;
+}
+
+.titleCell {
+  max-width: 420px;
+}
+
+.authorCell,
+.dateCell {
+  white-space: nowrap;
+  color: hsl(var(--muted-foreground));
+}
+
+.viewsCell {
+  text-align: right;
+  color: hsl(var(--muted-foreground));
+}

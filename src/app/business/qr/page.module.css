@@ -1,0 +1,128 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .page {
+    padding: 1.25rem;
+  }
+
+  .statGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .statLabel {
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .statValue {
+    margin-top: 0.75rem;
+    font-size: 28px;
+    line-height: 1;
+  }
+
+  .codeLabel {
+    font-weight: 500;
+  }
+
+  .codePath {
+    display: block;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .titleIcon {
+    height: 18px;
+    width: 18px;
+    color: hsl(var(--primary));
+  }
+
+  /* ---- what you can create */
+
+  .kindGroup {
+    margin-bottom: 0.75rem;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .kindList > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.5rem;
+  }
+
+  .kind {
+    font-size: 14px;
+  }
+
+  .kindHelp {
+    display: block;
+    font-size: 12.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  @media (min-width: 640px) {
+    .statGrid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      padding: 2rem;
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.statCard {
+  padding: 1.5rem;
+}
+
+.tableCard {
+  overflow: hidden;
+}
+
+.numericHead {
+  text-align: right;
+}
+
+.mutedCell {
+  color: hsl(var(--muted-foreground));
+}
+
+.countCell {
+  text-align: right;
+  font-weight: 500;
+}
+
+.actionsCell {
+  white-space: nowrap;
+  text-align: right;
+}
+
+.serialCell {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 13px;
+}
+
+.iconTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.kindGrid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .kindGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

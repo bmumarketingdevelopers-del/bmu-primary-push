@@ -1,0 +1,127 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .page {
+    padding: 1.25rem;
+  }
+
+  .creatorGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  /* ---- profile */
+
+  .profile {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .profileText {
+    min-width: 0;
+    flex: 1 1 0%;
+  }
+
+  .handleRow {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  .handle {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 600;
+  }
+
+  .verifiedIcon {
+    height: 1rem;
+    width: 1rem;
+    flex-shrink: 0;
+    color: hsl(var(--primary));
+  }
+
+  .location {
+    font-size: 13.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* ---- figures */
+
+  .stats {
+    margin-top: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+    border-top: 1px solid hsl(var(--border));
+    padding-top: 1.25rem;
+    text-align: center;
+  }
+
+  .statLabel {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .statValue {
+    margin-top: 0.375rem;
+    font-size: 17px;
+  }
+
+  .actions {
+    margin-top: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .creatorGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      padding: 2rem;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .creatorGrid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.creatorCard {
+  transition-property: all;
+  transition-timing-function: var(--ease-brand);
+  transition-duration: 300ms;
+}
+.creatorCard:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.creatorBody {
+  padding: 1.5rem;
+}
+
+.avatar {
+  height: 3rem;
+  width: 3rem;
+}
+
+.categoryBadge {
+  margin-top: 0.625rem;
+}
+
+.bookButton {
+  flex: 1 1 0%;
+}

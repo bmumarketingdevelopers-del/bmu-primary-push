@@ -1,0 +1,158 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .section {
+    padding-top: var(--space-section);
+    padding-bottom: var(--space-section);
+  }
+
+  .header {
+    margin-bottom: var(--space-heading);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: clamp(1rem, 2.5vw, 2rem);
+  }
+
+  .header :global(.eyebrow) {
+    margin-bottom: 0.75rem;
+  }
+
+  .headerSplit {
+    justify-content: space-between;
+  }
+
+  .headerCentered {
+    justify-content: center;
+  }
+
+  .lede {
+    margin-top: 0.75rem;
+    max-width: 56ch;
+    font-size: clamp(16px, 1.4vw, 18px);
+    color: hsl(var(--muted-foreground));
+  }
+
+  .note {
+    margin-top: clamp(1rem, 2vw, 1.75rem);
+    text-align: center;
+    font-size: var(--text-small);
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* ---- plan cards (swipeable below 1024px, see SwipeCarousel) */
+
+  .plan {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    border-radius: var(--radius-lg);
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    padding: clamp(1.25rem, 3vw, 2.25rem);
+    box-shadow: var(--shadow-sm);
+    transition-property: all;
+    transition-timing-function: var(--ease-brand);
+    transition-duration: 300ms;
+  }
+
+  /* The highlighted plan: dark card. Defined after `.plan` so it wins. */
+  .featured {
+    border-color: var(--ink);
+    background-color: var(--ink);
+    color: #fff;
+    box-shadow: var(--shadow-lg);
+  }
+  :global(.dark) .featured {
+    border-color: hsl(var(--primary) / 0.4);
+  }
+
+  /* Hover (0,2,0) also beats `.featured`, as `hover:shadow-md` did. */
+  .plan:hover {
+    transform: scale(1.02);
+    box-shadow: var(--shadow-md);
+  }
+
+  .planName {
+    font-size: var(--text-card-title);
+  }
+
+  .description {
+    margin-bottom: 1.5rem;
+    margin-top: 0.625rem;
+    min-height: 42px;
+    font-size: var(--text-body);
+    line-height: 1.25rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .descriptionFeatured {
+    color: #b4c2cf;
+  }
+
+  .price {
+    font-size: clamp(28px, 3vw, 38px);
+    line-height: 1.25;
+  }
+
+  .unit {
+    font-family: var(--font-sans-stack);
+    font-size: var(--text-small);
+    line-height: 1.25rem;
+    font-weight: 500;
+    letter-spacing: 0em;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .unitFeatured {
+    color: #8fa0b0;
+  }
+
+  .features {
+    margin-top: clamp(1.25rem, 2.5vw, 1.75rem);
+    margin-bottom: clamp(1.25rem, 2.5vw, 1.75rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    font-size: var(--text-body);
+    color: hsl(var(--muted-foreground));
+  }
+
+  .featuresFeatured {
+    color: #b4c2cf;
+  }
+
+  .feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .bullet {
+    margin-top: 0.5rem;
+    height: 0.375rem;
+    width: 0.375rem;
+    flex-shrink: 0;
+    border-radius: 2px;
+    background-color: hsl(var(--primary));
+  }
+
+  /* Inside the swipe strip a scaled card gets clipped, so only lift on desktop */
+  @media (max-width: 1023px) {
+    .plan:hover {
+      transform: none;
+    }
+
+    .description {
+      margin-bottom: 1rem;
+      min-height: 0;
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.planCta {
+  margin-top: auto;
+  width: 100%;
+}

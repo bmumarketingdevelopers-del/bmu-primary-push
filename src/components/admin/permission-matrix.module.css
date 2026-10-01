@@ -1,0 +1,154 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .form > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1.5rem;
+  }
+
+  .titleIcon {
+    height: 18px;
+    width: 18px;
+    color: hsl(var(--primary));
+  }
+
+  .summary {
+    border-radius: var(--radius-md);
+    background-color: hsl(var(--muted));
+    padding: 0.75rem 1rem;
+    font-size: 13.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .summaryRole {
+    color: hsl(var(--foreground));
+  }
+
+  .notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1rem;
+    font-size: 13.5px;
+  }
+
+  .noticeLocked {
+    background-color: hsl(var(--warning) / 0.1);
+    color: hsl(var(--warning));
+  }
+
+  .noticeOk {
+    background-color: hsl(var(--success) / 0.1);
+    color: hsl(var(--success));
+  }
+
+  .noticeError {
+    background-color: hsl(var(--destructive) / 0.1);
+    color: hsl(var(--destructive));
+  }
+
+  .noticeIcon {
+    margin-top: 0.125rem;
+    height: 1rem;
+    width: 1rem;
+    flex-shrink: 0;
+  }
+
+  /* ---- module groups */
+
+  .groupTitle {
+    margin-bottom: 0.75rem;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .moduleList {
+    border-radius: var(--radius-lg);
+    border: 1px solid hsl(var(--border));
+  }
+  .moduleList > :not([hidden]) ~ :not([hidden]) {
+    border-top-width: 1px;
+    border-bottom-width: 0;
+    border-color: hsl(var(--border));
+  }
+
+  .moduleRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+  }
+
+  .moduleRowLocked {
+    opacity: 0.5;
+  }
+
+  .moduleInfo {
+    min-width: 0;
+  }
+
+  .moduleName {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 14.5px;
+    font-weight: 500;
+  }
+
+  .moduleDescription {
+    margin-top: 0.125rem;
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .action {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 13px;
+  }
+
+  .actionEnabled {
+    cursor: pointer;
+  }
+
+  .actionDisabled {
+    cursor: not-allowed;
+  }
+
+  .checkbox {
+    height: 1rem;
+    width: 1rem;
+    border-radius: var(--radius-sm);
+    accent-color: #8bb72c;
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.content > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1.5rem;
+}
+
+/* Badge drops its own text size (and with it the line-height) for this one. */
+.restrictedBadge {
+  font-size: 10px;
+  line-height: inherit;
+}

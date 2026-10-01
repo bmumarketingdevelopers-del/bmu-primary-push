@@ -1,0 +1,136 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .root > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1.25rem;
+  }
+
+  /* ---- sortable column heading */
+
+  .sortButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .sortButton:hover,
+  .sortActive {
+    color: hsl(var(--foreground));
+  }
+
+  .sortIcon {
+    height: 0.75rem;
+    width: 0.75rem;
+  }
+
+  /* ---- bulk assign bar */
+
+  .bulkBar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid hsl(var(--primary) / 0.4);
+    background-color: hsl(var(--primary) / 0.05);
+    padding: 1rem;
+  }
+
+  .bulkCount {
+    font-size: 13.5px;
+    font-weight: 500;
+  }
+
+  .bulkSelect {
+    height: 2.5rem;
+    border-radius: var(--radius-md);
+    border: 1px solid hsl(var(--input));
+    background-color: hsl(var(--background));
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    font-size: 13.5px;
+  }
+  .bulkSelect:focus-visible {
+    border-color: hsl(var(--primary));
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+
+  .clearSelection {
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+  .clearSelection:hover {
+    color: hsl(var(--foreground));
+  }
+
+  /* ---- rows */
+
+  .checkbox {
+    height: 1rem;
+    width: 1rem;
+    border-radius: var(--radius-sm);
+    accent-color: #8bb72c;
+  }
+
+  .leadName {
+    font-weight: 500;
+  }
+
+  .leadId {
+    display: block;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .ownerName {
+    color: hsl(var(--muted-foreground));
+  }
+}
+
+/* Overrides passed into the card and table primitives via `className`. */
+
+.tableCard {
+  overflow: hidden;
+}
+
+.checkHead {
+  width: 2.5rem;
+}
+
+.valueHead {
+  text-align: right;
+}
+
+.metaCell {
+  white-space: nowrap;
+  color: hsl(var(--muted-foreground));
+}
+
+.messageCell {
+  color: hsl(var(--muted-foreground));
+}
+
+.valueCell {
+  white-space: nowrap;
+  text-align: right;
+  font-weight: 500;
+}
+
+.ownerCell {
+  white-space: nowrap;
+}
+
+.drawerCell {
+  text-align: right;
+}
+
+.emptyCell {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  text-align: center;
+  color: hsl(var(--muted-foreground));
+}

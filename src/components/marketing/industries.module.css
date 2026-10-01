@@ -1,0 +1,127 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+
+  /* Tighter than the global .section padding (72–120px); this layer wins over it. */
+  .section {
+    padding-top: var(--space-section);
+    padding-bottom: var(--space-section);
+  }
+
+  /* Title on the left, "Browse industries" pushed to the right corner, vertically centred on each other. */
+  .titleRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 2rem;
+    row-gap: 1rem;
+  }
+
+  .lede {
+    margin-top: 0.625rem;
+    font-size: var(--text-lede);
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* Forces the two sentences onto separate lines once there's room for each. */
+  .break {
+    display: none;
+  }
+
+  .rows {
+    margin-top: clamp(1rem, 2vw, 1.5rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  /*
+   * Full-bleed strip with soft fades at both edges. It is a real scroll box, so it can be
+   * swiped (touch) or dragged (mouse); IndustriesMarquee auto-scrolls it in between.
+   */
+  .marquee {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-block: 0.125rem;
+    /* just enough room for the chip's hover lift */
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+    cursor: grab;
+    mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  }
+
+  .marquee::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* While dragging with the mouse */
+  .dragging {
+    cursor: grabbing;
+    user-select: none;
+  }
+
+  .dragging .chip {
+    pointer-events: none;
+  }
+
+  /* The list is duplicated, so wrapping by exactly half its width loops seamlessly. */
+  .track {
+    display: flex;
+    width: max-content;
+  }
+
+  /* Spacing lives on the item (not `gap`) so both halves are exactly equal width. */
+  .item {
+    flex-shrink: 0;
+    padding-right: 0.5rem;
+  }
+
+  .chip {
+    display: block;
+    white-space: nowrap;
+    border-radius: var(--radius-sm);
+    border: 1px solid hsl(var(--primary));
+    background-color: hsl(var(--card));
+    padding: 0.4375rem 0.875rem;
+    font-size: var(--text-button);
+    font-weight: 500;
+    color: hsl(var(--foreground));
+    transition-property: all;
+    transition-timing-function: var(--ease-brand);
+    transition-duration: 300ms;
+  }
+
+  .chip:hover {
+    transform: translateY(-0.125rem);
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+
+  @media (min-width: 1024px) {
+    .break {
+      display: inline;
+    }
+  }
+
+  /* No motion: no auto-scroll (handled in IndustriesMarquee), rows stay swipeable */
+  @media (prefers-reduced-motion: reduce) {
+    .chip:hover {
+      transform: none;
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.browse {
+  flex-shrink: 0;
+  border-color: hsl(var(--primary));
+}
+
+.browse:hover {
+  border-color: hsl(var(--primary));
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}

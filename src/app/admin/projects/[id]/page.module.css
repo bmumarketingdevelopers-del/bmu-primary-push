@@ -1,0 +1,218 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .page {
+    padding: 1.25rem;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  /* ---- stats */
+
+  .statGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .statLabel {
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .statValue {
+    margin-top: 0.75rem;
+    font-size: 26px;
+    line-height: 1;
+  }
+
+  /* ---- tasks */
+
+  .taskTitle {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-weight: 500;
+  }
+
+  .taskIcon {
+    height: 1rem;
+    width: 1rem;
+    flex-shrink: 0;
+  }
+
+  .taskIconDone {
+    color: hsl(var(--success));
+  }
+
+  .taskIconBlocked {
+    color: hsl(var(--destructive));
+  }
+
+  .taskIconActive {
+    color: hsl(var(--primary));
+  }
+
+  /* ---- by service line */
+
+  .discipline > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.5rem;
+  }
+
+  .disciplineHead {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13.5px;
+  }
+
+  .disciplineName {
+    font-weight: 500;
+  }
+
+  .disciplinePct {
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* ---- timeline */
+
+  .timeline {
+    position: relative;
+    border-left: 1px solid hsl(var(--border));
+    padding-left: 1.5rem;
+  }
+  .timeline > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1.5rem;
+  }
+
+  .timelineItem {
+    position: relative;
+  }
+
+  .timelineDot {
+    position: absolute;
+    left: -31px;
+    display: grid;
+    height: 1.5rem;
+    width: 1.5rem;
+    place-items: center;
+    border-radius: 9999px;
+    border: 2px solid hsl(var(--background));
+  }
+
+  .timelineDotDefault {
+    background-color: hsl(var(--primary) / 0.15);
+    color: hsl(var(--primary));
+  }
+
+  .timelineDotBlocker {
+    background-color: hsl(var(--destructive) / 0.15);
+    color: hsl(var(--destructive));
+  }
+
+  .timelineIcon {
+    height: 0.875rem;
+    width: 0.875rem;
+  }
+
+  .timelineHead {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.625rem;
+  }
+
+  .timelineTitle {
+    font-weight: 600;
+  }
+
+  .timelineBody {
+    margin-top: 0.25rem;
+    font-size: 14px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .timelineMeta {
+    margin-top: 0.25rem;
+    font-size: 12.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  @media (min-width: 640px) {
+    .statGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      padding: 2rem;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .statGrid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.statCard {
+  padding: 1.5rem;
+}
+
+.statProgress {
+  margin-top: 0.75rem;
+}
+
+.cardWarning {
+  border-color: hsl(var(--warning) / 0.4);
+}
+
+.cardDanger {
+  border-color: hsl(var(--destructive) / 0.4);
+}
+
+.calloutTitle {
+  font-size: 15px;
+  line-height: inherit;
+}
+
+.tableCard {
+  overflow: hidden;
+}
+
+.weightHead {
+  text-align: right;
+}
+
+.assigneeCell {
+  white-space: nowrap;
+  color: hsl(var(--muted-foreground));
+}
+
+.weightCell {
+  text-align: right;
+  color: hsl(var(--muted-foreground));
+}
+
+.dueCell {
+  white-space: nowrap;
+}
+
+.dueOnTime {
+  color: hsl(var(--muted-foreground));
+}
+
+.dueLate {
+  font-weight: 600;
+  color: hsl(var(--warning));
+}
+
+.disciplineList > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1.25rem;
+}

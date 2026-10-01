@@ -1,0 +1,133 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  .page {
+    padding: 1.25rem;
+  }
+
+  .staffGrid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .person {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .personText {
+    min-width: 0;
+  }
+
+  .personRole {
+    margin-top: 0.25rem;
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .schedule {
+    border-top: 1px solid hsl(var(--border));
+    padding-top: 1.25rem;
+    font-size: 13.5px;
+  }
+  .schedule > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.625rem;
+  }
+
+  .scheduleRow {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .scheduleLabel {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .scheduleValue {
+    text-align: right;
+    font-weight: 500;
+  }
+
+  .staffFooter {
+    margin-top: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  /* ---- services */
+
+  .serviceList > :not([hidden]) ~ :not([hidden]) {
+    border-top-width: 1px;
+    border-bottom-width: 0;
+    border-color: hsl(var(--border));
+  }
+
+  .service {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  .service:first-child {
+    padding-top: 0;
+  }
+  .service:last-child {
+    padding-bottom: 0;
+  }
+
+  .serviceText {
+    min-width: 0;
+  }
+
+  .serviceName {
+    font-weight: 500;
+  }
+
+  .serviceMeta {
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .serviceActions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .servicePrice {
+    font-weight: 600;
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      padding: 2rem;
+    }
+
+    .staffGrid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Overrides passed into other components via `className`. */
+
+.avatar {
+  height: 3rem;
+  width: 3rem;
+}
+
+/* A size on a card title replaces its tight leading; the title takes the body's. */
+.personName {
+  font-size: 15.5px;
+  line-height: inherit;
+}
+
+.editButton {
+  margin-left: auto;
+}
