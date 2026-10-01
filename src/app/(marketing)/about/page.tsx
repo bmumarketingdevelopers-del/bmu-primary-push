@@ -20,7 +20,11 @@ export default function AboutPage() {
     <>
       <PageHero
         eyebrow="About"
+<<<<<<< HEAD
         title="The agency that reports the losses too"
+=======
+        title="An agency that reports the losses too"
+>>>>>>> ef0aa11 (HP first)
         lede={`Founded in ${COMPANY.founded} in ${COMPANY.city}. ${COMPANY.headcount} people running strategy, creative, media, web and software — so nobody can point at the other agency when the numbers slip.`}
       >
         <dl className={styles.stats}>

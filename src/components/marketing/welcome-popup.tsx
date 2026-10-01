@@ -70,7 +70,7 @@ export function WelcomePopup() {
             <span aria-hidden="true" className={styles.mark}>
               <span />
             </span>
-            <span className={styles.pill}>Curious What We Do?</span>
+            <span className={styles.pill}>Curious What We Do!</span>
 
             <Dialog.Title className={styles.title}>Let&apos;s build your next growth move.</Dialog.Title>
             <Dialog.Description className={styles.text}>
