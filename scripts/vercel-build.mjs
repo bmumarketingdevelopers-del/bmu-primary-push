@@ -8,12 +8,14 @@
  */
 import { execSync } from "node:child_process";
 
-const run = (cmd) => execSync(cmd, { stdio: "inherit" });
+const run = (cmd, env = process.env) => execSync(cmd, { stdio: "inherit", env });
 
 run("npx prisma generate");
 
 if (process.env.DATABASE_URL) {
-  run("npx prisma db push --skip-generate");
+  // Neon's Vercel integration also provides a direct (non-pooled) URL — schema changes are safer over it
+  const direct = process.env.DATABASE_URL_UNPOOLED;
+  run("npx prisma db push --skip-generate", direct ? { ...process.env, DATABASE_URL: direct } : process.env);
 } else {
   console.warn("[vercel-build] DATABASE_URL not set — skipping schema push. Leads won't persist without a database.");
 }
