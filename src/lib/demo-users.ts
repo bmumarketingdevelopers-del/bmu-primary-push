@@ -1,9 +1,9 @@
 /**
  * Demo accounts so the app is usable before a database exists.
  *
- * Used only when DATABASE_URL is unset or the users table can't be reached.
- * Once you run `npm run db:seed`, real rows take over and these are ignored.
- * Delete this file before production.
+ * Used when DATABASE_URL is unset, the users table can't be reached, or the
+ * email isn't in the database. Database users always take precedence.
+ * Switch them off with DEMO_ACCOUNTS=off (see isDemoMode below).
  */
 import type { AppRole } from "./roles";
 import { INDUSTRY_SETUPS } from "./industry-setup";
@@ -71,11 +71,10 @@ const LEGACY_ALIASES: DemoUser[] = [
 export const DEMO_USERS: DemoUser[] = [...CORE_USERS, ...BUSINESS_USERS, ...LEGACY_ALIASES];
 
 /**
- * Whether to offer the demo accounts on the login screen.
+ * Whether the demo accounts can sign in and are listed on the login screen.
  *
- * Shown in development regardless of whether a database is connected — the
- * seed creates these same accounts with these same passwords, so hiding the
- * list once Postgres arrives just means hunting for credentials. Never shown
- * in production, where these accounts should not exist at all.
+ * On by default — in development and in production (e.g. on Vercel) — so the
+ * same logins that work on localhost work on the hosted site. Set
+ * DEMO_ACCOUNTS=off in the environment to disable them once real accounts exist.
  */
-export const isDemoMode = () => process.env.NODE_ENV !== "production";
+export const isDemoMode = () => !["off", "false", "0"].includes((process.env.DEMO_ACCOUNTS ?? "").trim().toLowerCase());

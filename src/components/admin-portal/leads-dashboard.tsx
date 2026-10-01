@@ -45,7 +45,7 @@ import {
 import { cn } from "@/lib/utils";
 import styles from "./leads-dashboard.module.css";
 
-type LeadStorage = "database" | "file";
+type LeadStorage = "database" | "file" | "temporary";
 
 const DAY = 24 * 60 * 60 * 1000;
 
@@ -314,6 +314,13 @@ export function LeadsDashboard({
           <p className={cn(styles.notice, styles.noticeError)} role="alert">
             Couldn&apos;t load leads from the database. Check the connection and that the WebsiteLead table exists
             (run <code>npm run db:push</code>).
+          </p>
+        )}
+        {!loadError && storage === "temporary" && (
+          <p className={cn(styles.notice, styles.noticeError)} role="alert">
+            No database connected — leads are only kept in temporary server storage and will be lost. Add a
+            Postgres database (e.g. Neon from the Vercel Marketplace) so <code>DATABASE_URL</code> is set, then
+            redeploy.
           </p>
         )}
         {!loadError && storage === "file" && (

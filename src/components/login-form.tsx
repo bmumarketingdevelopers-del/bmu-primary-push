@@ -16,7 +16,7 @@ export function DemoAccounts({ onPick }: { onPick: (email: string, password: str
     <div className={styles.demo}>
       <div>
         <p className={styles.demoTitle}>Saved logins</p>
-        <p className={styles.demoNote}>Development only. Tap one to fill the form.</p>
+        <p className={styles.demoNote}>Tap one to fill the form.</p>
       </div>
 
       <div className={styles.group}>

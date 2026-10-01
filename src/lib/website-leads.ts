@@ -11,17 +11,22 @@ export * from "@/lib/website-lead-types";
  * portal can show exactly what each form collected, and track each one's review status.
  *
  * Storage: the WebsiteLead table when DATABASE_URL is set; otherwise a JSON file in .data/
- * (fine for local development — on serverless hosting the file system isn't persistent, so
- * production needs the database).
+ * (fine for local development). Serverless hosts like Vercel only allow writes to /tmp, which
+ * is wiped between instances — so there the file is "temporary" and production needs the database.
  */
 
 export type NewWebsiteLead = Omit<WebsiteLead, "id" | "createdAt" | "status" | "statusUpdatedAt">;
 
-export type LeadStorage = "database" | "file";
+export type LeadStorage = "database" | "file" | "temporary";
 
-const FILE = path.join(process.cwd(), ".data", "website-leads.json");
+const serverless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
 
-export const leadStorage = (): LeadStorage => (process.env.DATABASE_URL ? "database" : "file");
+const FILE = serverless
+  ? path.join("/tmp", "bmu-data", "website-leads.json")
+  : path.join(process.cwd(), ".data", "website-leads.json");
+
+export const leadStorage = (): LeadStorage =>
+  process.env.DATABASE_URL ? "database" : serverless ? "temporary" : "file";
 
 export const isLeadStatus = (v: unknown): v is LeadStatus => LEAD_STATUSES.includes(v as LeadStatus);
 

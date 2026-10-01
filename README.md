@@ -206,10 +206,11 @@ alone is not yet proven to be theirs.
 - [ ] `NEXT_PUBLIC_APP_URL` set to your real domain — **QR codes encode this
       address**, so getting it wrong means printing codes that point at
       localhost
-- [ ] Delete `src/lib/demo-users.ts` and its branch in `src/auth.ts`
+- [ ] Set `DEMO_ACCOUNTS=off` once real accounts exist
 
-Demo accounts are already blocked in production by a `NODE_ENV` guard, but
-deleting the file removes the possibility entirely.
+Demo accounts sign in everywhere — localhost and production — so the hosted
+site behaves exactly like local. Database users always take precedence; the
+demo list is only checked when an email isn't in the database.
 
 **Worth doing:**
 
@@ -234,8 +235,15 @@ its actual consequence. The same checks log once at startup via
 
 ## Deployment
 
-**Vercel** — push to GitHub, import, add the environment variables, then run
-`DATABASE_URL=… npx prisma db push` once against production.
+**Vercel** — push to GitHub and import the repo. Then:
+
+1. Storage → add a **Neon Postgres** database (Vercel Marketplace, free tier).
+   It sets `DATABASE_URL` for you. Without it, website leads live in `/tmp`
+   and disappear — the admin portal shows a red warning when that's the case.
+2. Settings → Environment Variables → add `AUTH_SECRET` (`npx auth secret`)
+   and `NEXT_PUBLIC_APP_URL` (your Vercel URL). Don't set `AUTH_URL`.
+3. Redeploy. The `vercel-build` script runs `prisma db push` automatically
+   when `DATABASE_URL` is set, so the tables are created on deploy.
 
 **Docker** — `docker compose up --build`. Postgres and the app, port 3000,
 with a healthcheck at `/api/health`.
@@ -253,5 +261,6 @@ Honest list of what isn't built:
 - **Cashfree and Stripe** — Razorpay only
 - **Report PDFs** and **integration setup** — buttons are visibly disabled
   with a tooltip rather than silently doing nothing
-#   P r o j e c t - m a i n 1 - i n t e r n  
+#   P r o j e c t - m a i n 1 - i n t e r n 
+ 
  
