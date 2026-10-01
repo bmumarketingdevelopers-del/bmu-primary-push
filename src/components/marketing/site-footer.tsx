@@ -10,7 +10,7 @@ export function SiteFooter() {
       <div className="container">
         <div className={styles.grid}>
           <div>
-            <Logo className={styles.logo} />
+            <Logo tone="onDark" className={styles.logo} />
             <p className={styles.about}>
               AI-first growth partner for businesses and real estate. Strategy, creative, media and software from one team.
             </p>
@@ -60,7 +60,7 @@ export function SiteFooter() {
         </div>
 
         <div className={styles.bottom}>
-          <span>© {new Date().getFullYear()} BMU.Marketing — Bengaluru, India</span>
+          <span>© {new Date().getFullYear()} BMU.Marketing - Bengaluru, India</span>
           <span>Privacy · Terms · Sitemap</span>
         </div>
       </div>

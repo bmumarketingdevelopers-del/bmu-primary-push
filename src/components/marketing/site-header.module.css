@@ -330,12 +330,25 @@
  * always beat the receiving component's own styles.
  */
 
-.logoOnDark {
-  color: #fff;
+/* Logo: grows with the screen and sits a little below the bar's centre, off the top corner */
+.headerLogo {
+  --logo-h: 36px;
+  position: relative;
+  top: 3px;
 }
 
-.logoOnLight {
-  color: hsl(var(--foreground));
+@media (min-width: 640px) {
+  .headerLogo {
+    --logo-h: 42px;
+    top: 4px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .headerLogo {
+    --logo-h: 46px;
+    top: 5px;
+  }
 }
 
 .themeToggleOnDark {
@@ -358,6 +371,7 @@
 }
 
 .sheetLogo {
+  --logo-h: 40px;
   margin-bottom: 1.75rem;
 }
 

@@ -108,7 +108,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
       <CtaBand
         title="Every product needs an account"
-        body="A free BMU QR account comes with each order — that's what makes the code reprogrammable. Upgrade only when you need more."
+        body="A free BMU QR account comes with each order - that's what makes the code reprogrammable. Upgrade only when you need more."
         secondary={{ href: "/store", label: "Keep browsing" }}
       />
     </>

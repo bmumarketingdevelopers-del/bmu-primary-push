@@ -22,7 +22,7 @@ export function CreatorSidebar({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <div className={styles.sidebar}>
       <div>
-        <Logo href="/creators" className={styles.logo} />
+        <Logo tone="onDark" href="/creators" className={styles.logo} />
         <span className={styles.productTag}>
           Creator portal
         </span>

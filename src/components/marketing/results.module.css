@@ -171,3 +171,20 @@
     }
   }
 }
+
+/* Overrides passed into other components via `className`. */
+
+/* Desktop: the two sentences sit on two lines, so the lede needs the full width; smaller screens wrap */
+.ledeBreak {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .heading p {
+    max-width: none;
+  }
+
+  .ledeBreak {
+    display: inline;
+  }
+}

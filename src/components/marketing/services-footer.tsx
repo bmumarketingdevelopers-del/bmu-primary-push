@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { PRODUCT_DETAILS, productHref } from "@/lib/products-data";
 import { FOOTER_SERVICE_LINKS } from "@/lib/nav";
+import { Logo } from "./logo";
 import { cn } from "@/lib/utils";
 import styles from "./services-footer.module.css";
 
@@ -38,7 +39,7 @@ export function ServicesFooter() {
       <div className="container">
         <div className={styles.grid}>
           <div>
-            <Link href="/" className={cn("display", styles.brand)}>BMU.Marketing</Link>
+            <Logo tone="onDark" className={styles.brand} />
             <p className={styles.about}>
               AI-first growth partner for businesses and real estate. Strategy, creative, media and software from one
               team.
@@ -67,7 +68,7 @@ export function ServicesFooter() {
         </div>
 
         <div className={styles.bottom}>
-          <span>© {new Date().getFullYear()} BMU.Marketing — Bengaluru, India</span>
+          <span>© {new Date().getFullYear()} BMU.Marketing - Bengaluru, India</span>
           <span>Privacy · Terms · Sitemap</span>
         </div>
       </div>

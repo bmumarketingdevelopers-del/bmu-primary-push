@@ -125,7 +125,7 @@ export function Hero({ content = {}, stats }: { content?: HeroContent; stats?: H
 
           <div className={styles.visual}>
             <DotMatrix />
-            <FloatCard className={styles.floatLeads} value="+312%" label="Qualified leads" />
+            <FloatCard className={styles.floatLeads} value="+312%" label="Social Reach" />
             <FloatCard
               className={styles.floatScans}
               value="18,402"

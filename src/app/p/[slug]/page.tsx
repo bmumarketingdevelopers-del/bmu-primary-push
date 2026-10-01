@@ -41,7 +41,7 @@ export default async function CustomPageRoute({
       <main>
         {!page.isPublished && (
           <div className={styles.draftBanner}>
-            Draft — only people with this link can see it.
+            Draft - only people with this link can see it.
           </div>
         )}
         <PageSections sections={page.sections} />

@@ -76,7 +76,7 @@ export const POSTS: Post[] = [
         heading: "Ask everyone, route by sentiment",
         paragraphs: [
           "The approach that works is simple and permitted: ask every customer for feedback, then send happy ones toward a public review and route complaints to your own inbox.",
-          "This isn't filtering — everyone can still post publicly. You're just making sure a complaint reaches the person who can fix it, rather than only reaching future customers.",
+          "This isn't filtering - everyone can still post publicly. You're just making sure a complaint reaches the person who can fix it, rather than only reaching future customers.",
         ],
       },
       {
@@ -100,7 +100,7 @@ export const POSTS: Post[] = [
     body: [
       {
         paragraphs: [
-          "We generate a lot of catalogue imagery. It has genuinely changed what's economically possible for a D2C brand — weekly creative refresh instead of quarterly. But the tooling has created a specific failure mode worth naming.",
+          "We generate a lot of catalogue imagery. It has genuinely changed what's economically possible for a D2C brand - weekly creative refresh instead of quarterly. But the tooling has created a specific failure mode worth naming.",
           "The failure isn't bad images. It's plausible images that misrepresent the product.",
         ],
       },
@@ -122,7 +122,7 @@ export const POSTS: Post[] = [
         heading: "Curation is where the value sits",
         paragraphs: [
           "Generating widely is cheap. Knowing which twelve images out of two hundred are worth putting behind media spend is not.",
-          "That judgement — which frames read as authentic, which will fatigue quickly, which fit the funnel stage — is the part that still takes a person who has watched a lot of ad accounts.",
+          "That judgement - which frames read as authentic, which will fatigue quickly, which fit the funnel stage - is the part that still takes a person who has watched a lot of ad accounts.",
         ],
       },
     ],
@@ -146,7 +146,7 @@ export const POSTS: Post[] = [
       {
         heading: "What did we spend, and what came back?",
         paragraphs: [
-          "Spend, leads, cost per lead, and — wherever the CRM allows it — revenue attributed. Compared to last month and to the same month last year if the data exists.",
+          "Spend, leads, cost per lead, and - wherever the CRM allows it - revenue attributed. Compared to last month and to the same month last year if the data exists.",
           "If attribution is incomplete, say which part is estimated rather than presenting a clean number that isn't.",
         ],
       },
@@ -160,7 +160,7 @@ export const POSTS: Post[] = [
       {
         heading: "What changes next month?",
         paragraphs: [
-          "A short list of specific decisions with owners and dates. Not 'continue optimising' — that isn't a decision.",
+          "A short list of specific decisions with owners and dates. Not 'continue optimising' - that isn't a decision.",
           "If the client reads only this section, they should still know exactly what they're paying for over the next thirty days.",
         ],
       },

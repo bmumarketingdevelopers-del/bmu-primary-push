@@ -10,7 +10,7 @@ import styles from "./page.module.css";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Marketing and visibility, brand and design, web and AI, social and personal brand, content production and UGC creator marketing — six services from one team in Bengaluru.",
+    "Marketing and visibility, brand and design, web and AI, social and personal brand, content production and UGC creator marketing - six services from one team in Bengaluru.",
 };
 
 // Clockwise from 12 o'clock, one every 60°

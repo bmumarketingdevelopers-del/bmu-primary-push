@@ -21,7 +21,7 @@ export function AuthShell({
     <div className={styles.page}>
       <div className={styles.card}>
         <aside className={styles.brand}>
-          <Logo className={styles.logo} />
+          <Logo tone="onLight" className={styles.logo} />
           <Image
             src="/images/auth/signup-growth.png"
             alt="Growth chart: bars rising to a flag, with +312% and a 4.8 star rating"

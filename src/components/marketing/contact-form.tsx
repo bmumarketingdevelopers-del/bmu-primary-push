@@ -50,7 +50,7 @@ export function ContactForm() {
         <h3 className={cn("display", styles.sentTitle)}>Request received</h3>
         <p className={styles.sentBody}>
           A strategist replies within one working day to book the call. If it&apos;s urgent, WhatsApp is faster
-          — the number is in the panel above.
+          - the number is in the panel above.
         </p>
       </div>
     );
@@ -100,7 +100,7 @@ export function ContactForm() {
 
       <p className={styles.note}>
         {state === "error"
-          ? "That didn't send. Try WhatsApp or email instead — both are listed above."
+          ? "That didn't send. Try WhatsApp or email instead - both are listed above."
           : "We reply within one working day. No mailing list, no follow-up sequence."}
       </p>
     </form>

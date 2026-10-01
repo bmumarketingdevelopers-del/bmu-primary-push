@@ -26,7 +26,7 @@ export const PRODUCT_DETAILS: ProductDetail[] = [
       "A printed QR code is permanent. What it points to shouldn't be. BMU QR keeps the code fixed and the destination editable, so a menu change, a moved landing page or an expired offer never means reprinting a thousand standees.",
     features: [
       { title: "Dynamic codes", body: "Change the destination any time. The printed code never changes." },
-      { title: "Restaurant digital menu", body: "A hosted menu with categories, photos, prices and daily specials — editable from your phone." },
+      { title: "Restaurant digital menu", body: "A hosted menu with categories, photos, prices and daily specials - editable from your phone." },
       { title: "Google review collection", body: "Route customers to your review page in one tap, with suggested copy." },
       { title: "WhatsApp and payment codes", body: "Pre-filled WhatsApp messages and UPI payment links as scannable codes." },
       { title: "Scan analytics", body: "Scans by day, location, device and referrer. Know which standee actually works." },
@@ -47,7 +47,7 @@ export const PRODUCT_DETAILS: ProductDetail[] = [
     ],
     faqs: [
       { q: "Do codes stop working if we cancel?", a: "Codes stay live for 30 days after cancellation so you have time to migrate or export. We'll warn you before anything breaks." },
-      { q: "Can we use our own domain?", a: "On Enterprise, yes — codes resolve through your domain rather than ours." },
+      { q: "Can we use our own domain?", a: "On Enterprise, yes - codes resolve through your domain rather than ours." },
       { q: "Is there an API?", a: "Yes, on Enterprise. Create, update and pull scan data programmatically." },
     ],
     cta: "Start a free trial",
@@ -61,7 +61,7 @@ export const PRODUCT_DETAILS: ProductDetail[] = [
     tagline: "Catch the complaint before it becomes a one-star review",
     summary: "Route happy customers to Google and unhappy ones to your inbox.",
     intro:
-      "The gap between a 3.9 and a 4.6 rating is rarely the food or the service — it's who gets asked to review, and when. Smart Review asks everyone, then sends the feedback where it belongs.",
+      "The gap between a 3.9 and a 4.6 rating is rarely the food or the service - it's who gets asked to review, and when. Smart Review asks everyone, then sends the feedback where it belongs.",
     features: [
       { title: "Feedback landing pages", body: "Branded pages that ask one question first: how did it go?" },
       { title: "Negative feedback routing", body: "Anything below your threshold goes to your operations lead, privately, immediately." },
@@ -76,7 +76,7 @@ export const PRODUCT_DETAILS: ProductDetail[] = [
       { who: "Hotels", what: "Checkout feedback that catches problems before the OTA review lands." },
     ],
     faqs: [
-      { q: "Is filtering reviews allowed?", a: "We don't filter reviews. Everyone gets the same chance to post publicly — we just make sure complaints also reach you privately, which platforms permit." },
+      { q: "Is filtering reviews allowed?", a: "We don't filter reviews. Everyone gets the same chance to post publicly - we just make sure complaints also reach you privately, which platforms permit." },
       { q: "Does it work without BMU QR?", a: "Yes. It works over SMS, email or WhatsApp links too." },
     ],
     cta: "Request a demo",
@@ -90,7 +90,7 @@ export const PRODUCT_DETAILS: ProductDetail[] = [
     tagline: "Find, brief and track creators in one place",
     summary: "A vetted creator marketplace with campaign management built in.",
     intro:
-      "Influencer campaigns usually die in the coordination — fifty DMs, unclear deliverables, no way to compare performance. BMU Creators puts discovery, briefing and reporting in one dashboard.",
+      "Influencer campaigns usually die in the coordination - fifty DMs, unclear deliverables, no way to compare performance. BMU Creators puts discovery, briefing and reporting in one dashboard.",
     features: [
       { title: "Vetted creator profiles", body: "Real audience data, past work and rate cards. No inflated follower counts." },
       { title: "Location and niche filters", body: "Search by city, category, audience size and budget." },
@@ -119,7 +119,7 @@ export const PRODUCT_DETAILS: ProductDetail[] = [
     tagline: "Product imagery without booking a studio",
     summary: "AI models, lifestyle product photography, virtual staging and background work at scale.",
     intro:
-      "The bottleneck in ecommerce creative is rarely ideas — it's shoot days. AI Studio generates catalogue-ready imagery in hours, with human art direction and retouching on every delivered frame.",
+      "The bottleneck in ecommerce creative is rarely ideas - it's shoot days. AI Studio generates catalogue-ready imagery in hours, with human art direction and retouching on every delivered frame.",
     features: [
       { title: "AI fashion and beauty models", body: "Diverse models matched to your target market, wearing your catalogue." },
       { title: "Food photography", body: "Your dishes plated and lit in scenes that match your brand." },

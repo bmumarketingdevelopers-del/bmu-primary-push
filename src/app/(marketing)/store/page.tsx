@@ -29,7 +29,7 @@ export default function StorePage() {
       <PageHero
         eyebrow="Store"
         title="QR and NFC products that keep working"
-        lede="Cards, standees, stickers and kits. Each one is a doorway into your BMU QR account — so what it does is a setting, not something printed on it."
+        lede="Cards, standees, stickers and kits. Each one is a doorway into your BMU QR account - so what it does is a setting, not something printed on it."
       />
 
       <section className="section">
@@ -62,7 +62,7 @@ export default function StorePage() {
 
       <CtaBand
         title="Not sure which one you need?"
-        body="Tell us what kind of business you run and we'll say what's actually worth buying — often less than you'd expect."
+        body="Tell us what kind of business you run and we'll say what's actually worth buying - often less than you'd expect."
         secondary={{ href: "/products", label: "See the software" }}
       />
     </>

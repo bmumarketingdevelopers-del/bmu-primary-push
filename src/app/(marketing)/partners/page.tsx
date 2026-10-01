@@ -29,7 +29,7 @@ const TRACKS = [
     icon: Percent,
     tag: "Reseller",
     title: "Sell hardware, earn on software",
-    body: "Print shops and IT dealers buy standees and cards at wholesale, then earn on every subscription that follows. No support burden — we take those calls.",
+    body: "Print shops and IT dealers buy standees and cards at wholesale, then earn on every subscription that follows. No support burden - we take those calls.",
     terms: ["30% off hardware", "25% recurring commission", "Co-branded, not white label", "Stock on 30-day credit"],
   },
   {
@@ -48,7 +48,7 @@ const FAQS = [
   },
   {
     q: "How is commission calculated?",
-    a: "On collected revenue, not invoiced revenue — so a client who doesn't pay doesn't cost you a clawback later. Paid monthly, in the first week for the previous month.",
+    a: "On collected revenue, not invoiced revenue - so a client who doesn't pay doesn't cost you a clawback later. Paid monthly, in the first week for the previous month.",
   },
   {
     q: "What happens if we stop partnering?",
@@ -72,7 +72,7 @@ export default function PartnersPage() {
       <PageHero
         eyebrow="Partners"
         title="Sell it under your own name"
-        lede="Agencies, print resellers and franchise groups already run BMU QR as their own product. You keep the client, the branding and the margin — we keep the platform running."
+        lede="Agencies, print resellers and franchise groups already run BMU QR as their own product. You keep the client, the branding and the margin - we keep the platform running."
       />
 
       <section className="section">

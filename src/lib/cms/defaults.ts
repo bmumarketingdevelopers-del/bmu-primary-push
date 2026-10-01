@@ -15,7 +15,7 @@ export const CMS_DEFAULTS: Record<string, Record<string, unknown>> = {
     headingLine2: "AI, content and",
     rotations: HERO_ROTATIONS,
     subheading:
-      "We run the whole growth stack in one place — creative, media, web and automation — and hand you products that keep working after the campaign ends.",
+      "We bring strategy, creative, Al, technology and performance together to turn attention into meaningful business growth, stronger customer connections and measurable results that move your brand forward.",
     pills: HERO_PILLS,
     primaryCtaLabel: "Book a free consultation",
     primaryCtaHref: "/contact",
@@ -55,7 +55,7 @@ export const CMS_DEFAULTS: Record<string, Record<string, unknown>> = {
     linkedin: "#",
     youtube: "#",
     whatsapp: "#",
-    copyright: "BMU.Marketing — Bengaluru, India",
+    copyright: "BMU.Marketing - Bengaluru, India",
   },
   "global.announcement": { message: "", linkLabel: "", linkHref: "" },
   "global.navigation": {
@@ -81,7 +81,7 @@ export const CMS_DEFAULTS: Record<string, Record<string, unknown>> = {
   },
   "seo.defaults": {
     titleTemplate: "%s · BMU.Marketing",
-    defaultTitle: "BMU.Marketing — AI Powered Growth Partner",
+    defaultTitle: "BMU.Marketing - AI Powered Growth Partner",
     description:
       "AI-first growth agency. Social media, UGC, performance marketing, SEO, websites, apps, automation and real estate marketing.",
     keywords: [

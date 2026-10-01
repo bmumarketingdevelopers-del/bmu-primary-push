@@ -413,9 +413,9 @@ export const SERVICE_PAGES: ServicePage[] = [
       lede: "Social media management and founder-led personal branding that builds trust before the first call.",
       heroNodes: [
         "Social Media Management",
-        "Social Media Management — Brands",
+        "Social Media Management - Brands",
         "Personal Branding",
-        "Social Media Management — Influencers",
+        "Social Media Management - Influencers",
       ],
       notes: {
         reasons: "One team for strategy, creative and execution, so nothing gets lost between agencies.",
@@ -441,7 +441,7 @@ export const SERVICE_PAGES: ServicePage[] = [
         {
           slug: "social-media-management-brands",
           icon: Store,
-          title: "Social Media Management — Brands",
+          title: "Social Media Management - Brands",
           body: "Always-on social for businesses: campaigns, launches and a consistent voice.",
           priceFrom: "₹25,000",
           detail: {
@@ -455,7 +455,7 @@ export const SERVICE_PAGES: ServicePage[] = [
         {
           slug: "social-media-management-influencers",
           icon: UserRoundCheck,
-          title: "Social Media Management — Influencers",
+          title: "Social Media Management - Influencers",
           body: "Content planning, posting and growth support for creators and public figures.",
           priceFrom: "₹25,000",
           detail: {

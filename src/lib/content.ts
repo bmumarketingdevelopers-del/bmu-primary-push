@@ -130,7 +130,7 @@ export const PRODUCTS: Product[] = [
     tag: "Flagship",
     name: "BMU QR",
     blurb:
-      "One dashboard for every code your business prints. Change what a QR points to without reprinting a single menu, standee or card — and see exactly who scanned, where and when.",
+      "One dashboard for every code your business prints. Change what a QR points to without reprinting a single menu, standee or card - and see exactly who scanned, where and when.",
     features: [
       "Dynamic, editable codes",
       "Restaurant digital menu",
@@ -186,7 +186,7 @@ export const PRODUCTS: Product[] = [
   {
     tag: "Real estate",
     name: "Real Estate Suite",
-    blurb: "Drone to walkthrough to landing page to CRM — the full pre-launch stack for a project.",
+    blurb: "Drone to walkthrough to landing page to CRM - the full pre-launch stack for a project.",
     features: [
       "Drone shoots and virtual tours",
       "Sales landing pages and funnels",
@@ -258,7 +258,7 @@ export const TESTIMONIALS = [
   },
   {
     quote:
-      "The QR dashboard settled an argument we'd had for two years — we finally know which outlet and which table actually drive reviews.",
+      "The QR dashboard settled an argument we'd had for two years - we finally know which outlet and which table actually drive reviews.",
     author: "Anita K.",
     role: "Director, restaurant group",
   },
@@ -397,7 +397,7 @@ export const FAQS = [
   },
   {
     q: "Who actually does the work?",
-    a: "An in-house team in Bengaluru — strategist, media buyer, designer, editor and developer. Drone pilots and creators are contracted per project and briefed by us.",
+    a: "An in-house team in Bengaluru - strategist, media buyer, designer, editor and developer. Drone pilots and creators are contracted per project and briefed by us.",
   },
   {
     q: "What does reporting look like?",

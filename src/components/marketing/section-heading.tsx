@@ -15,7 +15,7 @@ export function SectionHeading({
 }: {
   eyebrow: string;
   title: React.ReactNode;
-  lede?: string;
+  lede?: React.ReactNode;
   action?: React.ReactNode;
   invert?: boolean;
   className?: string;

@@ -243,7 +243,7 @@ export function LeadsDashboard({
       <header className={styles.topbar}>
         <div className={styles.topbarInner}>
           <div className={styles.brand}>
-            <Logo href="/admin-portal" className={styles.logo} />
+            <Logo tone="onDark" href="/admin-portal" className={styles.logo} />
             <span className={styles.portalTag}>Admin portal</span>
           </div>
           <div className={styles.topActions}>

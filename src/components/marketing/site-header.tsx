@@ -33,7 +33,7 @@ export function SiteHeader({
   return (
     <header className={cn(styles.header, stuck && styles.stuck)}>
       <div className={cn("container", styles.bar)}>
-        <Logo className={stuck ? styles.logoOnLight : styles.logoOnDark} />
+        <Logo tone={stuck ? "auto" : "onDark"} className={styles.headerLogo} />
 
         <nav className={styles.nav}>
           {[...MAIN_NAV, ...extraPages].map((item) => {

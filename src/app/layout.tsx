@@ -24,11 +24,11 @@ const sans = Albert_Sans({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"),
   title: {
-    default: "BMU.Marketing — AI Powered Growth Partner",
+    default: "BMU.Marketing - AI Powered Growth Partner",
     template: "%s · BMU.Marketing",
   },
   description:
-    "AI-first growth agency. Social media, UGC, performance marketing, SEO, websites, apps, automation and real estate marketing — plus SaaS products that keep working after the campaign ends.",
+    "AI-first growth agency. Social media, UGC, performance marketing, SEO, websites, apps, automation and real estate marketing - plus SaaS products that keep working after the campaign ends.",
   keywords: [
     "digital marketing agency Bengaluru",
     "real estate marketing",
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     "SEO agency India",
   ],
   openGraph: {
-    title: "BMU.Marketing — AI Powered Growth Partner",
+    title: "BMU.Marketing - AI Powered Growth Partner",
     description: "Strategy, creative, media and software from one team.",
     type: "website",
     locale: "en_IN",

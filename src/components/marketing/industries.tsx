@@ -31,9 +31,10 @@ export function Industries() {
             </Button>
           </div>
           <p className={styles.lede}>
-            Twenty-seven sectors, each with its own creative playbook, ad structure and lead-response window.{" "}
+            Experience across 27 sectors gives us a head start from creative direction and campaign architecture to
+            lead-response strategy.{" "}
             <br className={styles.break} />
-            You skip the six weeks agencies usually spend learning your business.
+            We spend less time learning your category and more time finding your next growth opportunity.
           </p>
         </Reveal>
       </div>

@@ -69,7 +69,7 @@ export function CheckoutForm() {
         </p>
         <p className={styles.placedNote}>
           {inr(placed.total)}
-          {mode === "COD" ? ", payable on delivery." : " — we'll send a payment link on WhatsApp within the hour."}
+          {mode === "COD" ? ", payable on delivery." : " - we'll send a payment link on WhatsApp within the hour."}
           {" "}Everything arrives pre-linked to your account.
         </p>
         <Button asChild variant="outline" className={styles.backToStore}>

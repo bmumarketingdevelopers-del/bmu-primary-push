@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Check } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "./reveal";
@@ -20,25 +21,26 @@ export function Pricing({ heading = true }: { heading?: boolean }) {
                 <div>
                   <span className="eyebrow">Pricing</span>
                   <h2 className="sec-title">Clear monthly pricing</h2>
-                  <p className={styles.lede}>
-                    No setup fees, no lock-in past the first 90 days. Switch between plans as the pipeline grows.
-                  </p>
                 </div>
               )}
-              <TabsList>
-                <TabsTrigger value="retainer">Marketing retainers</TabsTrigger>
-                <TabsTrigger value="qr">Premium</TabsTrigger>
+              <TabsList className={styles.tabs}>
+                <TabsTrigger value="retainer" className={styles.tab}>Marketing retainers</TabsTrigger>
+                {/* Premium is hidden for now. Uncomment this and its TabsContent below to bring it back. */}
+                {/* <TabsTrigger value="qr" className={styles.tab}>Premium</TabsTrigger> */}
               </TabsList>
             </div>
           </Reveal>
 
           <TabsContent value="retainer"><PlanGrid plans={PLANS.retainer} /></TabsContent>
-          <TabsContent value="qr"><PlanGrid plans={PLANS.qr} /></TabsContent>
+          {/* <TabsContent value="qr"><PlanGrid plans={PLANS.qr} /></TabsContent> */}
         </Tabs>
 
-        <p className={styles.note}>
-          All prices exclude GST. Ad spend is billed separately and paid directly to the platform.
-        </p>
+        {/* Landing page leaves the note out (per its design); the /pricing page keeps it */}
+        {!heading && (
+          <p className={styles.note}>
+            All prices exclude GST. Ad spend is billed separately and paid directly to the platform.
+          </p>
+        )}
       </div>
     </section>
   );
@@ -55,7 +57,10 @@ function PlanGrid({ plans }: { plans: Plan[] }) {
             p.featured && styles.featured
           )}
         >
-          <h3 className={cn("display", styles.planName)}>{p.name}</h3>
+          <div className={styles.planHead}>
+            <h3 className={cn("display", styles.planName)}>{p.name}</h3>
+            {p.featured && <span className={styles.popular}>Most popular</span>}
+          </div>
           <p className={cn(styles.description, p.featured && styles.descriptionFeatured)}>
             {p.description}
           </p>
@@ -69,6 +74,7 @@ function PlanGrid({ plans }: { plans: Plan[] }) {
             {p.features.map((f) => (
               <li key={f} className={styles.feature}>
                 <span className={styles.bullet} />
+                <Check className={styles.check} strokeWidth={2.5} aria-hidden="true" />
                 {f}
               </li>
             ))}

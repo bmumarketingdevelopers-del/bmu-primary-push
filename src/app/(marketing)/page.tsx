@@ -6,7 +6,8 @@ import { StoreStrip } from "@/components/marketing/store-strip";
 import { Industries } from "@/components/marketing/industries";
 // Recent work is hidden for now. Uncomment this and <Work /> below to bring it back.
 // import { Work } from "@/components/marketing/work";
-import { Results } from "@/components/marketing/results";
+// Case studies are hidden for now. Uncomment this and <Results /> below to bring them back.
+// import { Results } from "@/components/marketing/results";
 import { Testimonials } from "@/components/marketing/testimonials";
 import { Pricing } from "@/components/marketing/pricing";
 import { Faq } from "@/components/marketing/faq";
@@ -33,7 +34,7 @@ export default async function HomePage() {
       <StoreStrip />
       <Industries />
       {/* <Work /> */}
-      <Results />
+      {/* <Results /> */}
       <Testimonials items={testimonials.items} />
       <Pricing />
       <Faq items={faqs.items} />

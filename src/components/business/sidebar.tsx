@@ -65,7 +65,7 @@ export function BusinessSidebar({
   return (
     <div className={styles.sidebar}>
       <div>
-        <Logo href="/business" className={styles.logo} />
+        <Logo tone="onDark" href="/business" className={styles.logo} />
         <span className={styles.productTag}>
           BMU QR
         </span>

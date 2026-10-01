@@ -35,7 +35,7 @@ export const CASE_STUDIES: CaseStudyDetail[] = [
       { title: "Produced the film in one window", body: "Drone, gimbal walkthrough and stills captured across two days, cut into a launch film and fifteen short vertical edits." },
       { title: "Built a single-project microsite", body: "Floor plans, pricing enquiry, locality context and a form that asked for three fields instead of seven." },
       { title: "Automated the first response", body: "WhatsApp confirmation inside 60 seconds, then routing to a named pre-sales executive with a two-hour escalation timer." },
-      { title: "Optimised against site visits", body: "Campaigns judged on cost per booked visit, not cost per lead — which changed which creative won." },
+      { title: "Optimised against site visits", body: "Campaigns judged on cost per booked visit, not cost per lead - which changed which creative won." },
     ],
     results: [
       { value: "312%", label: "More site visits booked" },
@@ -63,7 +63,7 @@ export const CASE_STUDIES: CaseStudyDetail[] = [
       "A six-outlet group losing delivery and discovery traffic to a rating that didn't reflect the food. We changed who got asked to review, and when.",
     challenge: [
       "The group's rating had sat around 3.9 for two years. Management assumed it was a service problem, but the pattern told a different story: satisfied diners left quietly, while anyone with a complaint went straight to Google.",
-      "Nobody was asking happy customers to review, and complaints reached the outlet manager days later — if at all.",
+      "Nobody was asking happy customers to review, and complaints reached the outlet manager days later - if at all.",
     ],
     approach: [
       { title: "Table and bill QR codes", body: "A code on every table and printed on the bill, asking one question: how did it go?" },
@@ -79,7 +79,7 @@ export const CASE_STUDIES: CaseStudyDetail[] = [
       { value: "2 days", label: "To resolve a complaint, from 9" },
     ],
     quote: {
-      text: "The QR dashboard settled an argument we'd had for two years — we finally know which outlet and which table actually drive reviews.",
+      text: "The QR dashboard settled an argument we'd had for two years - we finally know which outlet and which table actually drive reviews.",
       author: "Anita K.",
       role: "Director, restaurant group",
     },
@@ -98,7 +98,7 @@ export const CASE_STUDIES: CaseStudyDetail[] = [
       "A beauty brand shooting quarterly and wondering why performance decayed every six weeks. We replaced the shoot calendar with a generation pipeline.",
     challenge: [
       "The brand ran two studio days a quarter, producing around 60 usable images. By week six of each quarter, creative fatigue had pushed CPA up by a third, and there was nothing new to rotate in.",
-      "Shooting more often wasn't viable — model booking, studio hire and retouching made each day expensive enough that quarterly was already a stretch.",
+      "Shooting more often wasn't viable - model booking, studio hire and retouching made each day expensive enough that quarterly was already a stretch.",
     ],
     approach: [
       { title: "Built an AI generation pipeline", body: "Products composited from real photography into generated lifestyle scenes, art-directed to the brand's existing look." },

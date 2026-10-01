@@ -16,9 +16,17 @@ export function Results({ heading = true }: { heading?: boolean }) {
         {heading && (
           <Reveal>
             <SectionHeading
+              className={styles.heading}
               eyebrow="Case studies"
-              title={<>The numbers that<br />actually got reported</>}
-              lede="Every retainer ships a monthly report with traffic, leads, cost per lead, ranking movement and revenue attribution."
+              title={<>The numbers that <br />actually got reported</>}
+              lede={
+                <>
+                  Your marketing should be measurable.{" "}
+                  <br className={styles.ledeBreak} />
+                  Every retainer includes a monthly report connecting traffic, leads, acquisition costs, search
+                  visibility and revenue to the outcomes that matter.
+                </>
+              }
               action={
                 <Button asChild variant="outline">
                   <Link href="/case-studies">

@@ -13,7 +13,7 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
 
   return (
     <div className={styles.sidebar}>
-      <Logo href="/dashboard" className={styles.logo} />
+      <Logo tone="onDark" href="/dashboard" className={styles.logo} />
 
       <div className={styles.workspace}>
         <p className={styles.workspaceLabel}>Workspace</p>

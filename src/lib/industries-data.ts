@@ -45,7 +45,7 @@ export const INDUSTRY_DETAILS: IndustryDetail[] = [
     tagline: "Fuller tables, better ratings",
     summary: "Local search, food content and QR-driven review collection across outlets.",
     intro:
-      "For most restaurants, the highest-leverage marketing isn't ads — it's the Google rating and the photos attached to it. We work on both before spending anything on paid.",
+      "For most restaurants, the highest-leverage marketing isn't ads - it's the Google rating and the photos attached to it. We work on both before spending anything on paid.",
     challenges: [
       { title: "Rating stuck below 4.2", body: "Table QR codes route happy diners to Google and complaints to the manager's phone." },
       { title: "Invisible in Maps searches", body: "Google Business Profile optimisation, category strategy and review velocity." },
@@ -72,7 +72,7 @@ export const INDUSTRY_DETAILS: IndustryDetail[] = [
     tagline: "Direct bookings over OTA commission",
     summary: "Content, search visibility and booking funnels that reduce dependence on aggregators.",
     intro:
-      "Every booking through an aggregator costs 15 to 25 percent. The work here is making the direct channel good enough — and visible enough — that guests choose it.",
+      "Every booking through an aggregator costs 15 to 25 percent. The work here is making the direct channel good enough - and visible enough - that guests choose it.",
     challenges: [
       { title: "OTAs take the margin", body: "Direct booking funnels with rate parity messaging and a better on-site experience." },
       { title: "Property looks like every other property", body: "Drone and lifestyle content that shows the location, not just the room." },
@@ -180,7 +180,7 @@ export const INDUSTRY_DETAILS: IndustryDetail[] = [
     tagline: "Test drives and service bookings",
     summary: "Dealership marketing for showroom footfall, test drives and service retention.",
     intro:
-      "Dealerships have two very different funnels — a slow considered purchase and a recurring service relationship. We run them separately, because the same campaign can't do both.",
+      "Dealerships have two very different funnels - a slow considered purchase and a recurring service relationship. We run them separately, because the same campaign can't do both.",
     challenges: [
       { title: "Enquiries never reach the sales floor", body: "Lead routing to individual sales executives with escalation timers." },
       { title: "Service customers churn to local garages", body: "Automated service reminders and offers over WhatsApp." },
@@ -207,7 +207,7 @@ export const INDUSTRY_DETAILS: IndustryDetail[] = [
     tagline: "Memberships and repeat bookings",
     summary: "Local visibility, content and booking automation for gyms, studios and salons.",
     intro:
-      "These are proximity businesses — almost every customer lives or works within a few kilometres. That makes local search and social proof do more work than broad awareness ever will.",
+      "These are proximity businesses - almost every customer lives or works within a few kilometres. That makes local search and social proof do more work than broad awareness ever will.",
     challenges: [
       { title: "Competing on price alone", body: "Content that shows results, trainers and atmosphere rather than discounts." },
       { title: "Trial visitors don't convert", body: "Post-trial WhatsApp sequences with a clear membership offer." },

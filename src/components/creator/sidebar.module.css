@@ -123,5 +123,5 @@
 /* Overrides passed into other components via `className`. */
 
 .logo {
-  color: #fff;
+  --logo-h: 34px;
 }

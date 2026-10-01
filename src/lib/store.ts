@@ -38,7 +38,7 @@ export const PRODUCTS: StoreProduct[] = [
     tech: "BOTH",
     tagline: "Tap to share everything about you",
     description:
-      "Matte PVC card with an embedded NFC chip and a printed QR on the back. One tap opens your digital profile — contact, WhatsApp, socials, payment link. The QR is the fallback for phones without NFC, which is still about a third of Android handsets in India.",
+      "Matte PVC card with an embedded NFC chip and a printed QR on the back. One tap opens your digital profile - contact, WhatsApp, socials, payment link. The QR is the fallback for phones without NFC, which is still about a third of Android handsets in India.",
     price: 79900,
     compareAt: 99900,
     features: [
@@ -99,7 +99,7 @@ export const PRODUCTS: StoreProduct[] = [
     tech: "QR",
     tagline: "Shopfront, door and counter",
     description:
-      "Five weather-resistant vinyl stickers in mixed sizes. Stick them where people already stand — the door while they wait, the counter while they pay.",
+      "Five weather-resistant vinyl stickers in mixed sizes. Stick them where people already stand - the door while they wait, the counter while they pay.",
     price: 39900,
     features: [
       "5 stickers, UV and rain resistant",
@@ -130,7 +130,7 @@ export const PRODUCTS: StoreProduct[] = [
     tech: "BOTH",
     tagline: "Everything a restaurant needs on day one",
     description:
-      "Ten table tents, one review standee, three window stickers and a counter card — pre-linked to your menu, your review flow and your WhatsApp. Set up once and the whole floor is live.",
+      "Ten table tents, one review standee, three window stickers and a counter card - pre-linked to your menu, your review flow and your WhatsApp. Set up once and the whole floor is live.",
     price: 549900,
     compareAt: 699900,
     features: [

@@ -14,7 +14,7 @@ import styles from "./page.module.css";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Book a free 30-minute consultation with BMU.Marketing. A written growth plan within three working days — no deck, no pressure.",
+    "Book a free 30-minute consultation with BMU.Marketing. A written growth plan within three working days - no deck, no pressure.",
 };
 
 const ICONS = { CalendarCheck, MessageCircle, Mail, LifeBuoy };

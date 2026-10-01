@@ -12,7 +12,7 @@ import styles from "./page.module.css";
 
 export const metadata: Metadata = {
   title: "Products",
-  description: "BMU QR, Smart Review, BMU Creators, AI Studio and the Real Estate Suite — software built in-house.",
+  description: "BMU QR, Smart Review, BMU Creators, AI Studio and the Real Estate Suite - software built in-house.",
 };
 
 export default function ProductsPage() {
@@ -21,7 +21,7 @@ export default function ProductsPage() {
       <PageHero
         eyebrow="Products"
         title="Software that keeps earning after the campaign"
-        lede="Five platforms built in-house. Use them alongside a retainer or on their own — either way the data stays yours, and it exports."
+        lede="Five platforms built in-house. Use them alongside a retainer or on their own - either way the data stays yours, and it exports."
       >
         <Button asChild>
           <Link href="/contact">Request a demo <ArrowRight /></Link>

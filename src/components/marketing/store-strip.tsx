@@ -36,7 +36,7 @@ export function StoreStrip() {
                 <span className={styles.line}>Unlock the Software.</span>
               </h2>
               <p className={styles.lede}>
-                NFC cards, standees &amp; table tents — ready from day one, pre-linked to your free BMU QR account,
+                NFC cards, standees &amp; table tents - ready from day one, pre-linked to your free BMU QR account,
                 making easier to turn interactions into reviews.
               </p>
               <Button asChild className={styles.cta}>

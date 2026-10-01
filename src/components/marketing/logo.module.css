@@ -2,34 +2,27 @@
 
 @layer components {
   .logo {
-    display: flex;
-    align-items: center;
-    gap: 0.625rem;
-    font-size: 19px;
-    letter-spacing: -0.025em;
-  }
-
-  .mark {
-    position: relative;
-    display: block;
-    height: 26px;
-    width: 26px;
+    display: inline-flex;
     flex-shrink: 0;
-    border-radius: 7px;
-    background-color: hsl(var(--primary));
+    align-items: center;
   }
 
-  .markCore {
-    position: absolute;
-    inset: 7px;
-    border-radius: 2px;
-    background-color: var(--ink);
-  }
-  :global(.dark) .markCore {
-    background-color: #fff;
+  .img {
+    display: block;
+    height: var(--logo-h, 40px);
+    width: auto;
   }
 
-  .dot {
-    color: hsl(var(--primary));
+  /* `auto` tone: only the version matching the current theme is shown */
+  .darkOnly {
+    display: none;
+  }
+
+  :global(.dark) .lightOnly {
+    display: none;
+  }
+
+  :global(.dark) .darkOnly {
+    display: block;
   }
 }

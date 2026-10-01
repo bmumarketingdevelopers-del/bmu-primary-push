@@ -14,7 +14,7 @@ export default function PortfolioPage() {
       <PageHero
         eyebrow="Portfolio"
         title="Work we can show"
-        lede="A selection across websites, branding, social, drone, apps and AI creative. Some launches are still under NDA — ask on a call and we'll walk you through those."
+        lede="A selection across websites, branding, social, drone, apps and AI creative. Some launches are still under NDA - ask on a call and we'll walk you through those."
       />
       <Work heading={false} />
       <CtaBand

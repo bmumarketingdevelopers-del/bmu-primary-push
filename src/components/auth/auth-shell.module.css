@@ -32,8 +32,7 @@
 
   .logo {
     align-self: flex-start;
-    font-size: 17px;
-    color: #1b2530;
+    --logo-h: 40px;
   }
 
   .illustration {

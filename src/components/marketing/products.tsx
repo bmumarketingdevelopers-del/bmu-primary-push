@@ -1,12 +1,40 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Building2, ImagePlus, QrCode, Star, UsersRound, type LucideIcon } from "lucide-react";
 import { SectionHeading } from "./section-heading";
 import { Reveal } from "./reveal";
 import { PRODUCT_DETAILS, productHref } from "@/lib/products-data";
 import { cn } from "@/lib/utils";
 import styles from "./products.module.css";
+
+/** Copy for the landing-page cards; links and "Coming soon" come from each product's status. */
+const CARDS: Record<string, { icon: LucideIcon; name?: string; body: string; highlights: string[] }> = {
+  "bmu-qr": {
+    icon: QrCode,
+    body: "Turn customer interactions into reviews and repeat engagement.",
+    highlights: ["QR-powered feedback", "Review generation", "Customer insights"],
+  },
+  "smart-review": {
+    icon: Star,
+    body: "Catch unhappy customers early and turn positive experiences into public reviews.",
+    highlights: ["Instant feedback", "Issue alerts", "Reputation growth"],
+  },
+  "bmu-creators": {
+    icon: UsersRound,
+    name: "BMU Creators",
+    body: "Find, brief and track creators in one place.",
+    highlights: ["Creator discovery", "Campaigns", "UGC management"],
+  },
+  "ai-studio": {
+    icon: ImagePlus,
+    body: "Product imagery without booking a studio.",
+    highlights: ["AI visuals", "Rapid production", "Creative variations"],
+  },
+  "real-estate-suite": {
+    icon: Building2,
+    body: "The whole launch stack, one team.",
+    highlights: ["Property", "Leads", "Performance"],
+  },
+};
 
 export function Products({ heading = true }: { heading?: boolean }) {
   return (
@@ -16,63 +44,51 @@ export function Products({ heading = true }: { heading?: boolean }) {
           <Reveal>
             <SectionHeading
               invert
+              className={styles.heading}
               eyebrow="Products"
-              title={<>Software that keeps<br />earning after the campaign</>}
-              lede="Five platforms built in-house. Use them with a retainer or on their own — you own the data either way."
-              action={
-                <Button asChild variant="ghostLight">
-                  <Link href="/products">
-                    All products <ArrowRight />
-                  </Link>
-                </Button>
-              }
+              title={<>Tools built to keep growth moving,<br className={styles.titleBreak} /> even after the campaign ends.</>}
+              lede="In-house products designed to take your marketing beyond the campaign - helping you capture attention, build lasting trust, strengthen customer relationships and turn everyday interactions into meaningful, measurable growth."
             />
           </Reveal>
         )}
 
         <div className={styles.grid}>
           {PRODUCT_DETAILS.map((p, i) => {
-            const lead = i === 0;
+            const card = CARDS[p.slug];
+            if (!card) return null;
+            const Icon = card.icon;
             const href = productHref(p);
-            return (
-              <Reveal key={p.slug} delay={(i % 3) * 0.07} className={cn(lead && styles.leadCell)}>
-                <article
-                  className={cn(
-                    styles.card,
-                    lead && styles.lead
+
+            const body = (
+              <>
+                <span className={styles.iconWrap}>
+                  <Icon className={styles.icon} strokeWidth={1.8} aria-hidden="true" />
+                </span>
+                <h3 className={cn("display", styles.name)}>{card.name ?? p.name}</h3>
+                <p className={styles.body}>{card.body}</p>
+                <p className={styles.highlights}>{card.highlights.join(" · ")}</p>
+                <p className={styles.cta}>
+                  {href ? (
+                    <>
+                      Explore product <span className={styles.arrow}>→</span>
+                    </>
+                  ) : (
+                    "Coming soon"
                   )}
-                >
-                  <Badge className={styles.tag}>{p.tag}</Badge>
-                  <h3 className={cn("display", styles.name)}>{p.name}</h3>
-                  <p className={styles.summary}>{lead ? p.intro : p.summary}</p>
+                </p>
+              </>
+            );
 
-                  <ul className={cn(styles.features, lead ? styles.featuresDouble : styles.featuresSingle)}>
-                    {p.features.slice(0, lead ? 8 : 4).map((f) => (
-                      <li key={f.title} className={styles.feature}>
-                        <span className={styles.bullet} />
-                        {f.title}
-                      </li>
-                    ))}
-                  </ul>
-
-                  <div className={styles.footer}>
-                    {lead && p.plans && (
-                      <div className={styles.plans}>
-                        <b className={cn("display", styles.fromPrice)}>from {p.plans[0].price}/mo</b>
-                        {p.plans.length} plans available
-                      </div>
-                    )}
-                    {href ? (
-                      <Button asChild variant={lead ? "default" : "ghostLight"} size="sm">
-                        <Link href={href}>
-                          Learn more {lead && <ArrowRight />}
-                        </Link>
-                      </Button>
-                    ) : (
-                      <span className={styles.soon}>Coming soon</span>
-                    )}
-                  </div>
-                </article>
+            return (
+              <Reveal key={p.slug} delay={(i % 3) * 0.07} className={styles.cell}>
+                {href ? (
+                  <Link href={href} className={cn(styles.card, styles.cardLink)}>
+                    {body}
+                  </Link>
+                ) : (
+                  // Coming soon: content only, not a link
+                  <div className={styles.card}>{body}</div>
+                )}
               </Reveal>
             );
           })}

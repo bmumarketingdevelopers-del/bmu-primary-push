@@ -14,7 +14,7 @@ export const COMPANY = {
 export const STORY = [
   {
     heading: "We started because reporting was broken",
-    body: "Two of us were in-house marketers who kept receiving agency decks full of impressions and reach — numbers that never reconciled with what the sales team saw in the CRM. BMU began as a reporting fix for three clients, and the services grew backwards from there: if we were going to be judged on leads, we wanted control of the creative and the landing page too.",
+    body: "Two of us were in-house marketers who kept receiving agency decks full of impressions and reach - numbers that never reconciled with what the sales team saw in the CRM. BMU began as a reporting fix for three clients, and the services grew backwards from there: if we were going to be judged on leads, we wanted control of the creative and the landing page too.",
   },
   {
     heading: "Then the software followed the work",
@@ -112,7 +112,7 @@ export const CONTACT_FAQS = [
   },
   {
     q: "Do you work outside Bengaluru?",
-    a: "Yes — clients across nine cities. Drone and video shoots need travel budgeted; everything else runs the same remotely.",
+    a: "Yes - clients across nine cities. Drone and video shoots need travel budgeted; everything else runs the same remotely.",
   },
   {
     q: "What's the smallest engagement you take?",

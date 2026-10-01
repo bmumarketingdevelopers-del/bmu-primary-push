@@ -13,7 +13,7 @@ export function AdminSidebar({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <div className={styles.sidebar}>
       <div>
-        <Logo href="/admin" className={styles.logo} />
+        <Logo tone="onDark" href="/admin" className={styles.logo} />
         <span className={styles.roleTag}>
           Agency admin
         </span>

@@ -13,7 +13,7 @@ import styles from "./page.module.css";
 export const metadata: Metadata = {
   title: "Join BMU Creators",
   description:
-    "Apply to the BMU Creators roster. Paid brand collaborations across food, travel, fitness, interiors and more — briefs matched to your city and category.",
+    "Apply to the BMU Creators roster. Paid brand collaborations across food, travel, fitness, interiors and more - briefs matched to your city and category.",
 };
 
 const PROMISES = [
@@ -42,7 +42,7 @@ const PROMISES = [
 const FAQS = [
   {
     q: "How many followers do I need?",
-    a: "There's no hard floor. Engagement and category fit matter more — we've booked 12,000-follower accounts for neighbourhood restaurant work and turned down 200,000-follower accounts with hollow reach.",
+    a: "There's no hard floor. Engagement and category fit matter more - we've booked 12,000-follower accounts for neighbourhood restaurant work and turned down 200,000-follower accounts with hollow reach.",
   },
   {
     q: "Do I have to be in Bengaluru?",
@@ -108,7 +108,7 @@ export default function JoinPage() {
             <SectionHeading
               eyebrow="Apply"
               title="Tell us what you make"
-              lede="Five minutes. Be accurate about reach — inflated numbers get found out at the first campaign report and cost you the roster spot."
+              lede="Five minutes. Be accurate about reach - inflated numbers get found out at the first campaign report and cost you the roster spot."
             />
           </Reveal>
           <Reveal delay={0.1}>

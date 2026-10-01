@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const { slug, offering } = await params;
   const page = getOfferingPage(slug, offering);
   if (!page) return {};
-  return { title: `${page.offering.title} — ${page.service.title}`, description: page.offering.body };
+  return { title: `${page.offering.title} - ${page.service.title}`, description: page.offering.body };
 }
 
 export default async function OfferingPage({ params }: { params: Params }) {

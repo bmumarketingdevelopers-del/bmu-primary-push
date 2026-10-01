@@ -41,7 +41,7 @@ export default function PricingPage() {
       <PageHero
         eyebrow="Pricing"
         title="Flat monthly fees, no percentage of your ad spend"
-        lede="We charge for the work, not a cut of the budget — so nobody has an incentive to talk you into spending more than the pipeline needs."
+        lede="We charge for the work, not a cut of the budget - so nobody has an incentive to talk you into spending more than the pipeline needs."
       />
 
       <Pricing heading={false} />
@@ -98,7 +98,7 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <CtaBand title="Still not sure which plan fits?" body="Tell us your monthly budget and what you're trying to hit. We'll tell you which plan makes sense — including if the answer is the cheapest one." />
+      <CtaBand title="Still not sure which plan fits?" body="Tell us your monthly budget and what you're trying to hit. We'll tell you which plan makes sense - including if the answer is the cheapest one." />
     </>
   );
 }

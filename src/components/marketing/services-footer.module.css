@@ -9,9 +9,7 @@
   }
 
   .brand {
-    display: inline-block;
-    font-size: 18px;
-    letter-spacing: -0.02em;
+    --logo-h: 44px;
   }
 
   .about {

@@ -88,7 +88,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
             <span className="eyebrow">How it runs</span>
             <h2 className="sec-title">The process</h2>
             <p className={styles.processLede}>
-              Four stages, in this order. We don&apos;t skip ahead — most of the failures we&apos;re asked to fix
+              Four stages, in this order. We don&apos;t skip ahead - most of the failures we&apos;re asked to fix
               come from launching before the foundation was in place.
             </p>
             <ul className={styles.outcomes}>

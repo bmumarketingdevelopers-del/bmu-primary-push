@@ -24,7 +24,7 @@ export default function ErrorBoundary({
         <p className={cn("display", styles.code)}>Oops</p>
         <h1 className={cn("display", styles.title)}>Something broke on our side</h1>
         <p className={styles.message}>
-          The error has been logged. Try again — if it keeps happening, tell us what you were doing
+          The error has been logged. Try again - if it keeps happening, tell us what you were doing
           and we&apos;ll fix it.
         </p>
         {error.digest && (

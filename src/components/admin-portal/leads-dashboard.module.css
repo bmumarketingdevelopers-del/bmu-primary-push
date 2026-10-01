@@ -38,8 +38,7 @@
   }
 
   .logo {
-    color: #fff;
-    font-size: 17px;
+    --logo-h: 32px;
   }
 
   .portalTag {
@@ -1275,7 +1274,7 @@
   /* Very small phones (≤ 380px): tighter type and spacing */
   @media (max-width: 380px) {
     .logo {
-      font-size: 15px;
+      --logo-h: 28px;
     }
 
     .topActions {

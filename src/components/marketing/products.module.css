@@ -9,147 +9,149 @@
     background-color: #0d1825;
   }
 
+  /* Phones: one column. Tablet: two. Desktop: two wide cards, then three (see .cell below) */
   .grid {
     display: grid;
-    gap: 1.5rem;
+    gap: 0.875rem;
   }
+
+  /* ---- card */
 
   .card {
     display: flex;
     height: 100%;
     flex-direction: column;
-    border-radius: var(--radius-lg);
-    border: 1px solid rgb(255 255 255 / 0.1);
-    background-color: rgb(255 255 255 / 0.05);
-    padding: 2rem;
-    transition-property: all;
-    transition-timing-function: var(--ease-brand);
-    transition-duration: 300ms;
+    border-radius: var(--radius-md);
+    border: 1px solid rgb(255 255 255 / 0.08);
+    background-color: rgb(255 255 255 / 0.045);
+    padding: 1.25rem;
+    color: #fff;
+    text-decoration: none;
+    transition:
+      transform 300ms var(--ease-brand),
+      border-color 300ms var(--ease-brand),
+      background-color 300ms var(--ease-brand);
   }
 
-  /* The first (flagship) product. Defined after `.card` so it wins. */
-  .lead {
-    border-color: hsl(var(--primary) / 0.3);
-    background-image: linear-gradient(to bottom right, hsl(var(--primary) / 0.15), rgb(255 255 255 / 0.04));
-  }
-
-  .card:hover {
-    transform: scale(1.02);
+  /* Only the linked (live) card reacts; coming-soon cards are plain content */
+  .cardLink:hover {
+    transform: translateY(-3px);
     border-color: hsl(var(--primary) / 0.5);
-    background-color: rgb(255 255 255 / 0.08);
+    background-color: rgb(255 255 255 / 0.07);
+  }
+
+  .iconWrap {
+    display: grid;
+    height: 2.25rem;
+    width: 2.25rem;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 0.5rem;
+    background-color: hsl(var(--primary) / 0.16);
+    color: hsl(var(--primary));
+  }
+
+  .icon {
+    height: 1.125rem;
+    width: 1.125rem;
   }
 
   .name {
-    margin-bottom: 0.75rem;
-    margin-top: 1.25rem;
-    font-size: var(--text-h5);
+    margin-top: 1rem;
+    font-size: var(--text-card-title);
+    line-height: 1.375;
   }
 
-  .summary {
+  .body {
+    margin-top: 0.375rem;
     font-size: var(--text-body);
+    line-height: 1.55;
     color: #b4c2cf;
   }
 
-  .features {
-    margin-top: 1.5rem;
-    display: grid;
-    column-gap: 1.25rem;
-    row-gap: 0.625rem;
-    font-size: var(--text-body);
-    color: #c8d4df;
-  }
-
-  .featuresSingle {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-  }
-
-  .feature {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.625rem;
-  }
-
-  .bullet {
+  /* Hidden on phones, as in the mobile design */
+  .highlights {
+    display: none;
     margin-top: 0.5rem;
-    height: 5px;
-    width: 5px;
-    flex-shrink: 0;
-    border-radius: 1px;
-    background-color: hsl(var(--primary));
-  }
-
-  .footer {
-    margin-top: auto;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 1rem;
-    padding-top: 1.75rem;
-  }
-
-  /* Stands in for "Learn more" on coming-soon products, which don't link anywhere yet */
-  .soon {
-    display: inline-flex;
-    align-items: center;
-    min-height: 2.25rem;
-    border-radius: var(--radius-pill);
-    border: 1px dashed rgb(255 255 255 / 0.2);
-    padding: 0 0.875rem;
     font-size: var(--text-small);
-    font-weight: 500;
-    color: #b4c2cf;
-  }
-
-  .plans {
-    font-size: var(--text-small);
+    line-height: 1.5;
     color: #8fa0b0;
   }
 
-  .fromPrice {
-    display: block;
-    font-size: 17px;
-    line-height: 1.625;
-    color: #fff;
+  .cta {
+    margin-top: auto;
+    padding-top: 1rem;
+    font-size: var(--text-small);
+    font-weight: 600;
+    color: hsl(var(--primary));
   }
+
+  .arrow {
+    display: inline-block;
+    transition: transform 300ms var(--ease-brand);
+  }
+
+  .cardLink:hover .arrow {
+    transform: translateX(0.25rem);
+  }
+
+  /* ---- tablet: two columns, highlights shown */
 
   @media (min-width: 640px) {
-    .featuresDouble {
+    .grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .card {
+      padding: 1.5rem;
+    }
+
+    .highlights {
+      display: block;
     }
   }
 
-  @media (min-width: 768px) {
-    .grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
+  /* ---- desktop: 6-column track, so the first row holds two cards and the second three */
 
-  @media (min-width: 1280px) {
+  @media (min-width: 1024px) {
     .grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 1.25rem;
     }
   }
 }
 
 /* Overrides passed into other components via `className`. */
 
-.tag {
-  align-self: flex-start;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
+.heading p {
+  max-width: 62ch;
 }
 
-@media (min-width: 768px) {
-  /* The lead product's cell spans two columns on tablets… */
-  .leadCell {
-    grid-column: span 2 / span 2;
+/* Desktop breaks the title after "moving," as in the design; smaller screens wrap naturally */
+.titleBreak {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .titleBreak {
+    display: inline;
   }
 }
 
-@media (min-width: 1280px) {
-  /* …and one tall column (two rows) on desktop. */
-  .leadCell {
-    grid-column: span 1 / span 1;
-    grid-row: span 2 / span 2;
+/* Tablet: five cards in two columns, so the last one spans the full row */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .cell:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1024px) {
+  .cell {
+    grid-column: span 2;
+  }
+
+  .cell:nth-child(-n + 2) {
+    grid-column: span 3;
   }
 }

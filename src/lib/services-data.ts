@@ -60,7 +60,7 @@ export const SERVICE_DETAILS: ServiceDetail[] = [
     intro:
       "Consistency beats occasional brilliance on social. We plan a month at a time, shoot in batches, and put every asset in front of you for approval before it publishes.",
     deliverables: [
-      { title: "Monthly content calendar", body: "Planned around your offers, festivals and launches — approved by you before anything is shot." },
+      { title: "Monthly content calendar", body: "Planned around your offers, festivals and launches - approved by you before anything is shot." },
       { title: "Reels and short video", body: "Scripted, shot and edited in batches. Vertical-first, captioned, sized for every placement." },
       { title: "UGC and creator content", body: "Briefed creators producing native-feeling content that performs in paid as well as organic." },
       { title: "Photography and drone", body: "Product, food, interior, property and event coverage, licensed to you outright." },
@@ -93,7 +93,7 @@ export const SERVICE_DETAILS: ServiceDetail[] = [
     intro:
       "SEO is slow, so we start with the fastest wins: local pack visibility and technical debt. Content and links follow once the foundation holds.",
     deliverables: [
-      { title: "Technical audit and fixes", body: "Crawlability, site speed, schema, indexation and Core Web Vitals — implemented, not just reported." },
+      { title: "Technical audit and fixes", body: "Crawlability, site speed, schema, indexation and Core Web Vitals - implemented, not just reported." },
       { title: "Local SEO", body: "Google Business Profile optimisation, category strategy, service areas, photos and review velocity." },
       { title: "Keyword and content plan", body: "Mapped to search intent and to what your sales team actually gets asked." },
       { title: "On-page and content production", body: "Landing pages and articles written for humans first, structured for search second." },
@@ -103,7 +103,7 @@ export const SERVICE_DETAILS: ServiceDetail[] = [
       { title: "Baseline", body: "Where you rank today, who outranks you, and what's technically blocking you." },
       { title: "Fix the foundation", body: "Technical issues and Google Business Profile in the first 30 days." },
       { title: "Build", body: "Content and links on a monthly cadence against the keyword map." },
-      { title: "Report", body: "Ranking movement, traffic and — where it can be traced — leads from organic." },
+      { title: "Report", body: "Ranking movement, traffic and - where it can be traced - leads from organic." },
     ],
     outcomes: [
       "Local pack visibility for the searches that convert",
@@ -122,7 +122,7 @@ export const SERVICE_DETAILS: ServiceDetail[] = [
     title: "Web & app development",
     icon: "Code2",
     tagline: "Sites built to convert and to last",
-    summary: "Next.js websites, ecommerce, web apps and mobile apps — fast, accessible, and yours to own.",
+    summary: "Next.js websites, ecommerce, web apps and mobile apps - fast, accessible, and yours to own.",
     intro:
       "We build on Next.js and TypeScript so the site stays fast, ranks well and doesn't need rebuilding in two years. Everything ships to a repository you own.",
     deliverables: [
@@ -190,7 +190,7 @@ export const SERVICE_DETAILS: ServiceDetail[] = [
     tagline: "A brand that holds up in every format",
     summary: "Identity, guidelines, packaging, UI/UX and pitch decks built as one coherent system.",
     intro:
-      "A logo isn't a brand. We build the system around it — type, colour, layout rules, tone — so everything your business produces afterwards looks like it came from the same company.",
+      "A logo isn't a brand. We build the system around it - type, colour, layout rules, tone - so everything your business produces afterwards looks like it came from the same company.",
     deliverables: [
       { title: "Brand identity", body: "Logo suite, colour system, typography and iconography with usage rules." },
       { title: "Brand guidelines", body: "A document your printers, agencies and internal team can all work from." },
@@ -212,7 +212,7 @@ export const SERVICE_DETAILS: ServiceDetail[] = [
     priceFrom: "₹85,000 per project",
     faqs: [
       { q: "How many logo options do we see?", a: "Two or three fully-developed directions, not fifty thumbnails. Depth beats volume." },
-      { q: "Do we get source files?", a: "Yes — Figma, Illustrator and exported formats, all handed over on completion." },
+      { q: "Do we get source files?", a: "Yes - Figma, Illustrator and exported formats, all handed over on completion." },
     ],
     related: ["web-app-development", "social-content", "ai-creative"],
   },
@@ -223,7 +223,7 @@ export const SERVICE_DETAILS: ServiceDetail[] = [
     tagline: "Catalogue imagery without a shoot day",
     summary: "AI product photography, fashion and beauty models, virtual staging and ad creative at scale.",
     intro:
-      "Studio days are expensive and slow, which is why most brands refresh creative quarterly instead of weekly. AI generation changes that maths — with human art direction on every frame.",
+      "Studio days are expensive and slow, which is why most brands refresh creative quarterly instead of weekly. AI generation changes that maths - with human art direction on every frame.",
     deliverables: [
       { title: "AI product photography", body: "Your product placed in lifestyle scenes, lit consistently, in any number of variations." },
       { title: "Fashion and beauty models", body: "Diverse AI models wearing your catalogue, matched to your target demographic." },
@@ -232,7 +232,7 @@ export const SERVICE_DETAILS: ServiceDetail[] = [
       { title: "AI video and voice", body: "Short-form video and voiceover in multiple Indian languages." },
     ],
     process: [
-      { title: "Reference and art direction", body: "We agree the look first — lighting, mood, styling — the same as a real shoot." },
+      { title: "Reference and art direction", body: "We agree the look first - lighting, mood, styling - the same as a real shoot." },
       { title: "Generate and curate", body: "We produce widely and show you only what's usable. You never sort through failures." },
       { title: "Retouch", body: "Every delivered image is human-retouched for product accuracy." },
       { title: "Deliver", body: "Web and print resolutions, named and organised for your catalogue." },
