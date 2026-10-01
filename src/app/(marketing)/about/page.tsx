@@ -12,7 +12,7 @@ import styles from "./page.module.css";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "BMU.Marketing is an AI-first growth agency in Bengaluru — 24 people running strategy, creative, media and software for brands across nine cities.",
+    "BMU.Marketing is an AI-first growth agency in Bengaluru — creative, media and software for brands across nine cities.",
 };
 
 export default function AboutPage() {
@@ -20,11 +20,7 @@ export default function AboutPage() {
     <>
       <PageHero
         eyebrow="About"
-<<<<<<< HEAD
         title="The agency that reports the losses too"
-=======
-        title="An agency that reports the losses too"
->>>>>>> ef0aa11 (HP first)
         lede={`Founded in ${COMPANY.founded} in ${COMPANY.city}. ${COMPANY.headcount} people running strategy, creative, media, web and software — so nobody can point at the other agency when the numbers slip.`}
       >
         <dl className={styles.stats}>
