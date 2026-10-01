@@ -1,0 +1,18 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  /* Phones get the compact services footer; tablet up gets the full one */
+  .wide {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .phone {
+      display: none;
+    }
+
+    .wide {
+      display: block;
+    }
+  }
+}

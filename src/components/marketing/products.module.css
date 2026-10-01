@@ -87,6 +87,19 @@
     padding-top: 1.75rem;
   }
 
+  /* Stands in for "Learn more" on coming-soon products, which don't link anywhere yet */
+  .soon {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.25rem;
+    border-radius: var(--radius-pill);
+    border: 1px dashed rgb(255 255 255 / 0.2);
+    padding: 0 0.875rem;
+    font-size: var(--text-small);
+    font-weight: 500;
+    color: #b4c2cf;
+  }
+
   .plans {
     font-size: var(--text-small);
     color: #8fa0b0;

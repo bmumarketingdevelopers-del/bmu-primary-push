@@ -49,10 +49,6 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
         eyebrow={service.tagline}
         title={service.title}
         lede={service.intro}
-        breadcrumbs={[
-          { href: "/services", label: "Services" },
-          { href: `/services/${service.slug}`, label: service.title },
-        ]}
       >
         <div className={styles.heroActions}>
           <Button asChild>

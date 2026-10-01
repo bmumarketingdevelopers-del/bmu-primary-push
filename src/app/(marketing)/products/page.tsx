@@ -22,7 +22,6 @@ export default function ProductsPage() {
         eyebrow="Products"
         title="Software that keeps earning after the campaign"
         lede="Five platforms built in-house. Use them alongside a retainer or on their own — either way the data stays yours, and it exports."
-        breadcrumbs={[{ href: "/products", label: "Products" }]}
       >
         <Button asChild>
           <Link href="/contact">Request a demo <ArrowRight /></Link>

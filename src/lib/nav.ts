@@ -1,5 +1,5 @@
-import { SERVICE_DETAILS } from "./services-data";
-import { PRODUCT_DETAILS } from "./products-data";
+import { SERVICE_PAGES, servicePageHref } from "./service-pages-data";
+import { PRODUCT_DETAILS, productHref } from "./products-data";
 import { INDUSTRY_DETAILS } from "./industries-data";
 
 type NavLink = { href: string; label: string; description?: string };
@@ -50,7 +50,8 @@ export const MAIN_NAV: NavItem[] = [
   //   label: "Industries",
   //   children: INDUSTRY_LINKS,
   // },
-  { href: "/portfolio", label: "Work" },
+  // Hidden for now. Uncomment to bring Work back into the menu.
+  // { href: "/portfolio", label: "Work" },
   { href: "/case-studies", label: "Case studies" },
   // { href: "/store", label: "Store" },
   { href: "/pricing", label: "Pricing" },
@@ -58,19 +59,32 @@ export const MAIN_NAV: NavItem[] = [
   { href: "/about", label: "About" },
 ];
 
+// Order the six services are listed in both footers
+const FOOTER_SERVICE_ORDER = [
+  "marketing-and-visibility",
+  "social-and-personal-brand",
+  "ugc-and-creator-marketing",
+  "brand-and-design",
+  "content-and-production",
+  "web-and-ai",
+];
+
+export const FOOTER_SERVICE_LINKS = FOOTER_SERVICE_ORDER.map((slug) => SERVICE_PAGES.find((s) => s.slug === slug)!).map(
+  (s) => ({ href: servicePageHref(s), label: s.title }),
+);
+
 export const FOOTER_NAV = [
   {
     title: "Services",
-    links: SERVICE_DETAILS.map((s) => ({ href: `/services/${s.slug}`, label: s.title })),
+    links: FOOTER_SERVICE_LINKS,
   },
   {
     title: "Products",
-    links: PRODUCT_DETAILS.map((p) => ({ href: `/products/${p.slug}`, label: p.name })),
+    links: PRODUCT_DETAILS.map((p) => ({ href: productHref(p), label: p.name })),
   },
   {
     title: "Company",
     links: [
-      { href: "/portfolio", label: "Portfolio" },
       { href: "/case-studies", label: "Case studies" },
       { href: "/industries", label: "Industries" },
       { href: "/pricing", label: "Pricing" },

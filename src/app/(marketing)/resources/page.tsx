@@ -22,7 +22,6 @@ export default function ResourcesPage() {
         eyebrow="Resources"
         title="Things we've learned running campaigns"
         lede="Written by the people doing the work, not a content team. Practical where we can be, honest where we can't."
-        breadcrumbs={[{ href: "/resources", label: "Resources" }]}
       />
 
       <section className="section">

@@ -14,16 +14,6 @@ export function OfferingHero({ service, offering }: OfferingPage) {
     <section className={styles.hero}>
       <div className={cn("container", styles.inner)}>
         <Reveal className={styles.copy}>
-          <nav aria-label="Breadcrumb" className={styles.breadcrumbs}>
-            <Link href="/services" className={cn(styles.crumbLink, styles.crumbServices)}>Services</Link>
-            <span aria-hidden="true" className={styles.crumbServices}>/</span>
-            <Link href={`/services/${service.slug}`} className={cn(styles.crumbLink, styles.crumbParent)}>
-              {service.title}
-            </Link>
-            <span aria-hidden="true">/</span>
-            <span className={styles.crumbCurrent} aria-current="page">{offering.title}</span>
-          </nav>
-
           <Link href={`/services/${service.slug}`} className={styles.parentPill}>{service.title}</Link>
           <h1 className={cn("display", styles.title)}>{offering.title}</h1>
           <p className={styles.lede}>{offering.body}</p>

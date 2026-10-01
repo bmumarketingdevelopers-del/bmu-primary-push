@@ -60,9 +60,9 @@ export function Hero({ content = {}, stats }: { content?: HeroContent; stats?: H
 
             <h1 className={cn("display", styles.title)}>
 
-              Grow your business
+              Building Smarter
               <br />
-              With AI, content and
+              Growth Systems for
 
               <br />
               <span className={styles.rotator}>
@@ -105,7 +105,7 @@ export function Hero({ content = {}, stats }: { content?: HeroContent; stats?: H
                 </Link>
               </Button>
               <Button asChild variant="ghostLight">
-                <Link href={content.secondaryCtaHref ?? "/portfolio"}>
+                <Link href={content.secondaryCtaHref ?? "/case-studies"}>
                   {content.secondaryCtaLabel ?? "See the work"}
                 </Link>
               </Button>

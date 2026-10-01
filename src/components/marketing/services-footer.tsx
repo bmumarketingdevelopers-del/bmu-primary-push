@@ -1,28 +1,12 @@
 import Link from "next/link";
-import { PRODUCT_DETAILS } from "@/lib/products-data";
-import { SERVICE_PAGES, servicePageHref } from "@/lib/service-pages-data";
+import { PRODUCT_DETAILS, productHref } from "@/lib/products-data";
+import { FOOTER_SERVICE_LINKS } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 import styles from "./services-footer.module.css";
 
-// Order the six services are listed in the footer
-const SERVICE_ORDER = [
-  "marketing-and-visibility",
-  "social-and-personal-brand",
-  "ugc-and-creator-marketing",
-  "brand-and-design",
-  "content-and-production",
-  "web-and-ai",
-];
-
-const SERVICE_LINKS = SERVICE_ORDER.map((slug) => SERVICE_PAGES.find((s) => s.slug === slug)!).map((s) => ({
-  href: servicePageHref(s),
-  label: s.title,
-}));
-
-const PRODUCT_LINKS = PRODUCT_DETAILS.map((p) => ({ href: `/products/${p.slug}`, label: p.name }));
+const PRODUCT_LINKS = PRODUCT_DETAILS.map((p) => ({ href: productHref(p), label: p.name }));
 
 const COMPANY_LINKS = [
-  { href: "/portfolio", label: "Portfolio" },
   { href: "/case-studies", label: "Case studies" },
   { href: "/pricing", label: "Pricing" },
   { href: "/resources", label: "Resources" },
@@ -30,19 +14,24 @@ const COMPANY_LINKS = [
   { href: "/contact", label: "Contact" },
 ];
 
-function LinkList({ links, className }: { links: { href: string; label: string }[]; className?: string }) {
+// A link without an href (a coming-soon product) is listed as plain text
+function LinkList({ links, className }: { links: { href: string | null; label: string }[]; className?: string }) {
   return (
     <ul className={cn(styles.links, className)}>
       {links.map((l) => (
         <li key={l.label}>
-          <Link href={l.href} className={styles.link}>{l.label}</Link>
+          {l.href ? (
+            <Link href={l.href} className={styles.link}>{l.label}</Link>
+          ) : (
+            <span className={styles.text}>{l.label}</span>
+          )}
         </li>
       ))}
     </ul>
   );
 }
 
-/** Footer for /services and every service page (see FooterSwitch). */
+/** Footer for /services and its pages, and for every page on phones (see FooterSwitch). */
 export function ServicesFooter() {
   return (
     <footer className={styles.footer}>
@@ -64,7 +53,7 @@ export function ServicesFooter() {
           <div className={styles.navGrid}>
             <nav aria-label="Services">
               <h4 className={styles.colTitle}>Services</h4>
-              <LinkList links={SERVICE_LINKS} />
+              <LinkList links={FOOTER_SERVICE_LINKS} />
             </nav>
             <nav aria-label="Products">
               <h4 className={styles.colTitle}>Products</h4>

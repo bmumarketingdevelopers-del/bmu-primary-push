@@ -8,7 +8,7 @@ import { Reveal } from "@/components/marketing/reveal";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { PRODUCT_DETAILS, getProduct } from "@/lib/products-data";
+import { PRODUCT_DETAILS, getProduct, productHref } from "@/lib/products-data";
 import { cn } from "@/lib/utils";
 import styles from "./page.module.css";
 
@@ -36,10 +36,6 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         eyebrow={product.tag}
         title={product.name}
         lede={product.tagline}
-        breadcrumbs={[
-          { href: "/products", label: "Products" },
-          { href: `/products/${product.slug}`, label: product.name },
-        ]}
       >
         <Button asChild>
           <Link href="/contact">{product.cta} <ArrowRight /></Link>
@@ -152,20 +148,28 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             <h2 className={cn("sec-title", styles.sectionTitle)}>Other products</h2>
           </Reveal>
           <div className={styles.otherGrid}>
-            {others.map((o, i) => (
-              <Reveal key={o.slug} delay={i * 0.07}>
-                <Link
-                  href={`/products/${o.slug}`}
-                  className={styles.otherCard}
-                >
+            {others.map((o, i) => {
+              const href = productHref(o);
+              const body = (
+                <>
                   <h3 className={cn("display", styles.otherName)}>{o.name}</h3>
                   <p className={styles.otherSummary}>{o.summary}</p>
                   <p className={styles.otherMore}>
-                    Learn more <span className={styles.arrow}>→</span>
+                    {href ? <>Learn more <span className={styles.arrow}>→</span></> : "Coming soon"}
                   </p>
-                </Link>
-              </Reveal>
-            ))}
+                </>
+              );
+              return (
+                <Reveal key={o.slug} delay={i * 0.07}>
+                  {href ? (
+                    <Link href={href} className={styles.otherCard}>{body}</Link>
+                  ) : (
+                    // Coming soon: shown as content only, no link
+                    <div className={styles.otherCard}>{body}</div>
+                  )}
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </section>

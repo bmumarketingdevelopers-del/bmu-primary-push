@@ -519,7 +519,7 @@ export const SERVICE_PAGES: ServicePage[] = [
     title: "Content & Production",
     summary: "Photography, reels, drone and video production, planned on a calendar and delivered ready to publish.",
     chips: ["Video Editing", "Business Video Shoots", "Podcast Shoots"],
-    priceFrom: "₹60,000 setup + ₹15,000/month",
+    priceFrom: "₹60,000",
     detail: {
       lede: "Photography, reels, drone and video production, planned on a calendar and delivered ready to publish.",
       heroNodes: ["Video Editing", "Podcast Shoots", "Business Video Shoots"],

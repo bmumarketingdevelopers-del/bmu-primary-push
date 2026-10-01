@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { SectionHeading } from "./section-heading";
 import { Reveal } from "./reveal";
-import { PRODUCT_DETAILS } from "@/lib/products-data";
+import { PRODUCT_DETAILS, productHref } from "@/lib/products-data";
 import { cn } from "@/lib/utils";
 import styles from "./products.module.css";
 
@@ -33,6 +33,7 @@ export function Products({ heading = true }: { heading?: boolean }) {
         <div className={styles.grid}>
           {PRODUCT_DETAILS.map((p, i) => {
             const lead = i === 0;
+            const href = productHref(p);
             return (
               <Reveal key={p.slug} delay={(i % 3) * 0.07} className={cn(lead && styles.leadCell)}>
                 <article
@@ -61,11 +62,15 @@ export function Products({ heading = true }: { heading?: boolean }) {
                         {p.plans.length} plans available
                       </div>
                     )}
-                    <Button asChild variant={lead ? "default" : "ghostLight"} size="sm">
-                      <Link href={`/products/${p.slug}`}>
-                        Learn more {lead && <ArrowRight />}
-                      </Link>
-                    </Button>
+                    {href ? (
+                      <Button asChild variant={lead ? "default" : "ghostLight"} size="sm">
+                        <Link href={href}>
+                          Learn more {lead && <ArrowRight />}
+                        </Link>
+                      </Button>
+                    ) : (
+                      <span className={styles.soon}>Coming soon</span>
+                    )}
                   </div>
                 </article>
               </Reveal>

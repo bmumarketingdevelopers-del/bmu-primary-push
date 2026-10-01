@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Check, ChevronRight } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CountUp } from "@/components/marketing/count-up";
 import { Reveal } from "@/components/marketing/reveal";
@@ -27,11 +27,6 @@ export default function CaseStudiesPage() {
         <div aria-hidden className={styles.heroGrid} />
         <div className={cn("container", styles.heroInner)}>
           <div className={styles.heroCopy}>
-            <nav aria-label="Breadcrumb" className={styles.breadcrumbs}>
-              <Link href="/" className={styles.crumbLink}>Home</Link>
-              <ChevronRight className={styles.crumbIcon} />
-              <span className={styles.crumbCurrent}>Case studies</span>
-            </nav>
             <h1 className={cn("display", styles.heroTitle)}>
               Ideas are easy. Making them work is harder.
             </h1>

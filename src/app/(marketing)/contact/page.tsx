@@ -32,7 +32,6 @@ export default function ContactPage() {
         eyebrow="Contact"
         title="Tell us what you're trying to grow"
         lede="Thirty minutes on a call, a look at your current numbers, and a written plan within three working days. The plan is yours either way."
-        breadcrumbs={[{ href: "/contact", label: "Contact" }]}
       />
 
       <section className="section">

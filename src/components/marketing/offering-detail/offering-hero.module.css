@@ -15,48 +15,12 @@
   .inner {
     display: grid;
     gap: 1.75rem;
-    padding-top: clamp(1.25rem, 1rem + 1.5vw, 2.5rem);
+    padding-top: clamp(2.5rem, 1.75rem + 2.5vw, 4rem);
     padding-bottom: clamp(2rem, 1.5rem + 2vw, 3.5rem);
   }
 
   .copy {
     min-width: 0;
-  }
-
-  .breadcrumbs {
-    margin-bottom: 0.875rem;
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    gap: 0.375rem;
-    font-size: var(--text-small);
-    color: #8fa0b0;
-  }
-
-  .crumbLink {
-    transition: color 150ms var(--ease-brand);
-  }
-  .crumbLink:hover {
-    color: #fff;
-  }
-
-  /* Phones drop the "Services /" step to keep the trail on one line */
-  .crumbServices {
-    display: none;
-  }
-
-  /* Phones keep the trail on one line and cut a long current page short with "…" */
-  .breadcrumbs > * {
-    flex-shrink: 0;
-  }
-
-  .crumbCurrent {
-    min-width: 0;
-    flex-shrink: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    color: #fff;
   }
 
   .parentPill {
@@ -301,14 +265,6 @@
   /* ---- tablet */
 
   @media (min-width: 640px) {
-    .crumbServices {
-      display: inline;
-    }
-
-    .breadcrumbs {
-      flex-wrap: wrap;
-    }
-
     .actions {
       display: flex;
       flex-wrap: wrap;

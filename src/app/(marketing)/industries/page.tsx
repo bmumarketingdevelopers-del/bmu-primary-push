@@ -23,7 +23,6 @@ export default function IndustriesPage() {
         eyebrow="Industries"
         title="Twenty-seven sectors, twenty-seven playbooks"
         lede="Every industry has a different buying cycle, a different response window and a different definition of a good lead. We start from the playbook rather than from scratch."
-        breadcrumbs={[{ href: "/industries", label: "Industries" }]}
       />
 
       <section className="section">

@@ -172,3 +172,10 @@ export const PRODUCT_DETAILS: ProductDetail[] = [
 ];
 
 export const getProduct = (slug: string) => PRODUCT_DETAILS.find((p) => p.slug === slug);
+
+/**
+ * Where a product links to, or null while it's coming soon. Coming-soon products are shown as
+ * plain text everywhere (footers, cards, "Other products"); setting status to "live" restores the links.
+ */
+export const productHref = (p: Pick<ProductDetail, "slug" | "status">) =>
+  p.status === "live" ? `/products/${p.slug}` : null;

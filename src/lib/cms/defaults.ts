@@ -20,7 +20,7 @@ export const CMS_DEFAULTS: Record<string, Record<string, unknown>> = {
     primaryCtaLabel: "Book a free consultation",
     primaryCtaHref: "/contact",
     secondaryCtaLabel: "See the work",
-    secondaryCtaHref: "/portfolio",
+    secondaryCtaHref: "/case-studies",
   },
   "home.stats": { items: HERO_STATS },
   "home.trusted": {
@@ -63,7 +63,6 @@ export const CMS_DEFAULTS: Record<string, Record<string, unknown>> = {
       { label: "Services", href: "/services" },
       { label: "Products", href: "/products" },
       { label: "Industries", href: "/industries" },
-      { label: "Work", href: "/portfolio" },
       { label: "Store", href: "/store" },
       { label: "Pricing", href: "/pricing" },
       { label: "Contact", href: "/contact" },

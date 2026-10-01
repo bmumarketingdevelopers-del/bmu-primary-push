@@ -43,10 +43,15 @@ export function SiteFooter() {
               <h4 className={styles.colTitle}>{col.title}</h4>
               <ul className={styles.links}>
                 {col.links.map((l) => (
-                  <li key={l.href}>
-                    <Link href={l.href} className={styles.link}>
-                      {l.label}
-                    </Link>
+                  <li key={l.label}>
+                    {l.href ? (
+                      <Link href={l.href} className={styles.link}>
+                        {l.label}
+                      </Link>
+                    ) : (
+                      // Coming-soon product: shown, not linked
+                      <span className={styles.text}>{l.label}</span>
+                    )}
                   </li>
                 ))}
               </ul>

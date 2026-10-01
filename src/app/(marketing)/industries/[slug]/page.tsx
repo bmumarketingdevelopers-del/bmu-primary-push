@@ -37,10 +37,6 @@ export default async function IndustryPage({ params }: { params: Promise<{ slug:
         eyebrow={`${industry.name} · ${industry.tagline}`}
         title={`Marketing for ${industry.name.toLowerCase()}`}
         lede={industry.intro}
-        breadcrumbs={[
-          { href: "/industries", label: "Industries" },
-          { href: `/industries/${industry.slug}`, label: industry.name },
-        ]}
       >
         <Button asChild>
           <Link href="/contact">Book a free consultation <ArrowRight /></Link>

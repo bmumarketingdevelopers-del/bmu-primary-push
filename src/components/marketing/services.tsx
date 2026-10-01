@@ -6,171 +6,107 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "./section-heading";
 import { Reveal } from "./reveal";
-import { ServiceIcon } from "./service-icon";
-import { SERVICE_DETAILS } from "@/lib/services-data";
+import { SERVICE_PAGES, servicePageHref } from "@/lib/service-pages-data";
 import { cn } from "@/lib/utils";
 import styles from "./services.module.css";
 
-
-const DESKTOP_QUERY = "(min-width: 1280px)";
 const DRAG_THRESHOLD = 5;
 
-function getCards(carousel: HTMLElement) {
-  return carousel.querySelectorAll<HTMLElement>(`.${styles.cardWrapper}`);
+function getCards(track: HTMLElement) {
+  return Array.from(track.querySelectorAll<HTMLElement>(`.${styles.cardWrapper}`));
 }
 
-// Cards snap to the start on mobile and to the center on tablet (see CSS)
-function isStartAligned(card: HTMLElement) {
-  return getComputedStyle(card).scrollSnapAlign.includes("start");
+// Scroll position that puts each card at the start of the track (cards past the end clamp to it)
+function getStops(track: HTMLElement) {
+  const cards = getCards(track);
+  if (!cards.length) return [0];
+  const first = cards[0].offsetLeft;
+  const max = track.scrollWidth - track.clientWidth;
+  const stops = cards.map((c) => Math.min(c.offsetLeft - first, max));
+  // Cards that can't reach the start share the last stop, so they get one dot between them
+  return stops.filter((s, i) => i === 0 || s > stops[i - 1] + 1);
 }
 
-// Where a card's left edge must sit (relative to the carousel) to be "active"
-function getSnapOffset(carousel: HTMLElement, card: HTMLElement) {
-  if (isStartAligned(card)) {
-    return parseFloat(getComputedStyle(carousel).scrollPaddingLeft) || 0;
-  }
-
-  return (carousel.clientWidth - card.offsetWidth) / 2;
-}
-
-// Index of the card sitting closest to its snap position
-function getClosestIndex(carousel: HTMLElement) {
-  const cards = getCards(carousel);
-
-  if (!cards.length) return 0;
-
-  // At the very end the last cards can't reach the start position
-  const maxScroll = carousel.scrollWidth - carousel.clientWidth;
-
-  if (carousel.scrollLeft >= maxScroll - 2) return cards.length - 1;
-
-  const carouselLeft = carousel.getBoundingClientRect().left;
-  const snapOffset = getSnapOffset(carousel, cards[0]);
-
+function getClosestStop(track: HTMLElement, stops: number[]) {
   let closest = 0;
-  let minDistance = Infinity;
-
-  cards.forEach((card, i) => {
-    const left = card.getBoundingClientRect().left - carouselLeft;
-    const distance = Math.abs(left - snapOffset);
-
-    if (distance < minDistance) {
-      minDistance = distance;
-      closest = i;
-    }
+  stops.forEach((s, i) => {
+    if (Math.abs(s - track.scrollLeft) < Math.abs(stops[closest] - track.scrollLeft)) closest = i;
   });
-
   return closest;
 }
 
+/**
+ * The six services from /services as a swipeable row: 4 cards visible on desktop (the rest swipe
+ * or drag in), 3 on laptops, 2 on tablets and 1 on phones, each with the next one peeking.
+ */
 export function Services({ heading = true }: { heading?: boolean }) {
-  const carouselRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const drag = useRef({
-    active: false,
-    moved: false,
-    startX: 0,
-    startScroll: 0,
-  });
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [stops, setStops] = useState<number[]>([0]);
+  const [active, setActive] = useState(0);
+  const drag = useRef({ active: false, moved: false, startX: 0, startScroll: 0 });
 
   useEffect(() => {
-    const carousel = carouselRef.current;
+    const track = trackRef.current;
+    if (!track) return;
 
-    if (!carousel) return;
-
-    const handleScroll = () => {
-      setActiveIndex(getClosestIndex(carousel));
+    const measure = () => {
+      const next = getStops(track);
+      setStops(next);
+      setActive(getClosestStop(track, next));
     };
+    const onScroll = () => setActive(getClosestStop(track, getStops(track)));
 
-    carousel.addEventListener("scroll", handleScroll, {
-      passive: true,
-    });
-
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(track);
+    track.addEventListener("scroll", onScroll, { passive: true });
     return () => {
-      carousel.removeEventListener("scroll", handleScroll);
+      observer.disconnect();
+      track.removeEventListener("scroll", onScroll);
     };
   }, []);
 
-  const goToSlide = (index: number) => {
-    const carousel = carouselRef.current;
-
-    if (!carousel) return;
-
-    const card = getCards(carousel)[index];
-
-    if (!card) return;
-
-    // Scroll so the target card sits at its snap position
-    const carouselLeft = carousel.getBoundingClientRect().left;
-    const cardLeft = card.getBoundingClientRect().left - carouselLeft;
-
-    carousel.scrollTo({
-      left:
-        carousel.scrollLeft +
-        cardLeft -
-        getSnapOffset(carousel, card),
-      behavior: "smooth",
-    });
-
-    setActiveIndex(index);
+  const goTo = (index: number) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const all = getStops(track);
+    const i = Math.max(0, Math.min(index, all.length - 1));
+    track.scrollTo({ left: all[i], behavior: "smooth" });
+    setActive(i);
   };
 
   /* Mouse drag-to-swipe (touch devices already scroll natively) */
 
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    const carousel = carouselRef.current;
-
-    if (
-      !carousel ||
-      e.pointerType !== "mouse" ||
-      e.button !== 0 ||
-      window.matchMedia(DESKTOP_QUERY).matches
-    ) {
-      return;
-    }
-
-    drag.current = {
-      active: true,
-      moved: false,
-      startX: e.clientX,
-      startScroll: carousel.scrollLeft,
-    };
+    const track = trackRef.current;
+    if (!track || e.pointerType !== "mouse" || e.button !== 0) return;
+    drag.current = { active: true, moved: false, startX: e.clientX, startScroll: track.scrollLeft };
   };
 
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    const carousel = carouselRef.current;
+    const track = trackRef.current;
     const state = drag.current;
-
-    if (!carousel || !state.active) return;
+    if (!track || !state.active) return;
 
     const dx = e.clientX - state.startX;
-
     if (!state.moved && Math.abs(dx) > DRAG_THRESHOLD) {
       state.moved = true;
-      carousel.classList.add(styles.dragging);
-      carousel.setPointerCapture(e.pointerId);
+      track.classList.add(styles.dragging);
+      track.setPointerCapture(e.pointerId);
     }
-
-    if (state.moved) {
-      carousel.scrollLeft = state.startScroll - dx;
-    }
+    if (state.moved) track.scrollLeft = state.startScroll - dx;
   };
 
   const endDrag = (e: React.PointerEvent<HTMLDivElement>) => {
-    const carousel = carouselRef.current;
+    const track = trackRef.current;
     const state = drag.current;
-
-    if (!carousel || !state.active) return;
+    if (!track || !state.active) return;
 
     state.active = false;
-
-    if (carousel.hasPointerCapture(e.pointerId)) {
-      carousel.releasePointerCapture(e.pointerId);
-    }
-
+    if (track.hasPointerCapture(e.pointerId)) track.releasePointerCapture(e.pointerId);
     if (state.moved) {
-      carousel.classList.remove(styles.dragging);
-      goToSlide(getClosestIndex(carousel));
+      track.classList.remove(styles.dragging);
+      goTo(getClosestStop(track, getStops(track)));
     }
   };
 
@@ -182,6 +118,8 @@ export function Services({ heading = true }: { heading?: boolean }) {
       drag.current.moved = false;
     }
   };
+
+  const scrollable = stops.length > 1;
 
   return (
     <section id="services" className={cn("section", styles.section)}>
@@ -198,7 +136,7 @@ export function Services({ heading = true }: { heading?: boolean }) {
                   under one roof
                 </>
               }
-              lede="Eight practice areas that plug into each other. Most clients start with one and add the rest as results compound."
+              lede="Six services that plug into each other. Most clients start with one and add the rest as results compound."
               action={
                 <Button asChild variant="outline" className={styles.allServices}>
                   <Link href="/services">
@@ -210,85 +148,48 @@ export function Services({ heading = true }: { heading?: boolean }) {
           </Reveal>
         )}
 
-        <div className={styles.carousel}>
-          <div
-            ref={carouselRef}
-            className={styles.grid}
-            onPointerDown={handlePointerDown}
-            onPointerMove={handlePointerMove}
-            onPointerUp={endDrag}
-            onPointerCancel={endDrag}
-            onClickCapture={handleClickCapture}
-            onDragStart={(e) => e.preventDefault()}
-          >
-            {SERVICE_DETAILS.map((s, i) => (
-              <div
-                key={s.slug}
-                className={styles.cardWrapper}
-              >
-                <Reveal
-                  delay={(i % 4) * 0.07}
-                  className={styles.reveal}
-                >
-                  <Link
-                    href={`/services/${s.slug}`}
-                    className={styles.card}
-                  >
-                    <span className={styles.accent} />
+        <div
+          ref={trackRef}
+          className={styles.track}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={endDrag}
+          onPointerCancel={endDrag}
+          onClickCapture={handleClickCapture}
+          onDragStart={(e) => e.preventDefault()}
+        >
+          {SERVICE_PAGES.map((s, i) => (
+            <div key={s.slug} className={styles.cardWrapper}>
+              <Reveal delay={(i % 4) * 0.07} className={styles.reveal}>
+                <Link href={servicePageHref(s)} className={styles.card}>
+                  <h3 className={cn("display", styles.title)}>{s.title}</h3>
+                  <p className={styles.summary}>{s.summary}</p>
+                  <div className={styles.footer}>
+                    <span className={styles.price}>
+                      From <b className={styles.priceValue}>{s.priceFrom}</b>
+                    </span>
+                    <span className={styles.details}>Details</span>
+                  </div>
+                </Link>
+              </Reveal>
+            </div>
+          ))}
+        </div>
 
-                    <div className={styles.iconWrap}>
-                      <ServiceIcon
-                        name={s.icon}
-                        slug={s.slug}
-                        className={styles.icon}
-                      />
-                    </div>
-
-                    <h3
-                      className={cn(
-                        "display",
-                        styles.title
-                      )}
-                    >
-                      {s.title}
-                    </h3>
-
-                    <p className={styles.summary}>
-                      {s.summary}
-                    </p>
-
-                    <p className={styles.more}>
-                      Explore{" "}
-                      <span className={styles.arrow}>
-                        →
-                      </span>
-                    </p>
-                  </Link>
-                </Reveal>
-              </div>
-            ))}
-          </div>
-
-          {/* Mobile slide indicators */}
+        {scrollable && (
           <div className={styles.dots}>
-            {SERVICE_DETAILS.map((s, i) => (
+            {stops.map((_, i) => (
               <button
-                key={s.slug}
+                key={i}
                 type="button"
-                aria-label={`Go to service ${i + 1}`}
-                aria-current={
-                  activeIndex === i ? "true" : undefined
-                }
-                className={cn(
-                  styles.dot,
-                  activeIndex === i &&
-                  styles.activeDot
-                )}
-                onClick={() => goToSlide(i)}
+                aria-label={`Go to services slide ${i + 1}`}
+                aria-current={active === i ? "true" : undefined}
+                className={cn(styles.dot, active === i && styles.activeDot)}
+                onClick={() => goTo(i)}
               />
             ))}
           </div>
-        </div>
+        )}
       </div>
     </section>
   );

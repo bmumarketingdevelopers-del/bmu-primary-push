@@ -4,7 +4,8 @@ import { Services } from "@/components/marketing/services";
 import { Products } from "@/components/marketing/products";
 import { StoreStrip } from "@/components/marketing/store-strip";
 import { Industries } from "@/components/marketing/industries";
-import { Work } from "@/components/marketing/work";
+// Recent work is hidden for now. Uncomment this and <Work /> below to bring it back.
+// import { Work } from "@/components/marketing/work";
 import { Results } from "@/components/marketing/results";
 import { Testimonials } from "@/components/marketing/testimonials";
 import { Pricing } from "@/components/marketing/pricing";
@@ -31,7 +32,7 @@ export default async function HomePage() {
       <Products />
       <StoreStrip />
       <Industries />
-      <Work />
+      {/* <Work /> */}
       <Results />
       <Testimonials items={testimonials.items} />
       <Pricing />

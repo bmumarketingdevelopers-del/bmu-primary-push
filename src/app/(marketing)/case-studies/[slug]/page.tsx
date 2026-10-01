@@ -35,10 +35,6 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
         eyebrow={study.industry}
         title={study.title}
         lede={study.summary}
-        breadcrumbs={[
-          { href: "/case-studies", label: "Case studies" },
-          { href: `/case-studies/${study.slug}`, label: study.client },
-        ]}
       />
 
       <section className={styles.resultsBand}>

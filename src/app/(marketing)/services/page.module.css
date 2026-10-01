@@ -14,37 +14,12 @@
   .heroInner {
     display: grid;
     gap: 2rem;
-    padding-top: clamp(1.5rem, 1rem + 2vw, 2.75rem);
+    padding-top: clamp(2.5rem, 1.75rem + 2.5vw, 4rem);
     padding-bottom: clamp(2rem, 1.5rem + 2vw, 3rem);
   }
 
   .heroCopy {
     min-width: 0;
-  }
-
-  .breadcrumbs {
-    margin-bottom: 1.25rem;
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    font-size: var(--text-small);
-    color: #8fa0b0;
-  }
-
-  .crumbLink {
-    transition: color 150ms var(--ease-brand);
-  }
-  .crumbLink:hover {
-    color: #fff;
-  }
-
-  .crumbIcon {
-    height: 0.8rem;
-    width: 0.8rem;
-  }
-
-  .crumbCurrent {
-    color: #fff;
   }
 
   .heroEyebrow {

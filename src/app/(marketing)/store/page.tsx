@@ -30,7 +30,6 @@ export default function StorePage() {
         eyebrow="Store"
         title="QR and NFC products that keep working"
         lede="Cards, standees, stickers and kits. Each one is a doorway into your BMU QR account — so what it does is a setting, not something printed on it."
-        breadcrumbs={[{ href: "/store", label: "Store" }]}
       />
 
       <section className="section">

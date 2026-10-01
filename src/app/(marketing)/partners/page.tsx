@@ -73,7 +73,6 @@ export default function PartnersPage() {
         eyebrow="Partners"
         title="Sell it under your own name"
         lede="Agencies, print resellers and franchise groups already run BMU QR as their own product. You keep the client, the branding and the margin — we keep the platform running."
-        breadcrumbs={[{ href: "/partners", label: "Partners" }]}
       />
 
       <section className="section">

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Check, ChevronRight } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { Reveal } from "@/components/marketing/reveal";
 import { Button } from "@/components/ui/button";
 import { SERVICE_PAGES, servicePageHref } from "@/lib/service-pages-data";
@@ -66,11 +66,6 @@ export default function ServicesPage() {
       <section className={styles.hero}>
         <div className={cn("container", styles.heroInner)}>
           <Reveal className={styles.heroCopy}>
-            <nav aria-label="Breadcrumb" className={styles.breadcrumbs}>
-              <Link href="/" className={styles.crumbLink}>Home</Link>
-              <ChevronRight className={styles.crumbIcon} aria-hidden="true" />
-              <span className={styles.crumbCurrent} aria-current="page">Services</span>
-            </nav>
             <span className={cn("eyebrow", styles.heroEyebrow)}>Services</span>
             <h1 className={cn("display", styles.heroTitle)}>Six services that plug into each other</h1>
             <p className={styles.heroLede}>

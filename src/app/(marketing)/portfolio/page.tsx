@@ -15,7 +15,6 @@ export default function PortfolioPage() {
         eyebrow="Portfolio"
         title="Work we can show"
         lede="A selection across websites, branding, social, drone, apps and AI creative. Some launches are still under NDA — ask on a call and we'll walk you through those."
-        breadcrumbs={[{ href: "/portfolio", label: "Portfolio" }]}
       />
       <Work heading={false} />
       <CtaBand

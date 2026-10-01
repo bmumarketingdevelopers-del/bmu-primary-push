@@ -22,13 +22,6 @@ export function ServiceHero({ service }: { service: ServicePageWithDetail }) {
       <section className={styles.hero}>
         <div className={cn("container", styles.inner)}>
           <Reveal className={styles.copy}>
-            <nav aria-label="Breadcrumb" className={styles.breadcrumbs}>
-              <Link href="/" className={styles.crumbLink}>Home</Link>
-              <span aria-hidden="true">/</span>
-              <Link href="/services" className={styles.crumbLink}>Services</Link>
-              <span aria-hidden="true">/</span>
-              <span className={styles.crumbCurrent} aria-current="page">{service.title}</span>
-            </nav>
             <span className={cn("eyebrow", styles.eyebrow)}>{service.tagline}</span>
             <h1 className={cn("display", styles.title)}>{service.title}</h1>
             <p className={styles.lede}>{service.detail.lede}</p>

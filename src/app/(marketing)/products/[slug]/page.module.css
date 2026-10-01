@@ -195,7 +195,8 @@
     transition-timing-function: var(--ease-brand);
     transition-duration: 300ms;
   }
-  .otherCard:hover {
+  /* Only linked cards react; coming-soon cards are plain content */
+  a.otherCard:hover {
     border-color: hsl(var(--primary));
     box-shadow: var(--shadow-md);
   }

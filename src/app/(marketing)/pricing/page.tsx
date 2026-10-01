@@ -42,7 +42,6 @@ export default function PricingPage() {
         eyebrow="Pricing"
         title="Flat monthly fees, no percentage of your ad spend"
         lede="We charge for the work, not a cut of the budget — so nobody has an incentive to talk you into spending more than the pipeline needs."
-        breadcrumbs={[{ href: "/pricing", label: "Pricing" }]}
       />
 
       <Pricing heading={false} />

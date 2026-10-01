@@ -71,7 +71,6 @@ export default function JoinPage() {
         eyebrow="BMU Creators"
         title="Get paid properly for the work you already make"
         lede="We book creators for brand campaigns across food, travel, fitness, interiors and retail. Clear briefs, agreed fees, and payouts that arrive when we said they would."
-        breadcrumbs={[{ href: "/join", label: "Join" }]}
       />
 
       <section className="section">

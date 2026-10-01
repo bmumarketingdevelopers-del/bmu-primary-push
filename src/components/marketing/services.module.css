@@ -24,269 +24,169 @@
   }
 
   /* =========================================
-     CAROUSEL
+     TRACK
+     --per-view: how many cards fit across. A fraction
+     (1.15, 2.2…) lets the next card peek in; desktop
+     shows exactly 4 and the other 2 swipe in.
      ========================================= */
 
-  .carousel {
-    /* Fixed card width for mobile; overridden for tablet below.
-       Height follows the content, and every card in the row
-       stretches to the tallest one, so the cards stay uniform. */
-    --card-w: 280px;
+  .track {
+    --per-view: 1.15;
+    --gap: 0.75rem;
+    /* Bleed to the viewport edge on smaller screens (cancels .container padding) */
+    --bleed: 1.25rem;
 
-    width: 100%;
     position: relative;
-  }
-
-  .grid {
     display: flex;
-    gap: 1rem;
-
-    /* Bleed to the viewport edges (cancels .container padding) so the
-       neighbouring cards peek in from both sides */
-    margin-inline: -1.25rem;
-
-    /* Center the active card: half the free space on each side */
-    padding-inline: calc(50% + 1.25rem - var(--card-w) / 2);
-    padding-block: 0.5rem;
+    gap: var(--gap);
+    margin-inline: calc(var(--bleed) * -1);
+    padding-inline: var(--bleed);
+    /* Room for the hover lift and shadow, which the scroller would otherwise clip */
+    padding-block: 0.5rem 0.75rem;
+    scroll-padding-inline: var(--bleed);
 
     overflow-x: auto;
     overflow-y: hidden;
-
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x pan-y;
 
     scrollbar-width: none;
-    -ms-overflow-style: none;
-
-    touch-action: pan-x pan-y;
-    overscroll-behavior-x: contain;
+    cursor: grab;
   }
 
-  .grid::-webkit-scrollbar {
+  .track::-webkit-scrollbar {
     display: none;
   }
 
+  /* While dragging with a mouse: follow the pointer 1:1, snap on release */
+  .track.dragging {
+    cursor: grabbing;
+    scroll-snap-type: none;
+    scroll-behavior: auto;
+    user-select: none;
+  }
 
-  /* =========================================
-     CARD WRAPPER
-     ========================================= */
+  .track.dragging .card {
+    pointer-events: none;
+  }
 
   .cardWrapper {
-    flex: 0 0 var(--card-w);
-    width: var(--card-w);
+    flex: 0 0 calc((100% - var(--gap) * (var(--per-view) - 1)) / var(--per-view));
     min-width: 0;
-
-    scroll-snap-align: center;
-    scroll-snap-stop: always;
+    scroll-snap-align: start;
   }
 
   .reveal {
     height: 100%;
   }
 
-
   /* =========================================
-     CARD
+     CARD — title, summary, price + Details
      ========================================= */
 
   .card {
-    position: relative;
     display: flex;
-    width: 100%;
     height: 100%;
-    min-height: 0;
     flex-direction: column;
-    overflow: hidden;
     border-radius: var(--radius-lg);
     border: 1px solid hsl(var(--border));
     background-color: hsl(var(--card));
-    padding: 1rem;
-    box-shadow: var(--shadow-sm);
+    padding: 1.25rem 1.25rem 1.125rem;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.04);
     text-decoration: none;
-    transition-property: all;
-    transition-timing-function: var(--ease-brand);
-    transition-duration: 300ms;
-    /*
-    position: relative;
-    display: flex;
-    width: 100%;
-    min-height: 262px;
-    flex-direction: column;
-    overflow: hidden;
-    border-radius: var(--radius-lg);
-    border: 1px solid hsl(var(--border));
-    background-color: hsl(var(--card));
-    padding: 2rem;
-    box-shadow: var(--shadow-sm);
-    text-decoration: none;
-    transition-property: all;
-    transition-timing-function: var(--ease-brand);
-    transition-duration: 300ms; */
+    /* Lets the title size itself to the card's width (cqi units below) */
+    container-type: inline-size;
+    transition:
+      transform 300ms var(--ease-brand),
+      box-shadow 300ms var(--ease-brand),
+      border-color 300ms var(--ease-brand);
   }
 
-
-  /* =========================================
-     CARD HOVER
-     ========================================= */
-
   .card:hover {
-    transform: scale(1.02);
-
-    border-color: hsl(var(--primary));
-
+    transform: translateY(-4px);
+    border-color: hsl(var(--primary) / 0.5);
     box-shadow: var(--shadow-md);
   }
 
-
-  /* =========================================
-     GREEN TOP ACCENT
-     ========================================= */
-
-  .accent {
-    position: absolute;
-
-    left: 0;
-    top: 0;
-
-    height: 3px;
-    width: 0;
-
-    background-color: hsl(var(--primary));
-
-    transition-property: all;
-    transition-timing-function: var(--ease-brand);
-    transition-duration: 500ms;
-  }
-
-  .card:hover .accent {
-    width: 100%;
-  }
-
-
-  /* =========================================
-     ICON
-     ========================================= */
-
-  .iconWrap {
-    margin-bottom: 1rem;
-    flex-shrink: 0;
-
-    display: grid;
-
-    height: 3rem;
-    width: 3rem;
-
-    place-items: center;
-
-    border-radius: var(--radius-md);
-
-    background-color: hsl(var(--primary) / 0.1);
-
-    color: hsl(var(--primary));
-  }
-
-  .icon {
-    height: 24px;
-    width: 24px;
-  }
-
-
-  /* =========================================
-     TITLE
-     ========================================= */
-
+  /* Same size as the other sections' card headings, but shrinks with a narrow card so even
+     "Social and Personal Brand" stays on one line */
   .title {
-    margin-bottom: 0.75rem;
-
-    font-size: var(--text-card-title);
+    overflow: hidden;
+    font-size: min(var(--text-card-title), 6cqi);
     line-height: 1.375;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: hsl(var(--foreground));
   }
-
-
-  /* =========================================
-     SUMMARY
-     ========================================= */
 
   .summary {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
     font-size: var(--text-body);
-
     line-height: 1.55;
-
     color: hsl(var(--muted-foreground));
-
-    /* Keep text inside the fixed card size */
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-    overflow: hidden;
   }
 
+  /* Pinned to the bottom so every card's divider lines up */
+  .footer {
+    margin-top: auto;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 0.75rem;
+    border-top: 1px solid hsl(var(--border));
+    padding-top: 0.875rem;
+  }
 
-  /* =========================================
-     EXPLORE
-     ========================================= */
-
-  /* Sits right under the summary (no longer pushed to the card bottom) */
-  .more {
-    margin-top: 0;
-
-    padding-top: 0.75rem;
-
+  /* A long price wraps on its own line; "Details" stays on the right */
+  .price {
+    min-width: 0;
     font-size: var(--text-small);
+    line-height: 1.5;
+    color: hsl(var(--muted-foreground));
+  }
 
+  .priceValue {
+    font-weight: 700;
+    color: hsl(var(--foreground));
+  }
+
+  .details {
+    flex-shrink: 0;
+    line-height: 1.5;
+    font-size: var(--text-small);
     font-weight: 600;
+    color: hsl(var(--foreground));
+    transition: color 300ms var(--ease-brand);
+  }
 
+  .card:hover .details {
     color: hsl(var(--primary));
   }
 
-  .arrow {
-    display: inline-block;
-
-    transition-property: transform;
-    transition-timing-function: cubic-bezier(0.4,
-        0,
-        0.2,
-        1);
-    transition-duration: 300ms;
-  }
-
-  .card:hover .arrow {
-    transform: translateX(0.25rem);
-  }
-
-
   /* =========================================
-     MOBILE DOTS
+     DOTS
      ========================================= */
 
   .dots {
+    margin-top: 0.75rem;
     display: flex;
-
     justify-content: center;
     align-items: center;
-
     gap: 6px;
-
-    margin-top: 0.75rem;
   }
 
   .dot {
     display: block;
-
     width: 6px;
     height: 6px;
-
     padding: 0;
-
     border: 0;
-
     border-radius: 999px;
-
     background-color: hsl(var(--muted-foreground) / 0.3);
-
     cursor: pointer;
-
     transition:
       width 200ms ease,
       background-color 200ms ease,
@@ -299,157 +199,70 @@
 
   .activeDot {
     width: 18px;
-
     background-color: hsl(var(--primary));
   }
 
-
   /* =========================================
-     MOBILE — testimonial-style cards
-     Card starts at the left margin, next card
-     peeks in on the right, swipe with thumb.
+     PHONE — 1 card + the next peeking
      ========================================= */
 
   @media (max-width: 639px) {
-
     /* "All services" button hidden on phones */
     .heading .allServices {
       display: none;
     }
 
-    .carousel {
-      --card-w: min(300px, calc(100vw - 5rem));
-    }
-
-    .grid {
-      gap: 0.75rem;
-      padding-inline: 1.25rem;
-      padding-block: 0.25rem;
-      scroll-padding-inline: 1.25rem;
-    }
-
-    .cardWrapper {
-      scroll-snap-align: start;
-    }
-
     .card {
       padding: 1rem;
-      border-radius: 0.5rem;
-      border-color: hsl(var(--border));
-      box-shadow: none;
     }
 
+    /* No lift on touch screens: it sticks after a tap */
     .card:hover {
-      box-shadow: none;
-    }
-
-    .accent {
-      display: none;
-    }
-
-    /* Plain icon, like the quote mark in the reference */
-    .iconWrap {
-      height: auto;
-      width: auto;
-      margin-bottom: 0.625rem;
-      place-items: start;
-      background-color: transparent;
-      border-radius: 0;
-    }
-
-    .icon {
-      height: 22px;
-      width: 22px;
-    }
-
-    .title {
-      margin-bottom: 0.5rem;
-      line-height: 1.4;
-      color: hsl(var(--foreground));
-    }
-
-    .summary {
-      line-height: 1.6;
-      color: hsl(var(--foreground) / 0.75);
-    }
-
-    .more {
-      padding-top: 0.625rem;
-      font-weight: 500;
-      color: hsl(var(--foreground));
+      transform: none;
+      box-shadow: 0 1px 3px rgb(0 0 0 / 0.04);
     }
   }
 
-
   /* =========================================
-     TABLET
+     TABLET — 2 cards + peek
      ========================================= */
 
   @media (min-width: 640px) {
-    .carousel {
-      --card-w: 360px;
+    .track {
+      --per-view: 2.2;
+      --gap: 1rem;
     }
 
     .card {
-      padding: 1.5rem;
+      padding: 1.5rem 1.5rem 1.25rem;
     }
   }
 
-
   /* =========================================
-     DESKTOP
+     LAPTOP — 3 cards + peek
      ========================================= */
 
-  @media (min-width: 1280px) {
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 1.5rem;
-
-      overflow: visible;
-      scroll-snap-type: none;
-      margin-inline: 0;
-      padding: 0;
-    }
-
-    /* Desktop: 4 equal-height cards per row, sized to their content */
-    .cardWrapper {
-      width: auto;
-      flex: none;
-      min-width: 0;
+  @media (min-width: 1024px) {
+    .track {
+      --per-view: 3.25;
+      --gap: 1.25rem;
     }
 
     .dots {
-      display: none;
+      margin-top: 1rem;
     }
   }
-}
 
+  /* =========================================
+     DESKTOP — exactly 4 cards inside the
+     container; the remaining 2 swipe in
+     ========================================= */
 
-/* =========================================
-   MOBILE / TABLET CAROUSEL BEHAVIOR
-   ========================================= */
-
-@media (max-width: 1279px) {
-  .grid {
-    cursor: grab;
-  }
-
-  /* While dragging with a mouse: follow the pointer 1:1, snap on release */
-  .grid.dragging {
-    cursor: grabbing;
-    scroll-snap-type: none;
-    scroll-behavior: auto;
-    user-select: none;
-  }
-
-  .grid.dragging .card,
-  .grid.dragging .card * {
-    pointer-events: none;
-  }
-
-  /* No scale-on-hover inside the carousel (it gets clipped) */
-  .card:hover {
-    transform: none;
+  @media (min-width: 1280px) {
+    .track {
+      --per-view: 4;
+      --gap: 1.5rem;
+      --bleed: 0px;
+    }
   }
 }

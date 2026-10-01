@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SERVICE_DETAILS } from "@/lib/services-data";
-import { PRODUCT_DETAILS } from "@/lib/products-data";
+import { PRODUCT_DETAILS, productHref } from "@/lib/products-data";
 import { INDUSTRY_DETAILS } from "@/lib/industries-data";
 import { CASE_STUDIES } from "@/lib/case-studies-data";
 import { POSTS } from "@/lib/posts-data";
@@ -16,7 +16,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/services", priority: 0.9 },
     { path: "/products", priority: 0.9 },
     { path: "/industries", priority: 0.8 },
-    { path: "/portfolio", priority: 0.8 },
     { path: "/case-studies", priority: 0.8 },
     { path: "/pricing", priority: 0.9 },
     { path: "/resources", priority: 0.7 },
@@ -34,7 +33,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const dynamicRoutes = [
     ...SERVICE_DETAILS.map((s) => `/services/${s.slug}`),
-    ...PRODUCT_DETAILS.map((p) => `/products/${p.slug}`),
+    // Coming-soon products aren't linked anywhere, so they're left out here too
+    ...PRODUCT_DETAILS.map(productHref).filter((href): href is string => !!href),
     ...INDUSTRY_DETAILS.map((i) => `/industries/${i.slug}`),
     ...CASE_STUDIES.map((c) => `/case-studies/${c.slug}`),
     ...POSTS.map((p) => `/resources/${p.slug}`),

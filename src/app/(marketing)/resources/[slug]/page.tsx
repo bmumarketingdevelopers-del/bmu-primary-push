@@ -33,10 +33,6 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         eyebrow={post.category}
         title={post.title}
         lede={post.excerpt}
-        breadcrumbs={[
-          { href: "/resources", label: "Resources" },
-          { href: `/resources/${post.slug}`, label: post.category },
-        ]}
       >
         <p className={styles.meta}>
           {post.author} · {formatDate(post.publishedAt)} · {post.readTime}
