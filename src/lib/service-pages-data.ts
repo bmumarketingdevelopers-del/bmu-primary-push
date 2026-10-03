@@ -147,7 +147,7 @@ export const SERVICE_PAGES: ServicePage[] = [
     title: "Marketing and Visibility",
     summary: "Paid campaigns, SEO and local search planned around qualified leads, so the right people find you first.",
     chips: ["Digital Marketing", "ChatGPT Ads", "Google Business Profile"],
-    priceFrom: "₹35,000/month + ad spend",
+    priceFrom: "₹35,000/month",
     detail: {
       lede: "Paid campaigns, SEO and local search planned around qualified leads, so the right people find you first.",
       heroNodes: ["Digital Marketing", "ChatGPT Ads", "Google Business Profile", "SEO"],
@@ -519,7 +519,7 @@ export const SERVICE_PAGES: ServicePage[] = [
     title: "Content & Production",
     summary: "Photography, reels, drone and video production, planned on a calendar and delivered ready to publish.",
     chips: ["Video Editing", "Business Video Shoots", "Podcast Shoots"],
-    priceFrom: "₹60,000",
+    priceFrom: "₹60,000/month",
     detail: {
       lede: "Photography, reels, drone and video production, planned on a calendar and delivered ready to publish.",
       heroNodes: ["Video Editing", "Podcast Shoots", "Business Video Shoots"],

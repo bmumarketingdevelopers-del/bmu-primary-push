@@ -25,6 +25,8 @@
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
+    /* No visible scrollbar on any screen; on very short screens it still scrolls by touch/wheel */
+    scrollbar-width: none;
     border-radius: clamp(20px, 5vw, 28px);
     background:
       linear-gradient(180deg, #c3e28a 0%, #d9eeb4 30%, #f6fbee 58%, #fff 72%);
@@ -32,6 +34,10 @@
     color: #1b2530;
     transform: translate(-50%, -50%);
     outline: none;
+  }
+
+  .content::-webkit-scrollbar {
+    display: none;
   }
 
   .content[data-state="open"] {
@@ -82,8 +88,9 @@
     z-index: 2;
     display: grid;
     place-items: center;
-    width: 36px;
-    height: 36px;
+    /* bigger tap target: 40px on phones → 46px on tablet/desktop */
+    width: clamp(40px, 10vw, 46px);
+    height: clamp(40px, 10vw, 46px);
     border: 0;
     border-radius: 50%;
     background: transparent;
@@ -95,8 +102,8 @@
   }
 
   .close svg {
-    width: clamp(18px, 5vw, 22px);
-    height: clamp(18px, 5vw, 22px);
+    width: clamp(22px, 6vw, 26px);
+    height: clamp(22px, 6vw, 26px);
     stroke-width: 2.5;
   }
 

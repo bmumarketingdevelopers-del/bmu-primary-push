@@ -1,281 +1,1236 @@
 @layer reset, base, helpers, ui, components;
 
 @layer components {
-  /* ---- shared */
+  /* =========================================
+     BUTTONS (page-local)
+     ========================================= */
 
-  .sectionTitle {
-    margin-bottom: 3rem;
-  }
-
-  /* ---- intro + features */
-
-  .intro {
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 68ch;
-    text-align: center;
-    font-size: clamp(17px, 1.8vw, 22px);
-    line-height: 1.625;
-  }
-
-  .featureGrid {
-    margin-top: 4rem;
-    display: grid;
-    gap: 1.5rem;
-  }
-
-  .featureTitle {
-    margin-bottom: 0.625rem;
-    font-size: 1rem;
-    line-height: 1.5rem;
+  .btnPrimary,
+  .btnGhostDark,
+  .btnOutline {
+    display: inline-flex;
+    height: 48px;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    border-radius: 10px;
+    padding-inline: 1.5rem;
+    font-size: var(--text-button);
     font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition:
+      background-color 200ms var(--ease-brand),
+      border-color 200ms var(--ease-brand),
+      filter 200ms var(--ease-brand);
   }
 
-  .featureBody {
-    font-size: 14.5px;
-    color: hsl(var(--muted-foreground));
+  .btnPrimary svg,
+  .btnGhostDark svg {
+    height: 18px;
+    width: 18px;
   }
 
-  /* ---- use cases */
-
-  .useCaseSection {
-    border-block: 1px solid hsl(var(--border));
-    background-color: hsl(var(--card));
+  .btnPrimary {
+    background-color: hsl(var(--primary));
+    color: #fff;
   }
 
-  .useCaseGrid {
-    display: grid;
-    gap: 1.5rem;
+  .btnPrimary:hover {
+    filter: brightness(1.08);
   }
 
-  .useCase {
-    height: 100%;
-    border-radius: var(--radius-lg);
+  .btnGhostDark {
+    border: 1px solid rgb(255 255 255 / 0.3);
+    color: #fff;
+  }
+
+  .btnGhostDark:hover {
+    border-color: rgb(255 255 255 / 0.65);
+    background-color: rgb(255 255 255 / 0.05);
+  }
+
+  .btnOutline {
     border: 1px solid hsl(var(--border));
-    background-color: hsl(var(--background));
-    padding: 2rem;
+    background-color: hsl(var(--card));
+    color: hsl(var(--foreground));
   }
 
-  .useCaseWho {
-    margin-bottom: 0.75rem;
-    font-size: 17px;
+  .btnOutline:hover {
+    border-color: hsl(var(--primary));
+  }
+
+  /* shared green check in a pale circle */
+  .checkDot {
+    display: grid;
+    flex-shrink: 0;
+    height: 20px;
+    width: 20px;
+    place-items: center;
+    border-radius: 999px;
+    background-color: hsl(var(--primary) / 0.15);
+    color: var(--green-dark);
+  }
+
+  .checkDot svg {
+    height: 12px;
+    width: 12px;
+    stroke-width: 3;
+  }
+
+  /* =========================================
+     HERO (dark, sits under the sticky header)
+     ========================================= */
+
+  .hero {
+    position: relative;
+    overflow: hidden;
+    margin-top: -76px;
+    padding-top: 76px;
+    color: #fff;
+    background:
+      radial-gradient(ellipse 40% 60% at 78% 55%, rgb(139 183 44 / 0.2), transparent 70%),
+      linear-gradient(135deg, #101c27 0%, #13212c 55%, #182c26 100%);
+  }
+
+  /* faint grid, strongest on the right */
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgb(255 255 255 / 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(255 255 255 / 0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    -webkit-mask-image: radial-gradient(ellipse 60% 80% at 75% 50%, #000 30%, transparent 80%);
+    mask-image: radial-gradient(ellipse 60% 80% at 75% 50%, #000 30%, transparent 80%);
+    pointer-events: none;
+  }
+
+  .heroGrid {
+    position: relative;
+    display: grid;
+    gap: 3rem;
+    padding-top: clamp(1.75rem, 4vw, 3rem);
+    padding-bottom: clamp(3rem, 6vw, 4.5rem);
+  }
+
+  .crumbs {
+    font-size: var(--text-small);
+    color: #93a2b1;
+  }
+
+  .crumbs a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .crumbs a:hover {
+    color: #fff;
+  }
+
+  .crumbs [aria-current] {
+    color: #c6d0da;
+  }
+
+  .tag {
+    margin-top: 1.25rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    border-radius: 999px;
+    border: 1px solid hsl(var(--primary) / 0.35);
+    background-color: hsl(var(--primary) / 0.12);
+    padding: 0.3rem 0.8rem;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     color: hsl(var(--primary));
   }
 
-  .useCaseWhat {
-    font-size: 14.5px;
+  .tagDot {
+    height: 6px;
+    width: 6px;
+    border-radius: 999px;
+    background-color: hsl(var(--primary));
+  }
+
+  .heroTitle {
+    margin-top: 1rem;
+    font-size: clamp(44px, 7vw, 88px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .heroTagline {
+    margin-top: 1.25rem;
+    font-size: clamp(17px, 1.6vw, 21px);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .heroIntro {
+    margin-top: 1rem;
+    max-width: 52ch;
+    font-size: var(--text-lede);
+    line-height: 1.6;
+    color: #b8c4cf;
+  }
+
+  .heroActions {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .heroStats {
+    margin-top: 2.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid rgb(255 255 255 / 0.1);
+    padding-top: 1.25rem;
+  }
+
+  .heroStats > div {
+    padding-inline: 0.75rem;
+  }
+
+  .heroStats > div:first-child {
+    padding-left: 0;
+  }
+
+  .heroStats > div + div {
+    border-left: 1px solid rgb(255 255 255 / 0.1);
+  }
+
+  .heroStats dt {
+    font-size: var(--text-small);
+    color: #93a2b1;
+  }
+
+  .heroStats dd {
+    margin-top: 0.3rem;
+    font-size: var(--text-body);
+    font-weight: 700;
+  }
+
+  /* ---- dashboard card */
+
+  .dash {
+    position: relative;
+    padding-bottom: 1.75rem;
+  }
+
+  .dashCard {
+    border-radius: 20px;
+    border: 1px solid rgb(255 255 255 / 0.12);
+    background:
+      radial-gradient(ellipse 70% 60% at 45% 55%, rgb(139 183 44 / 0.22), transparent 75%),
+      rgb(255 255 255 / 0.05);
+    padding: clamp(1.1rem, 3vw, 1.6rem);
+    padding-bottom: 3rem;
+    backdrop-filter: blur(6px);
+  }
+
+  .dashHead {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .dashTitle {
+    font-size: var(--text-card-title);
+    font-weight: 700;
+  }
+
+  .dashSub {
+    margin-top: 0.2rem;
+    font-size: 12px;
+    color: #93a2b1;
+  }
+
+  .livePill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border-radius: 999px;
+    background-color: hsl(var(--primary) / 0.16);
+    padding: 0.3rem 0.75rem;
+    font-size: 12px;
+    font-weight: 600;
+    color: hsl(var(--primary));
+  }
+
+  .liveDot {
+    height: 6px;
+    width: 6px;
+    border-radius: 999px;
+    background-color: hsl(var(--primary));
+  }
+
+  .dashBody {
+    margin-top: 1.25rem;
+    display: grid;
+    justify-items: center;
+    gap: 1.25rem;
+  }
+
+  .donut {
+    position: relative;
+    width: min(190px, 60vw);
+    aspect-ratio: 1;
+  }
+
+  .donut svg {
+    height: 100%;
+    width: 100%;
+  }
+
+  .donutCenter {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* sized so "18,402" (~5.6em in the heading font) fits inside the ring */
+  .donutTotal {
+    font-size: clamp(17px, 1.5vw, 21px);
+    line-height: 1;
+  }
+
+  .donutLabel {
+    margin-top: 0.35rem;
+    font-size: 12px;
+    color: #93a2b1;
+  }
+
+  .dashRows {
+    display: grid;
+    width: 100%;
+    gap: 0.7rem;
+  }
+
+  .dashRow {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    column-gap: 0.6rem;
+    row-gap: 0.35rem;
+    font-size: 13px;
+  }
+
+  .dashSwatch {
+    height: 10px;
+    width: 10px;
+    border-radius: 2px;
+  }
+
+  .dashRowLabel {
+    color: #dfe6ec;
+  }
+
+  .dashRowValue {
+    font-weight: 700;
+  }
+
+  .dashBar {
+    grid-column: 2 / -1;
+    display: block;
+    height: 3px;
+    border-radius: 999px;
+    background-color: rgb(255 255 255 / 0.08);
+  }
+
+  .dashBar > span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+  }
+
+  .feed {
+    margin-top: 1.25rem;
+    border-top: 1px solid rgb(255 255 255 / 0.1);
+    padding-top: 1rem;
+  }
+
+  .feedLabel {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #93a2b1;
+  }
+
+  .feedRow {
+    margin-top: 0.7rem;
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 0.65rem;
+    font-size: 12.5px;
+  }
+
+  .feedDot {
+    height: 6px;
+    width: 6px;
+    border-radius: 999px;
+    background-color: hsl(var(--primary) / 0.6);
+  }
+
+  .feedDotNew {
+    background-color: hsl(var(--primary));
+    box-shadow: 0 0 0 3px hsl(var(--primary) / 0.2);
+  }
+
+  .feedName {
+    font-weight: 600;
+  }
+
+  .feedWhere {
+    overflow: hidden;
+    padding-left: 0.5rem;
+    font-size: 11.5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #93a2b1;
+  }
+
+  .feedWhen {
+    font-size: 11.5px;
+    color: #93a2b1;
+  }
+
+  /* overlaps the card's bottom-left edge (phones: slightly inset, laptop: slightly outside) */
+  .toast {
+    position: absolute;
+    left: 1rem;
+    bottom: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-radius: 12px;
+    border: 1px solid rgb(255 255 255 / 0.12);
+    background-color: #162433;
+    padding: 0.7rem 1rem;
+    box-shadow: 0 12px 30px rgb(0 0 0 / 0.35);
+  }
+
+  .toastIcon {
+    display: grid;
+    height: 30px;
+    width: 30px;
+    place-items: center;
+    border-radius: 999px;
+    background-color: hsl(var(--primary) / 0.15);
+    color: hsl(var(--primary));
+  }
+
+  .toastIcon svg {
+    height: 16px;
+    width: 16px;
+  }
+
+  .toastTitle {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .toastBody {
+    display: block;
+    font-size: 11.5px;
+    color: #93a2b1;
+  }
+
+  /* =========================================
+     HOW IT WORKS
+     ========================================= */
+
+  .howGrid {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  .howTitle {
+    font-size: var(--text-h2);
+    line-height: var(--text-h2-lh);
+    letter-spacing: -0.015em;
+  }
+
+  .howBody {
+    margin-top: 1.25rem;
+    max-width: 44ch;
+    font-size: var(--text-lede);
+    line-height: 1.6;
     color: hsl(var(--muted-foreground));
   }
 
-  /* ---- plans */
-
-  .plansHeader {
-    margin-bottom: 3rem;
-    text-align: center;
+  .howPoints {
+    margin-top: 1.5rem;
+    display: grid;
+    gap: 0.85rem;
   }
 
-  .plansEyebrow {
-    justify-content: center;
+  .howPoints li {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-size: var(--text-body);
+    font-weight: 600;
+  }
+
+  /* Mobile: phone on top, cards in a 2-column grid; laptop: cards around the phone */
+  .howPanel {
+    position: relative;
+    border-radius: 24px;
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    padding: 1.25rem;
+  }
+
+  .howStage {
+    position: relative;
+    height: 250px;
+  }
+
+  .howLinks {
+    display: none;
+  }
+
+  .howHalo {
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    height: 210px;
+    width: 210px;
+    border-radius: 999px;
+    background: radial-gradient(circle, hsl(var(--primary) / 0.12) 0 55%, hsl(var(--primary) / 0.06) 56% 100%);
+    transform: translate(-50%, -50%);
+  }
+
+  .phone {
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    display: flex;
+    height: 170px;
+    width: 96px;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 18px;
+    background-color: #182636;
+    padding: 0.6rem 0.7rem 0;
+    box-shadow: 0 12px 30px rgb(18 31 47 / 0.25);
+    transform: translate(-50%, -50%);
+  }
+
+  .phoneNotch {
+    height: 4px;
+    width: 26px;
+    border-radius: 999px;
+    background-color: rgb(255 255 255 / 0.15);
+  }
+
+  /* green scanner corners */
+  .phoneFrame {
+    position: relative;
+    margin-top: 1.2rem;
+    display: grid;
+    height: 52px;
+    width: 58px;
+    place-items: center;
+    background:
+      linear-gradient(hsl(var(--primary)) 0 0) top left / 14px 3px no-repeat,
+      linear-gradient(hsl(var(--primary)) 0 0) top left / 3px 14px no-repeat,
+      linear-gradient(hsl(var(--primary)) 0 0) top right / 14px 3px no-repeat,
+      linear-gradient(hsl(var(--primary)) 0 0) top right / 3px 14px no-repeat,
+      linear-gradient(hsl(var(--primary)) 0 0) bottom left / 14px 3px no-repeat,
+      linear-gradient(hsl(var(--primary)) 0 0) bottom left / 3px 14px no-repeat,
+      linear-gradient(hsl(var(--primary)) 0 0) bottom right / 14px 3px no-repeat,
+      linear-gradient(hsl(var(--primary)) 0 0) bottom right / 3px 14px no-repeat;
+  }
+
+  .phoneScan {
+    height: 8px;
+    width: 34px;
+    border-radius: 2px;
+    background-color: hsl(var(--primary) / 0.7);
+  }
+
+  .phoneText {
+    margin-top: 1rem;
+    font-size: 9.5px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .phoneBar {
+    margin-top: 0.35rem;
+    display: block;
+    height: 3px;
+    width: 58px;
+    border-radius: 999px;
+    background-color: rgb(255 255 255 / 0.15);
+  }
+
+  .phoneBar > span {
+    display: block;
+    height: 100%;
+    width: 60%;
+    border-radius: inherit;
+    background-color: hsl(var(--primary));
+  }
+
+  .switchPill {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    border-radius: 999px;
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    padding: 0.3rem 0.9rem;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    color: var(--green-dark);
+    transform: translateX(-50%);
+  }
+
+  .howBranch {
+    display: block;
+    height: 34px;
+    width: 100%;
+    margin-top: 0.25rem;
+  }
+
+  .howCards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
+  }
+
+  /* phones/tablets: icon on top, text below; laptop: icon beside the text */
+  .howCard {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+    border-radius: 14px;
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    padding: 0.9rem;
+  }
+
+  .howIcon {
+    display: grid;
+    flex-shrink: 0;
+    height: 36px;
+    width: 36px;
+    place-items: center;
+    border-radius: 9px;
+    background-color: hsl(var(--primary) / 0.14);
+    color: var(--green-dark);
+  }
+
+  .howIcon svg {
+    height: 16px;
+    width: 16px;
+  }
+
+  .howCardTitle {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .howCardBody {
+    display: block;
+    font-size: 11.5px;
+    line-height: 1.35;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* =========================================
+     FEATURES
+     ========================================= */
+
+  .featuresHead {
+    margin-bottom: var(--space-heading);
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .featuresNote {
+    max-width: 36ch;
+    font-size: var(--text-body);
+    line-height: 1.55;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .featureGrid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  /* phones/tablets: icon on the left, text beside it; laptop: icon on top */
+  .featureCard {
+    display: grid;
+    height: 100%;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    column-gap: 1rem;
+    align-content: start;
+    border-radius: 18px;
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    padding: 1.15rem 1.25rem;
+    transition:
+      border-color 300ms var(--ease-brand),
+      box-shadow 300ms var(--ease-brand),
+      transform 300ms var(--ease-brand);
+  }
+
+  .featureCard:hover {
+    border-color: hsl(var(--primary) / 0.5);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-3px);
+  }
+
+  .featureIcon {
+    grid-row: 1 / 3;
+    display: grid;
+    height: 40px;
+    width: 40px;
+    place-items: center;
+    border-radius: 10px;
+    background-color: hsl(var(--primary) / 0.14);
+    color: var(--green-dark);
+  }
+
+  .featureIcon svg {
+    height: 18px;
+    width: 18px;
+  }
+
+  .featureTitle {
+    align-self: center;
+    font-size: var(--text-body);
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .featureBody {
+    margin-top: 0.3rem;
+    font-size: var(--text-small);
+    line-height: 1.55;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* =========================================
+     PRICING
+     ========================================= */
+
+  /* left-aligned on phones/tablets, centred on laptop */
+  .pricingHead {
+    margin-bottom: var(--space-heading);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pricingNote {
+    margin-top: 0.75rem;
+    font-size: var(--text-body);
+    color: hsl(var(--muted-foreground));
   }
 
   .planGrid {
     display: grid;
-    align-items: start;
-    gap: 1.5rem;
+    gap: 1.25rem;
+  }
+
+  .planReveal {
+    height: 100%;
   }
 
   .plan {
+    position: relative;
     display: flex;
     height: 100%;
     flex-direction: column;
-    border-radius: var(--radius-lg);
+    border-radius: 22px;
     border: 1px solid hsl(var(--border));
     background-color: hsl(var(--card));
-    padding: 2.25rem;
-    box-shadow: var(--shadow-sm);
-    transition-property: all;
-    transition-timing-function: var(--ease-brand);
-    transition-duration: 300ms;
-  }
-  .plan:hover {
-    transform: scale(1.02);
-    box-shadow: var(--shadow-md);
+    padding: clamp(1.5rem, 3vw, 2rem);
   }
 
-  /* After .plan so it wins; .plan:hover still swaps the shadow on hover. */
   .planFeatured {
-    border-color: var(--ink);
-    background-color: var(--ink);
+    border-color: transparent;
     color: #fff;
-    box-shadow: var(--shadow-lg);
+    background: linear-gradient(160deg, #13212d 0%, #1b3330 55%, #3d6a2a 100%);
+    box-shadow: 0 20px 50px rgb(18 31 47 / 0.25);
   }
-  :global(.dark) .planFeatured {
-    border-color: hsl(var(--primary) / 0.4);
+
+  .planBadge {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    border-radius: 999px;
+    background-color: hsl(var(--primary));
+    padding: 0.3rem 0.75rem;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #13212d;
   }
 
   .planName {
-    font-size: 18px;
+    font-size: clamp(20px, 1.8vw, 24px);
+  }
+
+  .planNote {
+    margin-top: 0.4rem;
+    font-size: var(--text-small);
+    color: hsl(var(--muted-foreground));
+  }
+
+  .planFeatured .planNote {
+    color: #a9b6c2;
   }
 
   .planPrice {
     margin-top: 1.25rem;
-    font-size: clamp(28px, 3vw, 38px);
-    line-height: 1.25;
-  }
-
-  .planUnit {
-    font-family: var(--font-sans-stack);
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    font-weight: 500;
-    color: hsl(var(--muted-foreground));
-  }
-
-  .planUnitFeatured {
-    color: #8fa0b0;
-  }
-
-  .planFeatures {
-    margin-top: 1.75rem;
-    margin-bottom: 1.75rem;
     display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    font-size: 14.5px;
-    color: hsl(var(--muted-foreground));
+    align-items: baseline;
+    gap: 0.5rem;
+    border-bottom: 1px solid hsl(var(--border));
+    padding-bottom: 1.5rem;
   }
 
-  .planFeaturesFeatured {
-    color: #b4c2cf;
+  .planFeatured .planPrice {
+    border-color: rgb(255 255 255 / 0.12);
   }
 
-  .planFeature {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
+  .planAmount {
+    font-size: clamp(38px, 4vw, 52px);
+    line-height: 1;
   }
 
-  .planBullet {
-    margin-top: 0.5rem;
-    height: 0.375rem;
-    width: 0.375rem;
-    flex-shrink: 0;
-    border-radius: 2px;
-    background-color: hsl(var(--primary));
-  }
-
-  /* ---- FAQ */
-
-  .faqSection {
-    border-top: 1px solid hsl(var(--border));
-    background-color: hsl(var(--card));
-  }
-
-  .faqGrid {
-    display: grid;
-    gap: 4rem;
-  }
-
-  /* ---- other products */
-
-  .otherGrid {
-    display: grid;
-    gap: 1.5rem;
-  }
-
-  .otherCard {
-    display: flex;
-    height: 100%;
-    flex-direction: column;
-    border-radius: var(--radius-lg);
-    border: 1px solid hsl(var(--border));
-    background-color: hsl(var(--card));
-    padding: 2rem;
-    transition-property: all;
-    transition-timing-function: var(--ease-brand);
-    transition-duration: 300ms;
-  }
-  /* Only linked cards react; coming-soon cards are plain content */
-  a.otherCard:hover {
-    border-color: hsl(var(--primary));
-    box-shadow: var(--shadow-md);
-  }
-
-  .otherName {
-    margin-bottom: 0.5rem;
-    font-size: 17px;
-  }
-
-  .otherSummary {
-    font-size: 14.5px;
-    color: hsl(var(--muted-foreground));
-  }
-
-  .otherMore {
-    margin-top: auto;
-    padding-top: 1.5rem;
-    font-size: 13px;
-    font-weight: 600;
+  .planFeatured .planAmount {
     color: hsl(var(--primary));
   }
 
-  .arrow {
-    display: inline-block;
-    transition-property: transform;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 300ms;
-  }
-  .otherCard:hover .arrow {
-    transform: translateX(0.25rem);
+  .planUnit {
+    font-size: var(--text-small);
+    color: hsl(var(--muted-foreground));
   }
 
-  @media (min-width: 768px) {
+  .planFeatured .planUnit {
+    color: #a9b6c2;
+  }
+
+  .planFeatures {
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+    display: grid;
+    gap: 0.85rem;
+  }
+
+  .planFeatures li {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-size: var(--text-body);
+  }
+
+  .planFeatured .checkDot {
+    background-color: hsl(var(--primary) / 0.22);
+    color: hsl(var(--primary));
+  }
+
+  /* button pinned to the bottom so all three line up */
+  .plan > a {
+    margin-top: auto;
+    width: 100%;
+  }
+
+  /* =========================================
+     FAQ
+     ========================================= */
+
+  .faqGrid {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .faqTitle {
+    font-size: var(--text-h2);
+    line-height: var(--text-h2-lh);
+    letter-spacing: -0.015em;
+  }
+
+  .faqNote {
+    margin-top: 1rem;
+    font-size: var(--text-body);
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* Dropdown list: same look as the landing page FAQ (rows split by thin lines,
+     round chevron that flips when open) */
+  .faqList {
+    border-top: 1px solid hsl(var(--border));
+  }
+
+  /* 16px apart on phones → 22px on desktop */
+  .faqTrigger {
+    padding-top: clamp(1rem, 0.9rem + 0.5vw, 1.375rem);
+    padding-bottom: clamp(1rem, 0.9rem + 0.5vw, 1.375rem);
+    font-size: var(--text-lede);
+    color: hsl(var(--foreground));
+  }
+
+  /* open question sits close to its answer */
+  .faqTrigger[data-state="open"] {
+    padding-bottom: clamp(0.375rem, 0.3rem + 0.3vw, 0.625rem);
+  }
+
+  .faqTrigger:hover {
+    color: hsl(var(--primary));
+  }
+
+  .faqAnswer {
+    padding-bottom: clamp(1rem, 0.9rem + 0.5vw, 1.375rem);
+    font-size: var(--text-body);
+    line-height: 1.65;
+  }
+
+  /* =========================================
+     CLOSING CTA BAND
+     ========================================= */
+
+  .cta {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    gap: 1.75rem;
+    border-radius: 22px;
+    padding: clamp(1.75rem, 5vw, 3.25rem);
+    color: #fff;
+    background:
+      radial-gradient(ellipse 50% 90% at 85% 50%, rgb(110 160 50 / 0.45), transparent 75%),
+      linear-gradient(110deg, #13212d 0%, #1e3530 45%, #3f6a2b 100%);
+  }
+
+  .ctaRings {
+    position: absolute;
+    right: -6rem;
+    top: 50%;
+    height: 26rem;
+    width: 26rem;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  .ctaText,
+  .ctaActions {
+    position: relative;
+  }
+
+  .ctaEyebrow {
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: hsl(var(--primary));
+  }
+
+  /* phones/tablets: heading font, natural wrap; laptop: bold sans with the design's line break */
+  .ctaTitle {
+    margin-top: 0.75rem;
+    font-family: var(--font-display-stack);
+    font-size: var(--text-h3);
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+
+  .ctaBody {
+    margin-top: 1rem;
+    font-size: var(--text-small);
+    line-height: 1.6;
+    color: #b8c4cf;
+  }
+
+  .ctaLine {
+    display: block;
+  }
+
+  .ctaSep {
+    display: none;
+  }
+
+  .ctaActions {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .ctaActions a {
+    width: 100%;
+  }
+
+
+
+  /* =========================================
+     PHONE / TABLET BREAKPOINTS
+     ========================================= */
+
+  /* =========================================
+     PHONES ONLY (mobile design trims a few extras)
+     ========================================= */
+
+  @media (max-width: 639px) {
+    .heroActions {
+      display: grid;
+    }
+
+    .heroActions a {
+      width: 100%;
+    }
+
+    .howPoints,
+    .featuresNote,
+    .faqNote {
+      display: none;
+    }
+  }
+
+  @media (min-width: 640px) {
+    /* donut beside the bars once there's room */
+    .dashBody {
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
     .featureGrid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .useCaseGrid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    .featuresHead {
+      grid-template-columns: 1fr auto;
+      align-items: end;
     }
 
-    .otherGrid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: 768px) {
     .planGrid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     .faqGrid {
-      grid-template-columns: 0.8fr 1.2fr;
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr);
+      gap: 3rem;
     }
   }
 
-  @media (min-width: 1280px) {
-    .featureGrid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+  /* =========================================
+     LAPTOP
+     ========================================= */
+
+  @media (min-width: 1024px) {
+    .heroGrid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr);
+      align-items: center;
+      gap: 4rem;
     }
 
-    .useCaseGrid {
+    .heroSolo {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .dash {
+      padding-bottom: 1.75rem;
+    }
+
+    .dashCard {
+      padding-bottom: 2.75rem;
+    }
+
+    .toast {
+      position: absolute;
+      left: -0.75rem;
+      bottom: 0;
+      margin-top: 0;
+    }
+
+    .featureGrid {
       grid-template-columns: repeat(4, minmax(0, 1fr));
     }
+
+    .howGrid {
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+      align-items: center;
+      gap: 3.5rem;
+    }
+
+    /* diagram: cards placed around the phone at the design's positions */
+    .howPanel {
+      padding: 0;
+      aspect-ratio: 1103 / 668;
+    }
+
+    .howStage {
+      position: absolute;
+      inset: 0;
+      height: auto;
+    }
+
+    .howLinks {
+      position: absolute;
+      inset: 0;
+      display: block;
+      height: 100%;
+      width: 100%;
+    }
+
+    .howHalo {
+      left: 49.9%;
+      top: 51.3%;
+      height: 45%;
+      width: auto;
+      aspect-ratio: 1;
+    }
+
+    .phone {
+      left: 49.9%;
+      top: 48%;
+      height: 36%;
+      width: 12%;
+    }
+
+    .switchPill {
+      bottom: auto;
+      top: 68.6%;
+    }
+
+    .howCards {
+      position: absolute;
+      inset: 0;
+      margin: 0;
+      display: block;
+    }
+
+    .howCard {
+      position: absolute;
+      width: 29.6%;
+      height: 14.5%;
+    }
+
+    .howCard_l0,
+    .howCard_l1,
+    .howCard_l2 {
+      left: 4.5%;
+    }
+
+    .howCard_r0,
+    .howCard_r1,
+    .howCard_r2 {
+      left: 65.8%;
+    }
+
+    .howCard_l0,
+    .howCard_r0 {
+      top: 13.6%;
+    }
+
+    .howCard_l1,
+    .howCard_r1 {
+      top: 40.6%;
+    }
+
+    .howCard_l2,
+    .howCard_r2 {
+      top: 67.5%;
+    }
+
+    .cta {
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .ctaTitle {
+      white-space: pre-line;
+      font-family: inherit;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.015em;
+    }
+
+    .ctaLine {
+      display: inline;
+    }
+
+    .ctaSep {
+      display: inline;
+    }
+
+    .ctaActions .btnPrimary {
+      justify-content: space-between;
+    }
+
+    .pricingHead {
+      align-items: center;
+      text-align: center;
+    }
+
+    .featureCard {
+      display: block;
+      padding: 1.5rem;
+    }
+
+    .featureTitle {
+      margin-top: 1.5rem;
+    }
+
+    .featureBody {
+      margin-top: 0.5rem;
+    }
+
+    .howBranch {
+      display: none;
+    }
+
+    .howCard {
+      flex-direction: row;
+      align-items: center;
+      padding: 0.6rem 0.7rem;
+    }
+
+    .howIcon {
+      height: 32px;
+      width: 32px;
+    }
+
+    .howCardTitle {
+      font-size: 13px;
+    }
+
+    .howCardBody {
+      font-size: 11px;
+    }
+
+    .ctaActions {
+      width: 300px;
+    }
   }
-}
-
-/* Overrides passed into other components via `className`. */
-
-.featureCard {
-  height: 100%;
-  padding: 2rem;
-}
-
-.planCta {
-  margin-top: auto;
-  width: 100%;
-}
-
-.faqList {
-  border-top: 1px solid hsl(var(--border));
 }
