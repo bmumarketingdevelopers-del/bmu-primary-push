@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -78,7 +78,13 @@ const SOURCE_LABELS: Record<LeadSource, string> = {
 
 const SOURCE_SHORT: Record<LeadSource, string> = { quick: "Landing page", popup: "Popup", contact: "Contact page" };
 
-const SOURCE_TABS: { id: LeadSource; hint: string }[] = [
+/** "all" lists every source together; the search, status and date filters apply to every tab. */
+type LeadTab = LeadSource | "all";
+
+const TAB_LABELS: Record<LeadTab, string> = { all: "All leads", ...SOURCE_LABELS };
+
+const SOURCE_TABS: { id: LeadTab; hint: string }[] = [
+  { id: "all", hint: "Every lead from the landing page form, the popup and the contact page." },
   { id: "quick", hint: "Short form on the home page: name, phone and what they need." },
   { id: "popup", hint: "Popup on the home page: name, phone and email." },
   { id: "contact", hint: "Full form on /contact: adds email, company, budget and a message." },
@@ -204,7 +210,7 @@ export function LeadsDashboard({
   const router = useRouter();
   const [refreshing, startRefresh] = useTransition();
   const [view, setView] = useState<"leads" | "review">("leads");
-  const [tab, setTab] = useState<LeadSource>("quick");
+  const [tab, setTab] = useState<LeadTab>("all");
   const [query, setQuery] = useState("");
   const [range, setRange] = useState<RangeId>("all");
   // Custom dates: defaults to the last 7 days, including today
@@ -219,6 +225,22 @@ export function LeadsDashboard({
   const [overrides, setOverrides] = useState<Record<string, LeadStatus>>({});
   const [flash, setFlash] = useState<{ tone: "ok" | "error"; text: string; details?: string[] } | null>(null);
 
+  // New leads arrive while the dashboard is open, so re-fetch them every 30 seconds and whenever
+  // the tab comes back into view. Filters, dates and the open tab are client state and stay as set.
+  useEffect(() => {
+    const refreshIfVisible = () => {
+      if (document.visibilityState === "visible") router.refresh();
+    };
+    const timer = window.setInterval(refreshIfVisible, 30_000);
+    document.addEventListener("visibilitychange", refreshIfVisible);
+    window.addEventListener("focus", refreshIfVisible);
+    return () => {
+      window.clearInterval(timer);
+      document.removeEventListener("visibilitychange", refreshIfVisible);
+      window.removeEventListener("focus", refreshIfVisible);
+    };
+  }, [router]);
+
   const items = useMemo(
     () => leads.map((l) => (overrides[l.id] ? { ...l, status: overrides[l.id] } : l)),
     [leads, overrides],
@@ -227,6 +249,7 @@ export function LeadsDashboard({
 
   const byForm = useMemo(
     () => ({
+      all: items,
       quick: items.filter((l) => sourceOf(l) === "quick"),
       popup: items.filter((l) => sourceOf(l) === "popup"),
       contact: items.filter((l) => sourceOf(l) === "contact"),
@@ -235,13 +258,20 @@ export function LeadsDashboard({
   );
 
   const q = query.trim().toLowerCase();
-  const visible = useMemo(
-    () =>
-      byForm[tab].filter(
-        (l) => inRange(l, range, span) && (statusFilter === "all" || l.status === statusFilter) && matches(l, q),
-      ),
-    [byForm, tab, range, span, statusFilter, q],
-  );
+
+  // The search, status and date filters are global: applied to every tab, and to the tab counts
+  const shownByForm = useMemo(() => {
+    const keep = (l: WebsiteLead) =>
+      inRange(l, range, span) && (statusFilter === "all" || l.status === statusFilter) && matches(l, q);
+    return {
+      all: byForm.all.filter(keep),
+      quick: byForm.quick.filter(keep),
+      popup: byForm.popup.filter(keep),
+      contact: byForm.contact.filter(keep),
+    };
+  }, [byForm, range, span, statusFilter, q]);
+
+  const visible = shownByForm[tab];
 
   const reviewPool = useMemo(
     () => items.filter((l) => (reviewForm === "all" || sourceOf(l) === reviewForm) && matches(l, q)),
@@ -426,15 +456,18 @@ export function LeadsDashboard({
                   className={cn(styles.tab, tab === t.id && styles.tabActive)}
                   onClick={() => setTab(t.id)}
                 >
-                  {t.id === "quick" ? (
+                  {t.id === "all" ? (
+                    <Users aria-hidden="true" />
+                  ) : t.id === "quick" ? (
                     <LayoutTemplate aria-hidden="true" />
                   ) : t.id === "popup" ? (
                     <AppWindow aria-hidden="true" />
                   ) : (
                     <Mail aria-hidden="true" />
                   )}
-                  {SOURCE_LABELS[t.id]}
-                  <span className={styles.tabCount}>{byForm[t.id].length}</span>
+                  {TAB_LABELS[t.id]}
+                  {/* Follows the filters, so one filter gives a count for every source */}
+                  <span className={styles.tabCount}>{shownByForm[t.id].length}</span>
                 </button>
               ))}
             </div>
@@ -451,9 +484,9 @@ export function LeadsDashboard({
                     placeholder={
                       tab === "quick"
                         ? "Search name, phone, need…"
-                        : tab === "popup"
-                          ? "Search name, phone, email…"
-                          : "Search name, email, company…"
+                        : tab === "contact"
+                          ? "Search name, email, company…"
+                          : "Search name, phone, email…"
                     }
                     aria-label="Search leads"
                   />
@@ -507,7 +540,9 @@ export function LeadsDashboard({
                 text={
                   filtered
                     ? "Try a different search, status or date range."
-                    : tab === "quick"
+                    : tab === "all"
+                      ? "Submissions from the landing page form, the popup and the contact page will appear here."
+                      : tab === "quick"
                       ? "Submissions from the form on the landing page will appear here."
                       : tab === "popup"
                         ? "Submissions from the website popup will appear here."
@@ -523,6 +558,7 @@ export function LeadsDashboard({
                       <tr>
                         <th>Lead</th>
                         <th>Phone</th>
+                        {tab === "all" && <th>Source</th>}
                         {tab === "contact" && <th>Company</th>}
                         {tab === "contact" && <th>Budget</th>}
                         {tab === "popup" ? <th>Email</th> : <th>Needs</th>}
@@ -542,7 +578,9 @@ export function LeadsDashboard({
                                 <button type="button" className={styles.leadName} onClick={() => setSelectedId(l.id)}>
                                   {l.name}
                                 </button>
-                                {tab === "contact" && l.email && <span className={styles.leadSub}>{l.email}</span>}
+                                {(tab === "contact" || tab === "all") && l.email && (
+                                  <span className={styles.leadSub}>{l.email}</span>
+                                )}
                               </div>
                             </div>
                           </td>
@@ -551,6 +589,11 @@ export function LeadsDashboard({
                               {l.phone}
                             </a>
                           </td>
+                          {tab === "all" && (
+                            <td>
+                              <SourceBadge lead={l} />
+                            </td>
+                          )}
                           {tab === "contact" && <td>{l.company ?? <span className={styles.dim}>—</span>}</td>}
                           {tab === "contact" && (
                             <td className={styles.nowrap}>{l.budget ?? <span className={styles.dim}>—</span>}</td>
@@ -568,7 +611,12 @@ export function LeadsDashboard({
                             </td>
                           ) : (
                             <td>
-                              {l.need ? <span className={styles.chip}>{l.need}</span> : <span className={styles.dim}>—</span>}
+                              {/* Popup leads' need is just the "Website popup" tag; the Source column says that */}
+                              {l.need && sourceOf(l) !== "popup" ? (
+                                <span className={styles.chip}>{l.need}</span>
+                              ) : (
+                                <span className={styles.dim}>—</span>
+                              )}
                             </td>
                           )}
                           <td className={styles.nowrap}>
@@ -589,7 +637,12 @@ export function LeadsDashboard({
                 <ul className={styles.cards}>
                   {visible.map((l) => (
                     <li key={l.id}>
-                      <LeadCard lead={l} onOpen={() => setSelectedId(l.id)} onStatus={(s) => changeStatus(l, s)} />
+                      <LeadCard
+                        lead={l}
+                        showForm={tab === "all"}
+                        onOpen={() => setSelectedId(l.id)}
+                        onStatus={(s) => changeStatus(l, s)}
+                      />
                     </li>
                   ))}
                 </ul>
@@ -783,18 +836,8 @@ function LeadCard({
         </span>
         {(showForm || lead.need || lead.company) && (
           <span className={styles.cardMeta}>
-            {showForm && (
-              <span
-                className={cn(
-                  styles.formBadge,
-                  sourceOf(lead) === "contact" && styles.formBadgeContact,
-                  sourceOf(lead) === "popup" && styles.formBadgePopup,
-                )}
-              >
-                {SOURCE_SHORT[sourceOf(lead)]}
-              </span>
-            )}
-            {lead.need && <span className={styles.chip}>{lead.need}</span>}
+            {showForm && <SourceBadge lead={lead} />}
+            {lead.need && sourceOf(lead) !== "popup" && <span className={styles.chip}>{lead.need}</span>}
             {lead.company && <span className={styles.leadSub}>{lead.company}</span>}
           </span>
         )}
@@ -803,6 +846,22 @@ function LeadCard({
         <StatusSelect value={lead.status} onChange={onStatus} align="end" />
       </div>
     </div>
+  );
+}
+
+/** Landing page / Popup / Contact page tag, used in the All leads table, phone cards and the review board */
+function SourceBadge({ lead }: { lead: WebsiteLead }) {
+  const source = sourceOf(lead);
+  return (
+    <span
+      className={cn(
+        styles.formBadge,
+        source === "contact" && styles.formBadgeContact,
+        source === "popup" && styles.formBadgePopup,
+      )}
+    >
+      {SOURCE_SHORT[source]}
+    </span>
   );
 }
 

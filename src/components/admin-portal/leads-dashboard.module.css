@@ -888,6 +888,7 @@
   }
 
   .formBadge {
+    white-space: nowrap;
     padding: 0.15rem 0.5rem;
     border-radius: 6px;
     background-color: rgb(139 183 44 / 0.15);
