@@ -19,7 +19,7 @@ export function Faq({ items }: { items?: Item[] }) {
           <h2 className="sec-title">
             Clear answers for
             <br />
-            complex operations
+            complex operation
           </h2>
           <p className={styles.lede}>
             Clear answers on timelines, engagement models, reporting and measurable business outcomes.
