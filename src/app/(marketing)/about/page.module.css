@@ -450,12 +450,7 @@
     height: 12px;
     width: 12px;
     border-radius: 3px;
-<<<<<<< HEAD
     background-color: hsl(var(--foreground));
-=======
-    /* fixed navy so the square stays dark in dark mode too */
-    background-color: hsl(213 45% 13%);
->>>>>>> e2f5f07 (hp test)
   }
 
   .founderName {
@@ -672,7 +667,7 @@
     background-color: #eef0ec;
   }
 
-  .talkFace + .talkFace {
+  .talkFace+.talkFace {
     margin-left: -8px;
   }
 
@@ -976,7 +971,7 @@
       width: 46px;
     }
 
-    .talkFace + .talkFace {
+    .talkFace+.talkFace {
       margin-left: -10px;
     }
 
