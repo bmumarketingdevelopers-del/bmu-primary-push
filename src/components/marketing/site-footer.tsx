@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Instagram, Linkedin, Youtube, MessageCircle, Mail, Phone, MapPin } from "lucide-react";
+import { Instagram, Linkedin, Mail, Phone, MapPin } from "lucide-react";
 import { Logo } from "./logo";
 import { FOOTER_NAV } from "@/lib/nav";
 import styles from "./site-footer.module.css";
@@ -16,19 +16,19 @@ export function SiteFooter() {
             </p>
             <ul className={styles.contact}>
               <li className={styles.contactItem}><MapPin className={styles.contactIcon} /> Bengaluru, Karnataka</li>
-              <li className={styles.contactItem}><Mail className={styles.contactIcon} /> hello@bmu.marketing</li>
-              <li className={styles.contactItem}><Phone className={styles.contactIcon} /> +91 80000 00000</li>
+              <li className={styles.contactItem}><Mail className={styles.contactIcon} /> buildmyuniversee@gmail.com</li>
+              <li className={styles.contactItem}><Phone className={styles.contactIcon} /> +91 81054 91414</li>
             </ul>
             <div className={styles.social}>
               {[
-                { Icon: Instagram, label: "Instagram" },
-                { Icon: Linkedin, label: "LinkedIn" },
-                { Icon: Youtube, label: "YouTube" },
-                { Icon: MessageCircle, label: "WhatsApp" },
-              ].map(({ Icon, label }) => (
+                { Icon: Instagram, label: "Instagram", href: "https://www.instagram.com/bmu.marketing?stkn=MTl4ajc4MDZwdGpiMQ==" },
+                { Icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/company/buildmyuniversee/" },
+              ].map(({ Icon, label, href }) => (
                 <a
                   key={label}
-                  href="#"
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={label}
                   className={styles.socialLink}
                 >

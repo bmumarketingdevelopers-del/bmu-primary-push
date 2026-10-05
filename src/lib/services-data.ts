@@ -44,7 +44,11 @@ export const SERVICE_DETAILS: ServiceDetail[] = [
       "Clear channel attribution for every enquiry",
       "Creative refreshed before fatigue, not after",
     ],
+<<<<<<< HEAD
     priceFrom: "₹35,000/month",
+=======
+    priceFrom: "₹35,000/month + ad spend",
+>>>>>>> e2f5f07 (hp test)
     faqs: [
       { q: "Do you charge a percentage of ad spend?", a: "No. It's a flat monthly fee, so our incentive isn't to talk you into a bigger budget." },
       { q: "Who pays the platforms?", a: "You do, directly. Cards stay on your ad accounts and we never touch the money." },

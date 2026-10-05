@@ -20,16 +20,16 @@
   }
 
   .track {
-    /* Logo size = each logo's height in the .tsx × this scale.
-       Phones 0.5 (~15–20px tall), tablets 0.58, laptops 0.68 (~20–27px). */
-    --logo-scale: 0.5;
+    /* logos scale down on phones; full size from tablet up */
+    --logo-scale: 0.72;
 
     display: flex;
     width: max-content;
     align-items: center;
     animation: marquee 34s linear infinite;
-    gap: 2rem;
+    gap: 2.75rem;
   }
+
   /* Pause the scroll while the pointer is anywhere over the strip. */
   .marquee:hover .track {
     animation-play-state: paused;
@@ -67,17 +67,10 @@
     filter: brightness(0) invert(1);
   }
 
-  @media (min-width: 640px) {
+  @media (min-width: 768px) {
     .track {
-      --logo-scale: 0.58;
-      gap: 2.75rem;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .track {
-      --logo-scale: 0.68;
-      gap: 3.5rem;
+      --logo-scale: 1;
+      gap: 4.5rem;
     }
   }
 }
@@ -86,6 +79,7 @@
   from {
     transform: translateX(0);
   }
+
   to {
     transform: translateX(-50%);
   }

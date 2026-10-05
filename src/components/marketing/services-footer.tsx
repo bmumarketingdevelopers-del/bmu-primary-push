@@ -46,8 +46,8 @@ export function ServicesFooter() {
             </p>
             <address className={styles.contact}>
               <span>Bengaluru, Karnataka</span>
-              <a href="mailto:hello@bmu.marketing" className={styles.contactLink}>hello@bmu.marketing</a>
-              <a href="tel:+918000000000" className={styles.contactLink}>+91 80000 00000</a>
+              <a href="mailto:buildmyuniversee@gmail.com" className={styles.contactLink}>buildmyuniversee@gmail.com</a>
+              <a href="tel:+918105491414" className={styles.contactLink}>+91 81054 91414</a>
             </address>
           </div>
 
