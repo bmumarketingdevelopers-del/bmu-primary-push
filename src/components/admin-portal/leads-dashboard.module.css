@@ -326,17 +326,18 @@
 
   /* ---------- stats ---------- */
 
+  /* Compact summary cards: tighter padding, icon and figures than the panels below */
   .stats {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(0.75rem, 2vw, 1.25rem);
-    margin-top: clamp(1.25rem, 3vw, 2rem);
+    gap: clamp(0.6rem, 1.6vw, 1rem);
+    margin-top: clamp(1rem, 2.5vw, 1.5rem);
   }
 
   .stat {
     position: relative;
     overflow: hidden;
-    padding: clamp(1rem, 2.5vw, 1.4rem);
+    padding: clamp(0.75rem, 1.8vw, 1rem) clamp(0.85rem, 2vw, 1.1rem);
     border: 1px solid hsl(var(--border));
     border-radius: var(--radius-lg);
     background-color: hsl(var(--card));
@@ -357,10 +358,10 @@
   .statIcon {
     display: grid;
     place-items: center;
-    width: 36px;
-    height: 36px;
-    margin-bottom: 0.9rem;
-    border-radius: 10px;
+    width: 30px;
+    height: 30px;
+    margin-bottom: 0.6rem;
+    border-radius: 8px;
     background-color: rgb(139 183 44 / 0.14);
     color: var(--green-dark);
   }
@@ -376,12 +377,12 @@
   }
 
   .statIcon svg {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
   }
 
   .statLabel {
-    font-size: 12.5px;
+    font-size: 12px;
     font-weight: 500;
     color: hsl(var(--muted-foreground));
   }
@@ -392,14 +393,14 @@
   }
 
   .statValue {
-    margin-top: 0.35rem;
-    font-size: clamp(26px, 1.2rem + 1.8vw, 36px);
+    margin-top: 0.3rem;
+    font-size: clamp(22px, 1rem + 1.2vw, 28px);
     line-height: 1;
   }
 
   .statNote {
-    margin-top: 0.45rem;
-    font-size: 12px;
+    margin-top: 0.35rem;
+    font-size: 11.5px;
     color: hsl(var(--muted-foreground));
   }
 
@@ -561,6 +562,56 @@
     font-size: 14px;
     color: inherit;
     outline: none;
+  }
+
+  /* ---------- custom date range (From / To calendar pickers) ---------- */
+
+  /* Its own row under the other controls, at every screen size */
+  .dates {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
+  }
+
+  .dateField {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 42px;
+    min-width: 0;
+    padding: 0 0.75rem;
+    border: 1px solid hsl(var(--border));
+    border-radius: 10px;
+    background-color: hsl(var(--background));
+  }
+
+  .dateField:focus-within {
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px rgb(139 183 44 / 0.18);
+  }
+
+  .dateField > span {
+    flex: none;
+    font-size: 12px;
+    font-weight: 600;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .dateInput {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    background: transparent;
+    font-size: 14px;
+    color: inherit;
+    outline: none;
+    /* The browser's calendar popup follows the dashboard theme */
+    color-scheme: light;
+  }
+
+  :global(.dark) .dateInput {
+    color-scheme: dark;
   }
 
   /* ---------- status select ---------- */
@@ -852,6 +903,11 @@
 
   :global(.dark) .formBadgeContact {
     color: #c6d0da;
+  }
+
+  .formBadgePopup {
+    background-color: rgb(245 166 35 / 0.16);
+    color: #b7791f;
   }
 
   .count {
@@ -1287,13 +1343,23 @@
     }
 
     .stats {
-      gap: 0.6rem;
+      gap: 0.5rem;
     }
 
     .statIcon {
-      width: 30px;
-      height: 30px;
-      margin-bottom: 0.6rem;
+      width: 26px;
+      height: 26px;
+      margin-bottom: 0.45rem;
+    }
+
+    .statIcon svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Narrowest phones: dates stack so each picker keeps a usable width */
+    .dates {
+      grid-template-columns: minmax(0, 1fr);
     }
 
     .viewButton {

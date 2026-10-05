@@ -4,6 +4,7 @@ import { useMemo, useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
+  AppWindow,
   ArrowUpRight,
   Building2,
   CheckCircle2,
@@ -38,7 +39,6 @@ import {
   LEAD_FORM_LABELS,
   LEAD_STATUS_LABELS,
   LEAD_STATUSES,
-  type LeadForm,
   type LeadStatus,
   type WebsiteLead,
 } from "@/lib/website-lead-types";
@@ -54,11 +54,33 @@ const RANGES = [
   { id: "today", label: "Today", days: 0 },
   { id: "7", label: "Last 7 days", days: 7 },
   { id: "30", label: "Last 30 days", days: 30 },
+  // Shows From / To calendar pickers in the toolbar
+  { id: "custom", label: "Custom dates", days: null },
 ] as const;
 type RangeId = (typeof RANGES)[number]["id"];
 
-const FORM_TABS: { id: LeadForm; hint: string }[] = [
+/** A calendar range as yyyy-mm-dd strings (what <input type="date"> uses), both days inclusive. */
+type DateSpan = { from: string; to: string };
+
+/**
+ * Where a lead came from. The popup saves its leads with the landing-page form and the need
+ * "Website popup", so they're split out here into their own source.
+ */
+type LeadSource = "quick" | "popup" | "contact";
+const POPUP_NEED = "Website popup";
+const sourceOf = (l: WebsiteLead): LeadSource => (l.form === "quick" && l.need === POPUP_NEED ? "popup" : l.form);
+
+const SOURCE_LABELS: Record<LeadSource, string> = {
+  quick: LEAD_FORM_LABELS.quick,
+  popup: "Popup form",
+  contact: LEAD_FORM_LABELS.contact,
+};
+
+const SOURCE_SHORT: Record<LeadSource, string> = { quick: "Landing page", popup: "Popup", contact: "Contact page" };
+
+const SOURCE_TABS: { id: LeadSource; hint: string }[] = [
   { id: "quick", hint: "Short form on the home page: name, phone and what they need." },
+  { id: "popup", hint: "Popup on the home page: name, phone and email." },
   { id: "contact", hint: "Full form on /contact: adds email, company, budget and a message." },
 ];
 
@@ -82,10 +104,23 @@ const startOfToday = () => {
   return d.getTime();
 };
 
-function inRange(lead: WebsiteLead, range: RangeId) {
+// yyyy-mm-dd in local time, for the date inputs
+const isoDay = (d: Date) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
+// Start of a yyyy-mm-dd day in local time
+const dayStart = (day: string) => new Date(`${day}T00:00:00`).getTime();
+
+function inRange(lead: WebsiteLead, range: RangeId, span?: DateSpan) {
+  const t = new Date(lead.createdAt).getTime();
+  if (range === "custom") {
+    if (!span?.from || !span.to) return true;
+    // Picked the wrong way round? Treat it as the same span.
+    const [a, b] = span.from <= span.to ? [span.from, span.to] : [span.to, span.from];
+    return t >= dayStart(a) && t < dayStart(b) + DAY;
+  }
   const r = RANGES.find((x) => x.id === range);
   if (!r || r.days === null) return true;
-  const t = new Date(lead.createdAt).getTime();
   return r.days === 0 ? t >= startOfToday() : t >= Date.now() - r.days * DAY;
 }
 
@@ -169,11 +204,16 @@ export function LeadsDashboard({
   const router = useRouter();
   const [refreshing, startRefresh] = useTransition();
   const [view, setView] = useState<"leads" | "review">("leads");
-  const [tab, setTab] = useState<LeadForm>("quick");
+  const [tab, setTab] = useState<LeadSource>("quick");
   const [query, setQuery] = useState("");
   const [range, setRange] = useState<RangeId>("all");
+  // Custom dates: defaults to the last 7 days, including today
+  const [span, setSpan] = useState<DateSpan>(() => ({
+    from: isoDay(new Date(Date.now() - 6 * DAY)),
+    to: isoDay(new Date()),
+  }));
   const [statusFilter, setStatusFilter] = useState<LeadStatus | "all">("all");
-  const [reviewForm, setReviewForm] = useState<LeadForm | "all">("all");
+  const [reviewForm, setReviewForm] = useState<LeadSource | "all">("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   // Optimistic status changes, shown until the refreshed server data catches up
   const [overrides, setOverrides] = useState<Record<string, LeadStatus>>({});
@@ -186,7 +226,11 @@ export function LeadsDashboard({
   const selected = items.find((l) => l.id === selectedId) ?? null;
 
   const byForm = useMemo(
-    () => ({ quick: items.filter((l) => l.form === "quick"), contact: items.filter((l) => l.form === "contact") }),
+    () => ({
+      quick: items.filter((l) => sourceOf(l) === "quick"),
+      popup: items.filter((l) => sourceOf(l) === "popup"),
+      contact: items.filter((l) => sourceOf(l) === "contact"),
+    }),
     [items],
   );
 
@@ -194,13 +238,13 @@ export function LeadsDashboard({
   const visible = useMemo(
     () =>
       byForm[tab].filter(
-        (l) => inRange(l, range) && (statusFilter === "all" || l.status === statusFilter) && matches(l, q),
+        (l) => inRange(l, range, span) && (statusFilter === "all" || l.status === statusFilter) && matches(l, q),
       ),
-    [byForm, tab, range, statusFilter, q],
+    [byForm, tab, range, span, statusFilter, q],
   );
 
   const reviewPool = useMemo(
-    () => items.filter((l) => (reviewForm === "all" || l.form === reviewForm) && matches(l, q)),
+    () => items.filter((l) => (reviewForm === "all" || sourceOf(l) === reviewForm) && matches(l, q)),
     [items, reviewForm, q],
   );
 
@@ -373,7 +417,7 @@ export function LeadsDashboard({
         {view === "leads" ? (
           <section className={styles.panel}>
             <div className={styles.tabs} role="tablist" aria-label="Lead source">
-              {FORM_TABS.map((t) => (
+              {SOURCE_TABS.map((t) => (
                 <button
                   key={t.id}
                   type="button"
@@ -382,15 +426,21 @@ export function LeadsDashboard({
                   className={cn(styles.tab, tab === t.id && styles.tabActive)}
                   onClick={() => setTab(t.id)}
                 >
-                  {t.id === "quick" ? <LayoutTemplate aria-hidden="true" /> : <Mail aria-hidden="true" />}
-                  {LEAD_FORM_LABELS[t.id]}
+                  {t.id === "quick" ? (
+                    <LayoutTemplate aria-hidden="true" />
+                  ) : t.id === "popup" ? (
+                    <AppWindow aria-hidden="true" />
+                  ) : (
+                    <Mail aria-hidden="true" />
+                  )}
+                  {SOURCE_LABELS[t.id]}
                   <span className={styles.tabCount}>{byForm[t.id].length}</span>
                 </button>
               ))}
             </div>
 
             <div className={styles.toolbar}>
-              <p className={styles.tabHint}>{FORM_TABS.find((t) => t.id === tab)!.hint}</p>
+              <p className={styles.tabHint}>{SOURCE_TABS.find((t) => t.id === tab)!.hint}</p>
               <div className={styles.controls}>
                 <label className={styles.search}>
                   <Search aria-hidden="true" />
@@ -398,7 +448,13 @@ export function LeadsDashboard({
                     type="search"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    placeholder={tab === "quick" ? "Search name, phone, need…" : "Search name, email, company…"}
+                    placeholder={
+                      tab === "quick"
+                        ? "Search name, phone, need…"
+                        : tab === "popup"
+                          ? "Search name, phone, email…"
+                          : "Search name, email, company…"
+                    }
                     aria-label="Search leads"
                   />
                 </label>
@@ -417,6 +473,31 @@ export function LeadsDashboard({
                   align="end"
                   icon={<CalendarRange aria-hidden="true" />}
                 />
+                {range === "custom" && (
+                  // Native date inputs: each opens the browser's calendar picker
+                  <div className={styles.dates} role="group" aria-label="Custom dates">
+                    <label className={styles.dateField}>
+                      <span>From</span>
+                      <input
+                        type="date"
+                        value={span.from}
+                        max={span.to || undefined}
+                        onChange={(e) => setSpan((s) => ({ ...s, from: e.target.value }))}
+                        className={styles.dateInput}
+                      />
+                    </label>
+                    <label className={styles.dateField}>
+                      <span>To</span>
+                      <input
+                        type="date"
+                        value={span.to}
+                        min={span.from || undefined}
+                        onChange={(e) => setSpan((s) => ({ ...s, to: e.target.value }))}
+                        className={styles.dateInput}
+                      />
+                    </label>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -428,7 +509,9 @@ export function LeadsDashboard({
                     ? "Try a different search, status or date range."
                     : tab === "quick"
                       ? "Submissions from the form on the landing page will appear here."
-                      : "Submissions from the contact page form will appear here."
+                      : tab === "popup"
+                        ? "Submissions from the website popup will appear here."
+                        : "Submissions from the contact page form will appear here."
                 }
               />
             ) : (
@@ -442,7 +525,7 @@ export function LeadsDashboard({
                         <th>Phone</th>
                         {tab === "contact" && <th>Company</th>}
                         {tab === "contact" && <th>Budget</th>}
-                        <th>Needs</th>
+                        {tab === "popup" ? <th>Email</th> : <th>Needs</th>}
                         <th>Received</th>
                         <th>Status</th>
                       </tr>
@@ -472,9 +555,22 @@ export function LeadsDashboard({
                           {tab === "contact" && (
                             <td className={styles.nowrap}>{l.budget ?? <span className={styles.dim}>—</span>}</td>
                           )}
-                          <td>
-                            {l.need ? <span className={styles.chip}>{l.need}</span> : <span className={styles.dim}>—</span>}
-                          </td>
+                          {tab === "popup" ? (
+                            // Popup leads all share the same "need" tag, so show their email instead
+                            <td>
+                              {l.email ? (
+                                <a href={`mailto:${l.email}`} onClick={(e) => e.stopPropagation()} className={styles.phone}>
+                                  {l.email}
+                                </a>
+                              ) : (
+                                <span className={styles.dim}>—</span>
+                              )}
+                            </td>
+                          ) : (
+                            <td>
+                              {l.need ? <span className={styles.chip}>{l.need}</span> : <span className={styles.dim}>—</span>}
+                            </td>
+                          )}
                           <td className={styles.nowrap}>
                             <span className={styles.when} title={formatDate(l.createdAt)} suppressHydrationWarning>
                               {timeAgo(l.createdAt)}
@@ -509,7 +605,7 @@ export function LeadsDashboard({
           <section className={styles.review}>
             <div className={styles.reviewBar}>
               <div className={styles.segment} role="group" aria-label="Form">
-                {(["all", "quick", "contact"] as const).map((f) => (
+                {(["all", "quick", "popup", "contact"] as const).map((f) => (
                   <button
                     key={f}
                     type="button"
@@ -517,7 +613,7 @@ export function LeadsDashboard({
                     className={cn(styles.segmentButton, reviewForm === f && styles.segmentActive)}
                     onClick={() => setReviewForm(f)}
                   >
-                    {f === "all" ? "Both forms" : f === "quick" ? "Landing page" : "Contact page"}
+                    {f === "all" ? "All forms" : SOURCE_SHORT[f]}
                   </button>
                 ))}
               </div>
@@ -585,7 +681,7 @@ export function LeadsDashboard({
                 <div>
                   <SheetTitle className={styles.detailName}>{selected.name}</SheetTitle>
                   <SheetDescription className={styles.detailSource}>
-                    {LEAD_FORM_LABELS[selected.form]} · {formatDate(selected.createdAt)}
+                    {SOURCE_LABELS[sourceOf(selected)]} · {formatDate(selected.createdAt)}
                   </SheetDescription>
                 </div>
               </div>
@@ -688,8 +784,14 @@ function LeadCard({
         {(showForm || lead.need || lead.company) && (
           <span className={styles.cardMeta}>
             {showForm && (
-              <span className={cn(styles.formBadge, lead.form === "contact" && styles.formBadgeContact)}>
-                {lead.form === "quick" ? "Landing page" : "Contact page"}
+              <span
+                className={cn(
+                  styles.formBadge,
+                  sourceOf(lead) === "contact" && styles.formBadgeContact,
+                  sourceOf(lead) === "popup" && styles.formBadgePopup,
+                )}
+              >
+                {SOURCE_SHORT[sourceOf(lead)]}
               </span>
             )}
             {lead.need && <span className={styles.chip}>{lead.need}</span>}
