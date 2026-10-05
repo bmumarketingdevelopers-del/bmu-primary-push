@@ -232,7 +232,20 @@ export default function AboutPage() {
                 </blockquote>
                 <figcaption className={styles.founderBy}>
                   <span className={styles.founderAvatar} aria-hidden="true">
-                    <span className={styles.founderAvatarDot} />
+                    <Image
+                      src="/images/brand/bmu-logo-light.png"
+                      alt=""
+                      width={556}
+                      height={233}
+                      className={cn(styles.founderLogo, styles.founderLogoLight)}
+                    />
+                    <Image
+                      src="/images/brand/bmu-logo-dark.png"
+                      alt=""
+                      width={556}
+                      height={233}
+                      className={cn(styles.founderLogo, styles.founderLogoDark)}
+                    />
                   </span>
                   <span>
                     <span className={styles.founderName}>Founder</span>
@@ -304,17 +317,20 @@ export default function AboutPage() {
                 <div className={styles.talkOrbit}>
                   <TalkOrbitDesktop />
                   <TalkOrbitMobile />
-                  {TALK_CARDS.map(({ key, title, body, Icon }) => (
-                    <div key={key} className={cn(styles.talkCard, styles[`talkCard_${key}`])}>
-                      <span className={styles.talkCardIcon}>
-                        <Icon aria-hidden="true" />
-                      </span>
-                      <span>
-                        <span className={styles.talkCardTitle}>{title}</span>
-                        <span className={styles.talkCardBody}>{body}</span>
-                      </span>
-                    </div>
-                  ))}
+                  {/* cards orbit the logo; each card counter-rotates so its text stays upright */}
+                  <div className={styles.talkCards}>
+                    {TALK_CARDS.map(({ key, title, body, Icon }) => (
+                      <div key={key} className={cn(styles.talkCard, styles[`talkCard_${key}`])}>
+                        <span className={styles.talkCardIcon}>
+                          <Icon aria-hidden="true" />
+                        </span>
+                        <span>
+                          <span className={styles.talkCardTitle}>{title}</span>
+                          <span className={styles.talkCardBody}>{body}</span>
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
                 <div className={styles.talkTeam}>
@@ -369,27 +385,53 @@ function CreativeIcon(props: React.SVGProps<SVGSVGElement>) {
 
 /* ---- Let's talk: orbit drawings (decorative). Coordinates traced from the design. */
 
+/** A faint ring that turns around the orbit centre; the small dot on it makes the turning visible. */
+function TalkRing({
+  cx,
+  cy,
+  r,
+  angle,
+  spin,
+  seconds,
+  stroke,
+  opacity,
+  dot,
+}: {
+  cx: number;
+  cy: number;
+  r: number;
+  angle: number;
+  spin: "cw" | "ccw";
+  seconds: number;
+  stroke: number;
+  opacity: number;
+  dot: number;
+}) {
+  const rad = (angle * Math.PI) / 180;
+  return (
+    <g
+      className={cn(styles.talkRing, spin === "ccw" && styles.talkRingCcw)}
+      style={{ transformOrigin: `${cx}px ${cy}px`, animationDuration: `${seconds}s` }}
+    >
+      <circle cx={cx} cy={cy} r={r} fill="none" stroke={`rgb(255 255 255 / ${opacity})`} strokeWidth={stroke} />
+      <circle cx={cx + r * Math.cos(rad)} cy={cy + r * Math.sin(rad)} r={dot} fill="rgb(255 255 255 / 0.55)" />
+    </g>
+  );
+}
+
 function TalkCenter({ cx, cy, r }: { cx: number; cy: number; r: number }) {
-  const outer = r * 0.95;
-  const inner = r * 0.45;
+  // BMU logo (556 × 233), off-white version on the transparent centre of the orbit
+  const w = r * 2.2;
+  const h = w * (233 / 556);
   return (
     <g>
-      <circle cx={cx} cy={cy} r={r} fill="#fff" />
-      <rect
-        x={cx - outer / 2}
-        y={cy - outer / 2}
-        width={outer}
-        height={outer}
-        rx={outer * 0.26}
-        fill="hsl(var(--primary))"
-      />
-      <rect
-        x={cx - inner / 2}
-        y={cy - inner / 2}
-        width={inner}
-        height={inner}
-        rx={inner * 0.2}
-        fill="#fff"
+      <image
+        href="/images/brand/bmu-logo-dark.png"
+        x={cx - w / 2}
+        y={cy - h / 2}
+        width={w}
+        height={h}
+        preserveAspectRatio="xMidYMid meet"
       />
     </g>
   );
@@ -418,24 +460,29 @@ function TalkOrbitDesktop() {
         </mask>
       </defs>
       <rect x="75" y="27" width="585" height="298" fill="url(#talkGridD)" mask="url(#talkMaskD)" />
-      <g fill="none" stroke="rgb(255 255 255 / 0.13)" strokeWidth="1">
-        <circle cx="356" cy="168" r="42" />
-        <circle cx="356" cy="168" r="82" />
-        <circle cx="356" cy="168" r="120" />
-        <circle cx="356" cy="168" r="149" />
-      </g>
-      <path
-        d="M318 86.4 A112 109 0 1 1 340.8 244.3"
-        fill="none"
-        stroke="rgb(255 255 255 / 0.85)"
-        strokeWidth="1.4"
-        strokeDasharray="6 6"
-      />
-      <g fill="#fff">
-        <circle cx="399" cy="46" r="4.5" />
-        <circle cx="517" cy="144" r="4.5" />
-        <circle cx="411" cy="264" r="4.5" />
-        <circle cx="272" cy="167" r="4.5" />
+      {/* faint ring under the dashed orbit stays still */}
+      <circle cx="356" cy="168" r="120" fill="none" stroke="rgb(255 255 255 / 0.13)" strokeWidth="1" />
+      {/* outer → inner: anticlockwise, (dashed orbit clockwise), anticlockwise, clockwise */}
+      <TalkRing cx={356} cy={168} r={149} angle={225} spin="ccw" seconds={56} stroke={1} opacity={0.13} dot={3} />
+      <TalkRing cx={356} cy={168} r={82} angle={0} spin="ccw" seconds={32} stroke={1} opacity={0.13} dot={3} />
+      <TalkRing cx={356} cy={168} r={42} angle={-90} spin="cw" seconds={24} stroke={1} opacity={0.13} dot={3} />
+      {/* dashed orbit (r 120) the cards ride on; dots sit on it between the cards; all turn together */}
+      <g className={styles.talkSpin} style={{ transformOrigin: "356px 168px" }}>
+        <circle
+          cx="356"
+          cy="168"
+          r="120"
+          fill="none"
+          stroke="rgb(255 255 255 / 0.85)"
+          strokeWidth="1.4"
+          strokeDasharray="6 6"
+        />
+        <g fill="#fff">
+          <circle cx="440.9" cy="83.1" r="4.5" />
+          <circle cx="440.9" cy="252.9" r="4.5" />
+          <circle cx="271.1" cy="252.9" r="4.5" />
+          <circle cx="271.1" cy="83.1" r="4.5" />
+        </g>
       </g>
       <TalkCenter cx={356} cy={168} r={30} />
     </svg>
@@ -464,23 +511,27 @@ function TalkOrbitMobile() {
         </mask>
       </defs>
       <rect width="688" height="540" fill="url(#talkGridM)" mask="url(#talkMaskM)" />
-      <g fill="none" stroke="rgb(255 255 255 / 0.14)" strokeWidth="1.5">
-        <circle cx="342" cy="277" r="75" />
-        <circle cx="342" cy="277" r="145" />
-        <circle cx="342" cy="277" r="275" />
-      </g>
-      <path
-        d="M200 146 A205 205 0 1 1 304 476"
-        fill="none"
-        stroke="rgb(255 255 255 / 0.85)"
-        strokeWidth="2.5"
-        strokeDasharray="11 11"
-      />
-      <g fill="#fff">
-        <circle cx="377" cy="74" r="8" />
-        <circle cx="562" cy="278" r="8" />
-        <circle cx="357" cy="483" r="8" />
-        <circle cx="168" cy="277" r="8" />
+      {/* outer → inner: anticlockwise, (dashed orbit clockwise), anticlockwise, clockwise */}
+      <TalkRing cx={342} cy={277} r={275} angle={225} spin="ccw" seconds={56} stroke={1.5} opacity={0.14} dot={5} />
+      <TalkRing cx={342} cy={277} r={145} angle={0} spin="ccw" seconds={32} stroke={1.5} opacity={0.14} dot={5} />
+      <TalkRing cx={342} cy={277} r={75} angle={-90} spin="cw" seconds={24} stroke={1.5} opacity={0.14} dot={5} />
+      {/* dashed orbit (r 200) the cards ride on; dots sit on it between the cards; all turn together */}
+      <g className={styles.talkSpin} style={{ transformOrigin: "342px 277px" }}>
+        <circle
+          cx="342"
+          cy="277"
+          r="200"
+          fill="none"
+          stroke="rgb(255 255 255 / 0.85)"
+          strokeWidth="2.5"
+          strokeDasharray="11 11"
+        />
+        <g fill="#fff">
+          <circle cx="483.4" cy="135.6" r="8" />
+          <circle cx="483.4" cy="418.4" r="8" />
+          <circle cx="200.6" cy="418.4" r="8" />
+          <circle cx="200.6" cy="135.6" r="8" />
+        </g>
       </g>
       <TalkCenter cx={342} cy={277} r={55} />
     </svg>
