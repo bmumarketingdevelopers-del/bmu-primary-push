@@ -19,26 +19,32 @@
     color: hsl(var(--muted-foreground));
   }
 
+  /* Runs continuously (no pause on hover). Logo size and spacing step up with the screen:
+     --logo-scale multiplies each logo's design height, --logo-gap is the space after each logo,
+     --marquee-time keeps the speed similar on every screen. */
   .track {
-    /* logos scale down on phones; full size from tablet up */
-    --logo-scale: 0.72;
+    --logo-scale: 0.5;
+    --logo-gap: 2rem;
+    --marquee-time: 50s;
 
     display: flex;
     width: max-content;
+    animation: marquee var(--marquee-time) linear infinite;
+    will-change: transform;
+  }
+
+  .group {
+    display: flex;
+    flex-shrink: 0;
     align-items: center;
-    animation: marquee 34s linear infinite;
-    gap: 2.75rem;
   }
 
-  /* Pause the scroll while the pointer is anywhere over the strip. */
-  .marquee:hover .track {
-    animation-play-state: paused;
-  }
-
-  /* Logos: grey by default, original colours on hover */
+  /* Logos: grey by default, original colours on hover. The space sits after every logo
+     (not between), so both halves are exactly the same width and the loop has no jump. */
   .logo {
     display: block;
     flex-shrink: 0;
+    margin-right: var(--logo-gap);
     filter: grayscale(1) opacity(0.6);
     transition: filter 300ms cubic-bezier(0.4, 0, 0.2, 1);
   }
@@ -67,10 +73,39 @@
     filter: brightness(0) invert(1);
   }
 
+  /* large phones / small tablets */
+  @media (min-width: 640px) {
+    .track {
+      --logo-scale: 0.58;
+      --logo-gap: 2.5rem;
+      --marquee-time: 56s;
+    }
+  }
+
+  /* tablets */
   @media (min-width: 768px) {
     .track {
-      --logo-scale: 1;
-      gap: 4.5rem;
+      --logo-scale: 0.64;
+      --logo-gap: 3rem;
+      --marquee-time: 62s;
+    }
+  }
+
+  /* laptops */
+  @media (min-width: 1024px) {
+    .track {
+      --logo-scale: 0.72;
+      --logo-gap: 3.5rem;
+      --marquee-time: 68s;
+    }
+  }
+
+  /* large desktops */
+  @media (min-width: 1440px) {
+    .track {
+      --logo-scale: 0.8;
+      --logo-gap: 4rem;
+      --marquee-time: 74s;
     }
   }
 }

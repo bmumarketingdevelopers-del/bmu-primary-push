@@ -35,10 +35,6 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       <section className={styles.hero}>
         <div className={cn("container", styles.heroGrid, !extra.dashboard && styles.heroSolo)}>
           <div>
-            <nav aria-label="Breadcrumb" className={styles.crumbs}>
-              <Link href="/">Home</Link> / <Link href="/products">Products</Link> /{" "}
-              <span aria-current="page">{product.name}</span>
-            </nav>
             <span className={styles.tag}>
               <span className={styles.tagDot} aria-hidden="true" />
               {product.tag}

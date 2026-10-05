@@ -18,29 +18,38 @@ const LOGOS = [
   { src: "/images/clients/vetenza.png", alt: "Vetenza", w: 603, hSrc: 143, h: 30 },
 ];
 
+// Each half repeats the logos 3 times so it's always wider than the screen, even on very wide
+// monitors; the strip then never runs out before the loop restarts.
+const REPEATS = 3;
+
 // `names` is still accepted (the landing page passes the CMS list) but the strip now shows logos.
 export function TrustedMarquee({ heading }: { heading?: string; names?: string[] }) {
-  // Two copies side by side so the scroll loops seamlessly (animation unchanged).
-  const row = [...LOGOS, ...LOGOS];
+  const half = Array.from({ length: REPEATS }, () => LOGOS).flat();
   return (
     <section className={styles.marquee}>
       <p className={styles.heading}>
         {heading ?? "Partnering with ambitious brands across diverse industries."}
       </p>
+      {/* Two identical halves side by side; the track slides left by exactly one half and loops,
+          so the scroll is seamless and never stops. Only the first set of logos is read out. */}
       <div className={styles.track}>
-        {row.map((logo, i) => {
-          const copy = i >= LOGOS.length;
-          return (
-            <span
-              key={`${logo.alt}-${i}`}
-              className={cn(styles.logo, logo.mono && styles.logoMono)}
-              style={{ "--logo-h": `${logo.h}px` } as React.CSSProperties}
-              aria-hidden={copy || undefined}
-            >
-              <Image src={logo.src} alt={copy ? "" : logo.alt} width={logo.w} height={logo.hSrc} />
-            </span>
-          );
-        })}
+        {[0, 1].map((h) => (
+          <div key={h} className={styles.group} aria-hidden={h === 1 || undefined}>
+            {half.map((logo, i) => {
+              const copy = h === 1 || i >= LOGOS.length;
+              return (
+                <span
+                  key={`${logo.alt}-${i}`}
+                  className={cn(styles.logo, logo.mono && styles.logoMono)}
+                  style={{ "--logo-h": `${logo.h}px` } as React.CSSProperties}
+                  aria-hidden={(h === 0 && copy) || undefined}
+                >
+                  <Image src={logo.src} alt={copy ? "" : logo.alt} width={logo.w} height={logo.hSrc} />
+                </span>
+              );
+            })}
+          </div>
+        ))}
       </div>
     </section>
   );

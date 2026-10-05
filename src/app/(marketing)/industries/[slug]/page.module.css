@@ -1,197 +1,2142 @@
 @layer reset, base, helpers, ui, components;
 
 @layer components {
-  /* ---- metrics strip */
+  /* =========================================
+     HERO: dark band that runs under the header
+     ========================================= */
 
-  .metricsBand {
-    border-bottom: 1px solid hsl(var(--border));
-    background-color: hsl(var(--card));
-    padding-top: 3rem;
-    padding-bottom: 3rem;
+  .hero {
+    position: relative;
+    overflow: hidden;
+    margin-top: -76px;
+    padding-top: 76px;
+    color: #fff;
+    /* soft green glow top-right and bottom-right over the navy */
+    background:
+      radial-gradient(ellipse 38% 55% at 88% 22%, rgb(70 120 50 / 0.35), transparent),
+      radial-gradient(ellipse 45% 50% at 100% 100%, rgb(45 95 60 / 0.3), transparent),
+      var(--grad-hero);
   }
 
-  .metricsGrid {
+  /* fine box pattern behind the map panel, running out to the right and bottom edges
+     and fading towards the text */
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgb(255 255 255 / 0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(255 255 255 / 0.055) 1px, transparent 1px);
+    background-size: 30px 30px;
+    mask-image: radial-gradient(ellipse 55% 95% at 82% 60%, #000 35%, transparent 80%);
+    pointer-events: none;
+  }
+
+  .heroGrid {
+    position: relative;
     display: grid;
-    gap: 2rem;
+    gap: 3rem;
+    padding-top: 2.5rem;
+    padding-bottom: 4rem;
   }
 
-  .metric {
+  .heroPill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    border-radius: 9999px;
+    border: 1px solid rgb(255 255 255 / 0.14);
+    background-color: rgb(255 255 255 / 0.06);
+    padding: 0.4rem 0.9rem;
+    font-size: 12px;
+    font-weight: 600;
+    color: #e6ebf0;
+  }
+
+  .heroPillDot {
+    height: 7px;
+    width: 7px;
+    flex-shrink: 0;
+    border-radius: 9999px;
+    background-color: hsl(var(--primary));
+  }
+
+  /* 20ch keeps it to "Marketing for / restaurants & cafes" */
+  .heroTitle {
+    margin-top: 1.25rem;
+    max-width: 20ch;
+    font-size: clamp(30px, 4.3vw, 50px);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+  }
+
+  .heroLede {
+    margin-top: 1.25rem;
+    max-width: 50ch;
+    font-size: clamp(14.5px, 1.2vw, 15.5px);
+    line-height: 1.65;
+    color: #c6d0da;
+  }
+
+  .heroActions {
+    margin-top: 1.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .btnPrimary,
+  .btnOutline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-radius: 8px;
+    padding: 0.9rem 1.4rem;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition:
+      filter 200ms var(--ease-brand),
+      background-color 200ms var(--ease-brand);
+  }
+
+  .btnPrimary {
+    background-color: hsl(var(--primary));
+    color: #121f2f;
+  }
+
+  .btnPrimary:hover {
+    filter: brightness(1.08);
+  }
+
+  .btnPrimary svg {
+    height: 16px;
+    width: 16px;
+  }
+
+  .btnOutline {
+    border: 1px solid rgb(255 255 255 / 0.35);
+    color: #fff;
+  }
+
+  .btnOutline:hover {
+    background-color: rgb(255 255 255 / 0.08);
+  }
+
+  /* ---- centred hero (real estate): text in the middle, numbers row underneath */
+
+  /* box pattern across the whole band, strongest on the right */
+  .heroCentered::before {
+    mask-image: radial-gradient(ellipse 85% 110% at 70% 45%, #000 30%, transparent 85%);
+  }
+
+  .heroCenter {
+    position: relative;
+    padding-top: 2.75rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .heroCenterText {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
   }
 
-  .metricValue {
-    font-size: clamp(30px, 4vw, 44px);
-    line-height: 1;
-    color: hsl(var(--primary));
+  /* larger centred title; the two lines are set in page.tsx, so no width limit */
+  .heroCenterText .heroTitle {
+    max-width: none;
+    font-size: clamp(32px, 5.2vw, 64px);
+    line-height: 1.1;
   }
 
-  .metricLabel {
+  /* two centred lines (break set in page.tsx from tablet up) */
+  .heroCenterText .heroLede {
+    max-width: none;
+    font-size: clamp(14.5px, 1.25vw, 16px);
+    line-height: 1.7;
+  }
+
+  /* phones: let the paragraph wrap naturally */
+  .ledeBreak {
+    display: none;
+  }
+
+  .heroCenterText .heroActions {
+    justify-content: center;
+  }
+
+  /* phones: 2 × 2; tablet up: one row of 4 split by thin lines */
+  .heroStats {
+    margin-top: 3.5rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 1.25rem;
+    border-top: 1px solid rgb(255 255 255 / 0.12);
+    border-bottom: 1px solid rgb(255 255 255 / 0.12);
+    list-style: none;
+    padding: 0;
+  }
+
+  /* each number centred in its column, on every screen size */
+  .heroStat {
+    padding: 1.4rem 0;
+    text-align: center;
+  }
+
+  .heroStat:nth-child(n + 3) {
+    border-top: 1px solid rgb(255 255 255 / 0.12);
+  }
+
+  /* hotels: numbers left-aligned, as in that design */
+  .heroStatsLeft .heroStat {
+    text-align: left;
+  }
+
+  .heroStatValue {
+    display: block;
+    font-size: clamp(30px, 3.2vw, 40px);
+    line-height: 1;
+    color: #fff;
+  }
+
+  /* first number in brand green */
+  .heroStatValueAccent {
+    color: hsl(79 61% 58%);
+  }
+
+  .heroStatLabel {
+    display: block;
     margin-top: 0.75rem;
     font-size: 14px;
-    color: hsl(var(--muted-foreground));
+    font-weight: 700;
+    color: #fff;
   }
 
-  /* ---- shared */
-
-  .sectionTitle {
-    margin-bottom: 3rem;
+  .heroStatSub {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 12px;
+    color: #93a2b1;
   }
 
-  /* ---- challenges */
+  /* ---- centred hero, features row (healthcare): icon + title + line, left-aligned
+     phones: one per row; tablet: 2 × 2; laptop: one row of 4 split by thin lines */
 
-  .challengeGrid {
+  .heroFeatures {
+    margin-top: 3.5rem;
     display: grid;
-    gap: 1.5rem;
+    border-top: 1px solid rgb(255 255 255 / 0.12);
+    border-bottom: 1px solid rgb(255 255 255 / 0.12);
+    list-style: none;
+    padding: 0;
+    text-align: left;
   }
 
-  .challengeTitle {
-    margin-bottom: 0.75rem;
-    font-size: 17px;
-    line-height: 1.375;
+  .heroFeature {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 1.1rem 0;
   }
 
-  .challengeBody {
+  .heroFeature + .heroFeature {
+    border-top: 1px solid rgb(255 255 255 / 0.12);
+  }
+
+  .heroFeatureIcon {
+    display: grid;
+    height: 40px;
+    width: 40px;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 9999px;
+    background-color: rgb(132 196 58 / 0.15);
+    color: hsl(79 61% 58%);
+  }
+
+  .heroFeatureIcon svg {
+    height: 18px;
+    width: 18px;
+  }
+
+  .heroFeatureTitle {
+    display: block;
     font-size: 14.5px;
-    color: hsl(var(--muted-foreground));
+    font-weight: 700;
+    color: #fff;
   }
 
-  .challengeLead {
-    font-weight: 600;
+  .heroFeatureSub {
+    display: block;
+    margin-top: 3px;
+    font-size: 12px;
+    color: #93a2b1;
+  }
+
+  /* ---- centred hero extras (ecommerce): green dashed label instead of the pill, ✓ row */
+
+  .heroEyebrow {
+    margin-bottom: 0;
+  }
+
+  .heroChecks {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem 2rem;
+    list-style: none;
+    padding: 0;
+  }
+
+  .heroCheck {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 13px;
+    color: #c6d0da;
+  }
+
+  .heroCheckIcon {
+    display: grid;
+    height: 16px;
+    width: 16px;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 9999px;
+    background-color: rgb(132 196 58 / 0.25);
+    color: hsl(79 61% 62%);
+  }
+
+  .heroCheckIcon svg {
+    height: 10px;
+    width: 10px;
+    stroke-width: 3;
+  }
+
+  /* ---- hero visual: glass panel (Maps search for restaurants, numbers for the rest) */
+
+  .visual {
+    position: relative;
+    width: 100%;
+    max-width: 460px;
+    padding-bottom: 1.1rem;
+  }
+
+  .mapsPanel {
+    border-radius: 22px;
+    border: 1px solid rgb(255 255 255 / 0.18);
+    background: linear-gradient(160deg, rgb(255 255 255 / 0.08), rgb(255 255 255 / 0.03));
+    padding: 1.25rem;
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06);
+    backdrop-filter: blur(8px);
+  }
+
+  .mapsSearch {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    border-radius: 9999px;
+    border: 1px solid rgb(255 255 255 / 0.2);
+    background-color: rgb(255 255 255 / 0.05);
+    padding: 0.75rem 1rem;
+    font-size: 14px;
+    color: #e6ebf0;
+  }
+
+  .mapsSearch svg {
+    height: 18px;
+    width: 18px;
+    flex-shrink: 0;
+    color: #c6d0da;
+  }
+
+  .mapsMap {
+    position: relative;
+    margin-top: 0.85rem;
+    height: 125px;
+    overflow: hidden;
+    border-radius: 12px;
+    border: 1px solid rgb(255 255 255 / 0.08);
+    background-color: #16263a;
+  }
+
+  .mapsRoads {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+  }
+
+  .mapsRoads path {
+    fill: none;
+    stroke: rgb(255 255 255 / 0.13);
+    stroke-width: 11px;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .mapsBlock {
+    position: absolute;
+    top: 12%;
+    right: 16%;
+    height: 30px;
+    width: 52px;
+    border-radius: 6px;
+    background-color: rgb(255 255 255 / 0.07);
+  }
+
+  /* solid grey pins with a dark centre dot */
+  .mapsPin {
+    position: absolute;
+    height: 24px;
+    width: 24px;
+    transform: translate(-50%, -50%);
+  }
+
+  .mapsPin path {
+    fill: #9aa7b4;
+    stroke: none;
+  }
+
+  .mapsPin circle {
+    fill: #16263a;
+    stroke: none;
+  }
+
+  /* the client's pin: solid green, with a soft glow */
+  .mapsPinMain {
+    position: absolute;
+    display: grid;
+    height: 38px;
+    width: 38px;
+    place-items: center;
+    transform: translate(-50%, -50%);
+    border-radius: 9999px;
+    background-color: rgb(132 196 58 / 0.28);
+    box-shadow: 0 0 0 7px rgb(132 196 58 / 0.1);
+  }
+
+  .mapsPinMain svg {
+    height: 24px;
+    width: 24px;
+  }
+
+  .mapsPinMain path {
+    fill: hsl(var(--primary));
+    stroke: none;
+  }
+
+  .mapsPinMain circle {
+    fill: #1d3424;
+    stroke: none;
+  }
+
+  .mapsResult {
+    position: relative;
+    margin-top: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    border-radius: 12px;
+    border: 1px solid rgb(255 255 255 / 0.1);
+    background-color: rgb(255 255 255 / 0.04);
+    padding: 0.9rem 1rem;
+  }
+
+  .mapsResultTop {
+    margin-top: 1.1rem;
+    border-color: rgb(132 196 58 / 0.6);
+    background-color: rgb(132 196 58 / 0.14);
+  }
+
+  .mapsResultDim {
+    opacity: 0.5;
+  }
+
+  /* green pill sitting on the top border, above the Directions button */
+  .mapsTopBadge {
+    position: absolute;
+    top: -10px;
+    right: 1.75rem;
+    border-radius: 9999px;
+    background-color: hsl(var(--primary));
+    padding: 2px 9px;
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #121f2f;
+  }
+
+  .mapsLogo {
+    display: grid;
+    height: 44px;
+    width: 44px;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 8px;
+    background-color: rgb(255 255 255 / 0.08);
+    color: #c6d0da;
+  }
+
+  .mapsLogoTop {
+    background-color: #2f4f22;
+    color: hsl(79 61% 62%);
+  }
+
+  .mapsLogo svg {
+    height: 20px;
+    width: 20px;
+  }
+
+  .mapsInfo {
+    min-width: 0;
+    flex: 1 1 0%;
+  }
+
+  .mapsName {
+    display: block;
+    font-size: 14.5px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .mapsMeta {
+    margin-top: 4px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 11.5px;
+    color: #93a2b1;
+  }
+
+  .mapsRating {
+    font-size: 13px;
+    font-weight: 700;
+    color: #f5b301;
+  }
+
+  .mapsStars {
+    font-size: 11.5px;
+    letter-spacing: 1px;
+    color: #f5b301;
+  }
+
+  .mapsStarOff {
+    color: rgb(255 255 255 / 0.3);
+  }
+
+  .mapsDirections {
+    flex-shrink: 0;
+    border-radius: 8px;
+    background-color: hsl(var(--primary));
+    padding: 0.55rem 1rem;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #121f2f;
+  }
+
+  /* floating "table scans" chip, hanging off the panel's bottom-left corner */
+  .scanChip {
+    position: absolute;
+    bottom: 0;
+    left: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    border-radius: 12px;
+    border: 1px solid rgb(255 255 255 / 0.16);
+    background-color: #142334;
+    padding: 0.7rem 0.9rem;
+    box-shadow: 0 12px 30px rgb(0 0 0 / 0.35);
+  }
+
+  .scanIcon {
+    display: grid;
+    height: 28px;
+    width: 28px;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 8px;
+    background-color: rgb(132 196 58 / 0.2);
     color: hsl(var(--primary));
   }
 
-  /* ---- playbook */
+  .scanIcon svg {
+    height: 15px;
+    width: 15px;
+  }
 
-  .playbookSection {
-    border-block: 1px solid hsl(var(--border));
+  .scanTitle {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .scanSub {
+    display: block;
+    font-size: 11px;
+    color: #93a2b1;
+  }
+
+  /* numbers panel for industries without their own visual yet */
+  .metricsLabel {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #9fb0c0;
+  }
+
+  .metricsList {
+    margin-top: 0.5rem;
+    list-style: none;
+    padding: 0;
+  }
+
+  .metricsItem {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    padding: 0.9rem 0;
+  }
+
+  .metricsItem + .metricsItem {
+    border-top: 1px solid rgb(255 255 255 / 0.08);
+  }
+
+  .metricsValue {
+    min-width: 4.5rem;
+    font-size: 26px;
+    line-height: 1;
+    color: hsl(79 61% 58%);
+  }
+
+  .metricsText {
+    font-size: 13px;
+    color: #c6d0da;
+  }
+
+  /* =========================================
+     SHARED SECTION HEADING
+     ========================================= */
+
+  .sectionTitle {
+    font-size: var(--text-h2);
+    line-height: 1.15;
+  }
+
+  /* =========================================
+     PROBLEMS: problem → fix table
+     ========================================= */
+
+  .problems {
+    margin-top: 2rem;
+    border-radius: 20px;
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    padding: 0.5rem 1.25rem;
+  }
+
+  /* column headings only make sense with the side-by-side layout */
+  .problemsHead {
+    display: none;
+  }
+
+  .problemList {
+    list-style: none;
+    padding: 0;
+  }
+
+  /* phones: problem on top, fix underneath */
+  .problemRow {
+    display: grid;
+    gap: 0.75rem;
+    padding: 1.1rem 0;
+  }
+
+  .problemRow + .problemRow {
+    border-top: 1px solid hsl(var(--border));
+  }
+
+  .problemCell {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .problemX {
+    display: grid;
+    height: 22px;
+    width: 22px;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 9999px;
+    background-color: hsl(var(--foreground) / 0.08);
+    color: hsl(var(--foreground) / 0.6);
+  }
+
+  .problemX svg {
+    height: 12px;
+    width: 12px;
+  }
+
+  .problemTitle {
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .problemArrow {
+    display: none;
+  }
+
+  .fixCell {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .fixCheck {
+    display: grid;
+    margin-top: 1px;
+    height: 20px;
+    width: 20px;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 9999px;
+    background-color: hsl(var(--primary));
+    color: #fff;
+  }
+
+  .fixCheck svg {
+    height: 12px;
+    width: 12px;
+    stroke-width: 3;
+  }
+
+  .fixText {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* =========================================
+     JOURNEY (healthcare): icon circles on one line
+     phones: down the left with a vertical line; tablet up: 4 across on a horizontal line
+     ========================================= */
+
+  .journey {
+    position: relative;
+    margin-top: 2.5rem;
+    display: grid;
+    gap: 1.75rem;
+    list-style: none;
+    padding: 0;
+  }
+
+  .journey::before {
+    content: "";
+    position: absolute;
+    top: 26px;
+    bottom: 26px;
+    left: 26px;
+    width: 1px;
+    background-color: hsl(var(--foreground) / 0.12);
+  }
+
+  .journeyStep {
+    position: relative;
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .journeyIcon {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    height: 52px;
+    width: 52px;
+    place-items: center;
+    border-radius: 9999px;
+    border: 1.5px solid hsl(var(--primary));
+    background-color: hsl(var(--background));
+    color: hsl(79 61% 36%);
+  }
+
+  .journeyIcon svg {
+    height: 20px;
+    width: 20px;
+  }
+
+  .journeyIconActive {
+    background-color: hsl(var(--primary));
+    color: #121f2f;
+  }
+
+  .journeyText {
+    padding-top: 0.25rem;
+  }
+
+  .journeyNum {
+    display: block;
+    font-size: 12px;
+    color: hsl(79 61% 38%);
+  }
+
+  .journeyTitle {
+    display: block;
+    margin-top: 0.2rem;
+    font-size: 22px;
+    line-height: 1.2;
+  }
+
+  .journeyBody {
+    display: block;
+    margin-top: 0.5rem;
+    max-width: 26ch;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* =========================================
+     CAREFUL BY DESIGN (healthcare): icon cards in the dark band
+     ========================================= */
+
+  .careCards {
+    margin-top: 2rem;
+    display: grid;
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+  }
+
+  .careCard {
+    border-radius: 14px;
+    border: 1px solid rgb(255 255 255 / 0.12);
+    background-color: rgb(255 255 255 / 0.05);
+    padding: 1.5rem;
+  }
+
+  .careHead {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .careIcon {
+    display: grid;
+    height: 36px;
+    width: 36px;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 9999px;
+    background-color: rgb(132 196 58 / 0.18);
+    color: hsl(79 61% 58%);
+  }
+
+  .careIcon svg {
+    height: 17px;
+    width: 17px;
+  }
+
+  .careTitle {
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .careBody {
+    display: block;
+    margin-top: 1rem;
+    max-width: 40ch;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: #9fb0c0;
+  }
+
+  /* =========================================
+     PHASES (education): progress line with dots over phase cards
+     phones/tablets: cards only (1 then 2 columns); laptop: 4 across with the line above
+     ========================================= */
+
+  .phases {
+    margin-top: 2.5rem;
+    display: grid;
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+  }
+
+  .phase {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .phaseMarker {
+    display: none;
+  }
+
+  .phaseCard {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    border-radius: 18px;
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    padding: 1.5rem;
+  }
+
+  .phaseTop {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .phaseIcon {
+    display: grid;
+    height: 36px;
+    width: 36px;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 9px;
+    background-color: hsl(var(--primary) / 0.12);
+    color: hsl(79 61% 36%);
+  }
+
+  .phaseIcon svg {
+    height: 18px;
+    width: 18px;
+  }
+
+  .phaseBadge {
+    border-radius: 9999px;
+    background-color: hsl(var(--primary));
+    padding: 4px 10px;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #121f2f;
+  }
+
+  .phaseLabel {
+    margin-top: 1.75rem;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: hsl(79 61% 38%);
+  }
+
+  .phaseTitle {
+    margin-top: 0.35rem;
+    font-size: 17px;
+    font-weight: 700;
+  }
+
+  .phaseBody {
+    margin-top: 0.6rem;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* the peak card: navy → green, light text */
+  .phaseCardActive {
+    border-color: transparent;
+    background: linear-gradient(150deg, #16263a 0%, #2c4a2a 60%, #4b7a2a 100%);
+    color: #fff;
+  }
+
+  .phaseCardActive .phaseIcon {
+    background-color: rgb(255 255 255 / 0.1);
+    color: hsl(79 61% 62%);
+  }
+
+  .phaseCardActive .phaseLabel {
+    color: hsl(79 61% 62%);
+  }
+
+  .phaseCardActive .phaseBody {
+    color: #c6d0da;
+  }
+
+  /* =========================================
+     HOW WE DO IT (education): numbered beige cards on a white band
+     ========================================= */
+
+  .howSection {
     background-color: hsl(var(--card));
   }
 
-  .playbookGrid {
+  .howCards {
+    margin-top: 2rem;
     display: grid;
-    gap: 4rem;
+    gap: 1rem;
   }
 
-  .playbookLede {
-    margin-top: 1rem;
-    font-size: 15px;
-    color: hsl(var(--muted-foreground));
-  }
-
-  .steps {
-    position: relative;
-    border-left: 1px solid hsl(var(--border));
-    padding-left: 2.25rem;
-  }
-  .steps > :not([hidden]) ~ :not([hidden]) {
-    margin-top: 1.75rem;
-  }
-
-  .step {
-    position: relative;
-  }
-
-  .stepNumber {
-    position: absolute;
-    left: -53px;
-    display: grid;
-    height: 2.25rem;
-    width: 2.25rem;
-    place-items: center;
-    border-radius: var(--radius-pill);
-    background-color: hsl(var(--primary));
-    font-size: 13px;
-    color: hsl(var(--primary-foreground));
-  }
-
-  .stepText {
-    font-size: 15.5px;
-    font-weight: 500;
-  }
-
-  /* ---- services */
-
-  .serviceGrid {
-    display: grid;
-    gap: 1.5rem;
-  }
-
-  .serviceCard {
+  .howCard {
     display: flex;
     height: 100%;
     flex-direction: column;
-    border-radius: var(--radius-lg);
-    border: 1px solid hsl(var(--border));
-    background-color: hsl(var(--card));
-    padding: 2rem;
-    transition-property: all;
-    transition-timing-function: var(--ease-brand);
-    transition-duration: 300ms;
-  }
-  .serviceCard:hover {
-    border-color: hsl(var(--primary));
-    box-shadow: var(--shadow-md);
+    border-radius: 18px;
+    background-color: hsl(var(--muted));
+    padding: 1.5rem;
   }
 
-  .serviceIconWrap {
-    margin-bottom: 1.25rem;
+  .howTop {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .howIcon {
     display: grid;
-    height: 2.75rem;
-    width: 2.75rem;
+    height: 42px;
+    width: 42px;
     place-items: center;
-    border-radius: var(--radius-md);
-    background-color: hsl(var(--primary) / 0.1);
-    color: hsl(var(--primary));
+    border-radius: 10px;
+    background-color: hsl(var(--card));
+    color: hsl(79 61% 36%);
   }
 
-  .serviceTitle {
-    margin-bottom: 0.5rem;
+  .howIcon svg {
+    height: 19px;
+    width: 19px;
+  }
+
+  .howNum {
+    font-size: 13px;
+    color: hsl(var(--foreground) / 0.3);
+  }
+
+  .howTitle {
+    margin-top: 2.25rem;
     font-size: 16px;
-    line-height: 1.375;
+    font-weight: 700;
   }
 
-  .serviceTagline {
-    font-size: 14px;
+  .howBody {
+    margin-top: 0.6rem;
+    font-size: 13.5px;
+    line-height: 1.6;
     color: hsl(var(--muted-foreground));
   }
 
+  /* =========================================
+     CENTRED SECTION HEADING (ecommerce): small green label without the dash
+     ========================================= */
+
+  .centerHead {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .centerEyebrow {
+    display: block;
+    margin-bottom: 0.75rem;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: hsl(79 61% 38%);
+  }
+
+  /* =========================================
+     CAUSES (ecommerce): centred columns split by thin lines, "Fix:" pill
+     ========================================= */
+
+  .causes {
+    margin-top: 2.5rem;
+    display: grid;
+    list-style: none;
+    padding: 0;
+  }
+
+  .cause {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.75rem 1rem;
+    text-align: center;
+  }
+
+  .cause + .cause {
+    border-top: 1px solid hsl(var(--border));
+  }
+
+  .causeIcon {
+    display: grid;
+    height: 46px;
+    width: 46px;
+    place-items: center;
+    border-radius: 9999px;
+    background-color: hsl(var(--primary) / 0.15);
+    color: hsl(79 61% 36%);
+  }
+
+  .causeIcon svg {
+    height: 19px;
+    width: 19px;
+  }
+
+  .causeTitle {
+    margin-top: 1.25rem;
+    font-size: 17px;
+    font-weight: 700;
+  }
+
+  .causeBody {
+    margin-top: 0.5rem;
+    max-width: 30ch;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .causeFix {
+    margin-top: 1.25rem;
+    border-radius: 9999px;
+    background-color: hsl(var(--primary) / 0.15);
+    padding: 0.45rem 0.95rem;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: hsl(79 61% 30%);
+  }
+
+  /* =========================================
+     WHAT WE RUN (ecommerce): intro + button left, numbered list right
+     ========================================= */
+
+  .run {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  .runTitle {
+    max-width: 11ch;
+    font-size: var(--text-h2);
+    line-height: 1.15;
+  }
+
+  .runBody {
+    margin-top: 2rem;
+    max-width: 30ch;
+    font-size: 14px;
+    line-height: 1.6;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .runButton {
+    margin-top: 1.75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 8px;
+    background-color: hsl(var(--secondary));
+    padding: 0.8rem 1.2rem;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    transition:
+      background-color 200ms var(--ease-brand),
+      color 200ms var(--ease-brand);
+  }
+
+  .runButton:hover {
+    background-color: hsl(var(--primary));
+    color: #121f2f;
+  }
+
+  .runButton svg {
+    height: 15px;
+    width: 15px;
+  }
+
+  .runList {
+    list-style: none;
+    padding: 0;
+  }
+
+  .runRow {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1rem 0;
+  }
+
+  .runRow + .runRow {
+    border-top: 1px solid hsl(var(--border));
+  }
+
+  .runIcon {
+    display: grid;
+    height: 44px;
+    width: 44px;
+    place-items: center;
+    border-radius: 10px;
+    background-color: hsl(var(--primary) / 0.12);
+    color: hsl(79 61% 36%);
+  }
+
+  .runIcon svg {
+    height: 20px;
+    width: 20px;
+  }
+
+  .runRowTitle {
+    display: block;
+    font-size: 15.5px;
+    font-weight: 700;
+  }
+
+  .runRowBody {
+    display: block;
+    margin-top: 3px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .runNum {
+    font-size: 12px;
+    color: hsl(var(--foreground) / 0.3);
+  }
+
+  /* =========================================
+     GROWTH LOOP (ecommerce): circles joined by arrows, dashed repeat curve
+     phones: 2 × 2, no arrows, "repeat" label centred underneath
+     ========================================= */
+
+  .loop {
+    margin-top: 3rem;
+  }
+
+  .loopSteps {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem 1rem;
+    list-style: none;
+    padding: 0;
+  }
+
+  .loopStep {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .loopNode {
+    display: grid;
+    height: 64px;
+    width: 64px;
+    place-items: center;
+    border-radius: 9999px;
+    border: 1.5px solid hsl(var(--primary));
+    background-color: hsl(var(--background));
+    color: hsl(79 61% 36%);
+  }
+
+  .loopNode svg {
+    height: 22px;
+    width: 22px;
+  }
+
+  .loopNodeActive {
+    background-color: hsl(var(--primary));
+    color: #121f2f;
+  }
+
+  .loopLink {
+    display: none;
+  }
+
+  .loopTitle {
+    margin-top: 1.1rem;
+    font-size: 20px;
+    line-height: 1.2;
+  }
+
+  .loopSub {
+    margin-top: 0.3rem;
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .loopRepeat {
+    position: relative;
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .loopCurve,
+  .loopRepeatArrow {
+    display: none;
+  }
+
+  .loopCurve path {
+    fill: none;
+    stroke: hsl(var(--primary));
+    stroke-width: 1.5px;
+    stroke-dasharray: 6 6;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .loopRepeatLabel {
+    border-radius: 9999px;
+    border: 1px solid hsl(var(--primary) / 0.35);
+    background-color: hsl(var(--background));
+    padding: 4px 12px;
+    font-size: 11.5px;
+    font-weight: 700;
+    white-space: nowrap;
+    color: hsl(79 61% 32%);
+  }
+
+  /* =========================================
+     HOW WE START (automobile): white band, numbered steps with a bar on top
+     ========================================= */
+
+  .startSection {
+    background-color: hsl(var(--card));
+  }
+
+  .startSteps {
+    margin-top: 2.5rem;
+    display: grid;
+    gap: 2rem;
+    list-style: none;
+    padding: 0;
+  }
+
+  .startStep {
+    border-top: 3px solid hsl(var(--foreground) / 0.1);
+    padding-top: 1.5rem;
+  }
+
+  /* the first step's bar is green */
+  .startStep:first-child {
+    border-top-color: hsl(var(--primary));
+  }
+
+  .startNum {
+    display: block;
+    font-size: 12px;
+    color: hsl(79 61% 38%);
+  }
+
+  .startTitle {
+    display: block;
+    margin-top: 0.6rem;
+    font-size: 17px;
+    font-weight: 700;
+  }
+
+  .startBody {
+    display: block;
+    margin-top: 0.5rem;
+    max-width: 36ch;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* =========================================
+     PLAYBOOK: dark band, rings top-right
+     ========================================= */
+
+  .playbook {
+    position: relative;
+    overflow: hidden;
+    padding-top: clamp(3rem, 2.5rem + 2vw, 4.5rem);
+    padding-bottom: clamp(3rem, 2.5rem + 2vw, 4.5rem);
+    color: #fff;
+    background: linear-gradient(120deg, #121f2f 0%, #16283a 55%, #1d3a2c 100%);
+  }
+
+  .playbook::before {
+    content: "";
+    position: absolute;
+    top: -230px;
+    right: -170px;
+    height: 520px;
+    width: 520px;
+    background: radial-gradient(
+      circle,
+      transparent 139px,
+      rgb(255 255 255 / 0.07) 140px,
+      transparent 141px,
+      transparent 199px,
+      rgb(255 255 255 / 0.07) 200px,
+      transparent 201px,
+      transparent 259px,
+      rgb(255 255 255 / 0.07) 260px,
+      transparent 261px
+    );
+    pointer-events: none;
+  }
+
+  .playbookInner {
+    position: relative;
+  }
+
+  .playbookHead {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+  }
+
+  .playbookTitle {
+    font-size: var(--text-h2);
+    line-height: 1.15;
+  }
+
+  .playbookNote {
+    font-size: 13px;
+    color: #93a2b1;
+  }
+
+  /* phones/tablets: one column, arrows point down between cards */
+  .playSteps {
+    margin-top: 2rem;
+    display: grid;
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+  }
+
+  .playStep {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border-radius: 14px;
+    border: 1px solid rgb(255 255 255 / 0.12);
+    background-color: rgb(255 255 255 / 0.05);
+    padding: 1.25rem;
+  }
+
+  .playNum {
+    font-size: 28px;
+    line-height: 1;
+    color: hsl(79 61% 58%);
+  }
+
+  .playTitle {
+    margin-top: 1.25rem;
+    font-size: 14.5px;
+    font-weight: 700;
+  }
+
+  .playBody {
+    margin-top: 0.4rem;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: #9fb0c0;
+  }
+
+  .playArrow {
+    position: absolute;
+    z-index: 1;
+    bottom: calc(-0.5rem - 11px);
+    left: 50%;
+    display: grid;
+    height: 22px;
+    width: 22px;
+    place-items: center;
+    transform: translateX(-50%) rotate(90deg);
+    border-radius: 9999px;
+    border: 1px solid rgb(255 255 255 / 0.25);
+    background-color: #16283a;
+  }
+
+  .playArrow svg {
+    height: 12px;
+    width: 12px;
+  }
+
+  /* =========================================
+     SERVICES AND TOOLS
+     ========================================= */
+
+  .tools {
+    margin-top: 2rem;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .tool {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    border-radius: 16px;
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    padding: 1.25rem;
+    color: hsl(var(--foreground));
+    text-decoration: none;
+    transition:
+      border-color 200ms var(--ease-brand),
+      box-shadow 200ms var(--ease-brand);
+  }
+
+  .tool:hover {
+    border-color: hsl(var(--primary));
+    box-shadow: var(--shadow-sm);
+  }
+
+  .toolTop {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .toolIcon {
+    display: grid;
+    height: 40px;
+    width: 40px;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 10px;
+    background-color: hsl(var(--primary) / 0.12);
+    color: hsl(79 61% 36%);
+  }
+
+  .toolIcon svg {
+    height: 20px;
+    width: 20px;
+  }
+
+  .toolBadge {
+    border-radius: 9999px;
+    background-color: hsl(var(--primary) / 0.15);
+    padding: 3px 9px;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: hsl(79 61% 32%);
+  }
+
+  .toolBadgeProduct {
+    background-color: hsl(var(--secondary));
+    color: #fff;
+  }
+
+  .toolTitle {
+    margin-top: 1.25rem;
+    font-size: 15.5px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .toolBody {
+    margin-top: 0.5rem;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .toolMore {
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-top: 1.5rem;
+    font-size: 13.5px;
+    font-weight: 700;
+  }
+
+  .toolMore svg {
+    height: 15px;
+    width: 15px;
+    transition: transform 200ms var(--ease-brand);
+  }
+
+  .tool:hover .toolMore svg {
+    transform: translateX(3px);
+  }
+
+  /* ---- list layout (hotels): rows in one white card
+     phones: icon | title + badge, description underneath, arrow right;
+     tablet up: icon | title | description | badge | arrow in one line */
+
+  .toolList {
+    margin-top: 2rem;
+    border-radius: 20px;
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    padding: 0.25rem 1.25rem;
+    list-style: none;
+  }
+
+  .toolList > li + li {
+    border-top: 1px solid hsl(var(--border));
+  }
+
+  .toolRow {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "icon title badge"
+      "icon body arrow";
+    align-items: center;
+    gap: 0.35rem 1rem;
+    padding: 1rem 0;
+    color: hsl(var(--foreground));
+    text-decoration: none;
+  }
+
+  .toolRowIcon {
+    grid-area: icon;
+  }
+
+  .toolRowTitle {
+    grid-area: title;
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .toolRowBody {
+    grid-area: body;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .toolRowBadge {
+    grid-area: badge;
+    justify-self: end;
+  }
+
+  .toolRowArrow {
+    grid-area: arrow;
+    justify-self: end;
+    display: grid;
+    height: 30px;
+    width: 30px;
+    place-items: center;
+    border-radius: 9999px;
+    border: 1px solid hsl(var(--foreground) / 0.2);
+    transition:
+      background-color 200ms var(--ease-brand),
+      border-color 200ms var(--ease-brand);
+  }
+
+  .toolRowArrow svg {
+    height: 15px;
+    width: 15px;
+  }
+
+  .toolRow:hover .toolRowArrow {
+    border-color: hsl(var(--primary));
+    background-color: hsl(var(--primary));
+    color: #121f2f;
+  }
+
+  .toolRow:hover .toolRowTitle {
+    color: hsl(79 61% 36%);
+  }
+
+  /* =========================================
+     CLOSING BAND: navy → green, rings behind the buttons
+     ========================================= */
+
+  .ctaSection {
+    padding-bottom: var(--space-section);
+  }
+
+  /* after a white band, keep a beige gap above the closing band */
+  .startSection + .ctaSection {
+    padding-top: var(--space-section);
+  }
+
+  .cta {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: grid;
+    gap: 1.75rem;
+    border-radius: 20px;
+    padding: 2rem 1.5rem;
+    color: #fff;
+    background:
+      radial-gradient(ellipse 60% 90% at 85% 60%, rgb(110 160 50 / 0.45), transparent),
+      linear-gradient(110deg, #121f2f 0%, #23402c 45%, #4b7a2a 100%);
+  }
+
+  .ctaText,
+  .ctaActions {
+    position: relative;
+  }
+
+  /* two large thin rings centred behind the buttons; z-index -1 keeps them under the buttons
+     but above the band's background */
+  .ctaActions::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 40%;
+    left: 50%;
+    height: 440px;
+    width: 440px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(
+      circle,
+      transparent 129px,
+      rgb(255 255 255 / 0.09) 130px,
+      transparent 131px,
+      transparent 204px,
+      rgb(255 255 255 / 0.09) 205px,
+      transparent 206px
+    );
+    pointer-events: none;
+  }
+
+  .ctaEyebrow {
+    display: block;
+    margin-bottom: 0.75rem;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: hsl(79 61% 58%);
+  }
+
+  .ctaTitle {
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.2;
+  }
+
+  .ctaBody {
+    margin-top: 0.9rem;
+    max-width: 60ch;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #c6d0da;
+  }
+
+  .ctaActions {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .ctaPrimary,
+  .ctaSecondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    border-radius: 8px;
+    padding: 0.7rem 1.4rem;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition:
+      filter 200ms var(--ease-brand),
+      background-color 200ms var(--ease-brand);
+  }
+
+  /* label left, arrow at the far right, as in the design */
+  .ctaPrimary {
+    justify-content: space-between;
+    background-color: hsl(var(--primary));
+    color: #121f2f;
+  }
+
+  .ctaPrimary:hover {
+    filter: brightness(1.08);
+  }
+
+  .ctaPrimary svg {
+    height: 16px;
+    width: 16px;
+  }
+
+  .ctaSecondary {
+    border: 1px solid rgb(255 255 255 / 0.35);
+    color: #fff;
+  }
+
+  .ctaSecondary:hover {
+    background-color: rgb(255 255 255 / 0.08);
+  }
+
+  /* =========================================
+     TABLET / LAPTOP
+     ========================================= */
+
   @media (min-width: 640px) {
-    .metricsGrid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+    .tools {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .phases,
+    .howCards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    /* hero features: 2 × 2 */
+    .heroFeatures {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 1.5rem;
+    }
+
+    .heroFeature + .heroFeature {
+      border-top: 0;
+    }
+
+    .heroFeature:nth-child(n + 3) {
+      border-top: 1px solid rgb(255 255 255 / 0.12);
     }
   }
 
   @media (min-width: 768px) {
-    .challengeGrid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    .heroStats {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      column-gap: 0;
     }
 
-    .serviceGrid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    .heroStat {
+      padding: 1.6rem 1.75rem;
+    }
+
+    .heroStat:nth-child(n + 3) {
+      border-top: 0;
+    }
+
+    .heroStat + .heroStat {
+      border-left: 1px solid rgb(255 255 255 / 0.12);
+    }
+
+    /* how we start: 3 across */
+    .startSteps {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+
+    /* causes: 3 across, thin lines between */
+    .causes {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .cause + .cause {
+      border-top: 0;
+      border-left: 1px solid hsl(var(--border));
+    }
+
+    /* growth loop: 4 across, arrows between circles, dashed curve back to the start */
+    .loopSteps {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0;
+    }
+
+    .loopLink {
+      position: absolute;
+      top: 32px;
+      left: calc(50% + 42px);
+      display: block;
+      height: 1.5px;
+      width: calc(100% - 84px);
+      background-color: hsl(var(--primary));
+    }
+
+    /* arrowhead at the end of each link */
+    .loopLink::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: 0;
+      height: 8px;
+      width: 8px;
+      transform: translateY(-50%) rotate(45deg);
+      border-top: 1.5px solid hsl(var(--primary));
+      border-right: 1.5px solid hsl(var(--primary));
+    }
+
+    .loopRepeat {
+      height: 56px;
+      margin-top: 0.75rem;
+      display: block;
+    }
+
+    .loopCurve {
+      position: absolute;
+      inset: 0;
+      display: block;
+      height: 100%;
+      width: 100%;
+    }
+
+    /* arrowhead pointing up into the first circle */
+    .loopRepeatArrow {
+      position: absolute;
+      top: 0;
+      left: 12.5%;
+      display: block;
+      height: 8px;
+      width: 8px;
+      transform: translateX(-50%) rotate(45deg);
+      border-top: 1.5px solid hsl(var(--primary));
+      border-left: 1.5px solid hsl(var(--primary));
+    }
+
+    /* label sitting on the bottom of the curve */
+    .loopRepeatLabel {
+      position: absolute;
+      top: 68%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* journey: 4 across, icons on one horizontal line */
+    .journey {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+
+    .journey::before {
+      top: 26px;
+      bottom: auto;
+      left: 26px;
+      right: 0;
+      width: auto;
+      height: 1px;
+    }
+
+    .journeyStep {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.75rem;
+    }
+
+    .journeyText {
+      padding-top: 0;
+    }
+
+    .careCards {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.25rem;
+    }
+
+    /* left-aligned numbers start flush with the row's left edge */
+    .heroStatsLeft .heroStat:first-child {
+      padding-left: 0;
+    }
+
+    .ledeBreak {
+      display: inline;
+    }
+
+    /* tools list: everything on one line */
+    .toolList {
+      padding: 0.25rem 1.75rem;
+    }
+
+    .toolRow {
+      grid-template-columns: auto minmax(0, 14rem) minmax(0, 1fr) auto auto;
+      grid-template-areas: "icon title body badge arrow";
+      gap: 1.5rem;
+    }
+
+    .toolRowBadge {
+      margin-right: 1.5rem;
+    }
+
+    /* problems: problem | arrow | fix, with column headings */
+    .problems {
+      padding: 0.25rem 2rem 0.5rem;
+    }
+
+    .problemsHead,
+    .problemRow {
+      grid-template-columns: minmax(0, 0.9fr) 3rem minmax(0, 1.3fr);
+      column-gap: 1.5rem;
+    }
+
+    .problemsHead {
+      display: grid;
+      border-bottom: 1px solid hsl(var(--border));
+      padding: 1.25rem 0 1rem;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: hsl(var(--foreground));
+    }
+
+    .problemsHeadFix {
+      grid-column: 3;
+      color: hsl(79 61% 38%);
+    }
+
+    .problemRow {
+      align-items: center;
+      padding: 1.4rem 0;
+    }
+
+    .problemArrow {
+      display: grid;
+      height: 30px;
+      width: 30px;
+      place-items: center;
+      justify-self: center;
+      border-radius: 9999px;
+      background-color: hsl(var(--primary) / 0.15);
+      color: hsl(79 61% 36%);
+    }
+
+    .problemArrow svg {
+      height: 15px;
+      width: 15px;
+    }
+
+    /* closing band: text left, buttons right, centred so wide screens don't open a big gap */
+    .cta {
+      grid-template-columns: minmax(0, 40rem) clamp(216px, 22vw, 280px);
+      justify-content: center;
+      align-items: center;
+      column-gap: clamp(2.5rem, 8vw, 7rem);
+      padding: 3.75rem 3rem;
     }
   }
 
   @media (min-width: 1024px) {
-    .playbookGrid {
-      grid-template-columns: 0.85fr 1.15fr;
+    .heroGrid {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      align-items: center;
+      gap: 3rem;
+      padding-top: 3rem;
+      padding-bottom: 5rem;
     }
-  }
 
-  @media (min-width: 1280px) {
-    .serviceGrid {
+    .visual {
+      justify-self: end;
+    }
+
+    /* what we run: intro left, list right */
+    .run {
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+      align-items: start;
+      gap: 5rem;
+    }
+
+    .runBody {
+      margin-top: 2.5rem;
+    }
+
+    /* phases: 4 across, progress line with dots above the cards */
+    .phases,
+    .howCards {
       grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+
+    .phaseMarker {
+      position: relative;
+      display: block;
+      height: 20px;
+      margin-bottom: 1.75rem;
+    }
+
+    /* each item draws the line from its dot to the next dot (the last runs to the edge) */
+    .phaseMarker::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 1.25rem;
+      right: -1.5rem;
+      height: 3px;
+      transform: translateY(-50%);
+      border-radius: 2px;
+      background-color: hsl(var(--foreground) / 0.1);
+    }
+
+    .phase:last-child .phaseMarker::before {
+      right: 0;
+    }
+
+    .phaseDone .phaseMarker::before {
+      background-color: hsl(var(--primary));
+    }
+
+    /* green runs a little past the peak dot, then grey */
+    .phaseCurrent .phaseMarker::before {
+      background: linear-gradient(90deg, hsl(var(--primary)) 0 30%, hsl(var(--foreground) / 0.1) 30%);
+    }
+
+    .phaseDot {
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      left: 1.25rem;
+      height: 20px;
+      width: 20px;
+      border-radius: 9999px;
+      border: 2.5px solid hsl(var(--primary));
+      background-color: hsl(var(--background));
+    }
+
+    .phaseDotOn {
+      background-color: hsl(var(--primary));
+    }
+
+    /* hero features: one row of 4 split by thin lines */
+    .heroFeatures {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      column-gap: 0;
+    }
+
+    .heroFeature {
+      padding: 1.5rem 1.5rem;
+    }
+
+    .heroFeature:first-child {
+      padding-left: 0;
+    }
+
+    .heroFeature:nth-child(n + 3) {
+      border-top: 0;
+    }
+
+    .heroFeature + .heroFeature {
+      border-left: 1px solid rgb(255 255 255 / 0.12);
+    }
+
+    .scanChip {
+      left: -1.8rem;
+    }
+
+    /* playbook: five cards in a row, arrows between them */
+    .playSteps {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0.9rem;
+    }
+
+    .playStep {
+      min-height: 150px;
+    }
+
+    .playArrow {
+      top: 50%;
+      right: calc(-0.45rem - 11px);
+      bottom: auto;
+      left: auto;
+      transform: translateY(-50%);
+    }
+
+    .tools {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0.9rem;
     }
   }
-}
-
-/* Overrides passed into other components via `className`. */
-
-.challengeCard {
-  height: 100%;
-  padding: 2rem;
-}
-
-.serviceIcon {
-  height: 1.25rem;
-  width: 1.25rem;
 }

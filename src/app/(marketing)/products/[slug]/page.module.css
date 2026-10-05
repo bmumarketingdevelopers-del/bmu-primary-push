@@ -115,24 +115,6 @@
     padding-bottom: clamp(3rem, 6vw, 4.5rem);
   }
 
-  .crumbs {
-    font-size: var(--text-small);
-    color: #93a2b1;
-  }
-
-  .crumbs a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  .crumbs a:hover {
-    color: #fff;
-  }
-
-  .crumbs [aria-current] {
-    color: #c6d0da;
-  }
-
   .tag {
     margin-top: 1.25rem;
     display: inline-flex;
