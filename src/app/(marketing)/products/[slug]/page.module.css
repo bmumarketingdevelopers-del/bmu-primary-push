@@ -1029,6 +1029,213 @@
      LAPTOP
      ========================================= */
 
+  /* ---- "Where your scans go" animation (markup lives in product-visuals.tsx).
+     ReplayOnView adds .dashPlay when the box comes into view and removes it once the box has
+     left the screen, so the sequence replays on every visit. The card itself stays still; only
+     what's inside moves: ring blocks turn into place, then the whole ring keeps turning slowly
+     → bars grow one by one → feed rows slide in → toast pops in, then floats.
+     Until .dashPlay is added, the moving parts wait in their start positions.
+     The Live dot and newest feed dot pulse all the time. */
+
+  .liveDot,
+  .feedDotNew {
+    animation: dashPulse 1.8s ease-out infinite;
+  }
+
+  /* Ring blocks: the SVG draws the grey ring first, then 5 stripes each at 12, 3, 6 and 9
+     o'clock (children 2–6, 7–11, 12–16, 17–21). On load the 12 & 6 set starts at 10 & 4 o'clock
+     and turns clockwise; the 3 & 9 set starts at 2 & 8 o'clock and turns anticlockwise. Both
+     cross on the same ring and land back in their standard positions together. The total in
+     the middle stays still. */
+  .donut svg path {
+    transform-box: view-box;
+    transform-origin: 100px 100px;
+  }
+
+  /* waiting positions: 12 & 6 set at 10 & 4 o'clock, 3 & 9 set at 2 & 8 o'clock */
+  .donut svg path:nth-child(n + 2):nth-child(-n + 6),
+  .donut svg path:nth-child(n + 12):nth-child(-n + 16) {
+    transform: rotate(-60deg);
+  }
+
+  .donut svg path:nth-child(n + 7):nth-child(-n + 11),
+  .donut svg path:nth-child(n + 17):nth-child(-n + 21) {
+    transform: rotate(-30deg);
+  }
+
+  .dashPlay .donut svg path:nth-child(n + 2):nth-child(-n + 6),
+  .dashPlay .donut svg path:nth-child(n + 12):nth-child(-n + 16) {
+    animation: ringClockwise 2.4s cubic-bezier(0.65, 0, 0.35, 1) 300ms both;
+  }
+
+  .dashPlay .donut svg path:nth-child(n + 7):nth-child(-n + 11),
+  .dashPlay .donut svg path:nth-child(n + 17):nth-child(-n + 21) {
+    animation: ringAnticlockwise 2.4s cubic-bezier(0.65, 0, 0.35, 1) 300ms both;
+  }
+
+  /* once the blocks have landed (0.3s delay + 2.4s), the whole ring keeps turning slowly */
+  .dashPlay .donut svg {
+    animation: dashSpin 40s linear 2.7s infinite;
+  }
+
+  .dashBar > span {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  .dashPlay .dashBar > span {
+    animation: dashGrow 700ms var(--ease-brand) both;
+  }
+
+  .dashPlay .dashRow:nth-child(1) .dashBar > span {
+    animation-delay: 450ms;
+  }
+
+  .dashPlay .dashRow:nth-child(2) .dashBar > span {
+    animation-delay: 550ms;
+  }
+
+  .dashPlay .dashRow:nth-child(3) .dashBar > span {
+    animation-delay: 650ms;
+  }
+
+  .dashPlay .dashRow:nth-child(4) .dashBar > span {
+    animation-delay: 750ms;
+  }
+
+  .dashPlay .dashRow:nth-child(5) .dashBar > span {
+    animation-delay: 850ms;
+  }
+
+  .feedRow {
+    opacity: 0;
+  }
+
+  .dashPlay .feedRow {
+    animation: dashSlide 450ms var(--ease-brand) both;
+  }
+
+  .dashPlay .feedRow:nth-child(1) {
+    animation-delay: 1100ms;
+  }
+
+  .dashPlay .feedRow:nth-child(2) {
+    animation-delay: 1250ms;
+  }
+
+  .dashPlay .feedRow:nth-child(3) {
+    animation-delay: 1400ms;
+  }
+
+  /* pops in last, then keeps floating */
+  .toast {
+    opacity: 0;
+  }
+
+  .dashPlay .toast {
+    animation:
+      dashPop 500ms var(--ease-brand) 1700ms both,
+      dashFloat 4s ease-in-out 2200ms infinite;
+  }
+
+  @keyframes dashSpin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes dashPulse {
+    0% {
+      box-shadow: 0 0 0 0 hsl(var(--primary) / 0.55);
+    }
+
+    100% {
+      box-shadow: 0 0 0 7px hsl(var(--primary) / 0);
+    }
+  }
+
+  /* 12 & 6 set: from 10 & 4 o'clock (−60°), one clockwise lap plus 60°, ends at 0 */
+  @keyframes ringClockwise {
+    from {
+      transform: rotate(-60deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* 3 & 9 set: from 2 & 8 o'clock (−30°), anticlockwise 330°, ends at 0 (−360°) */
+  @keyframes ringAnticlockwise {
+    from {
+      transform: rotate(-30deg);
+    }
+
+    to {
+      transform: rotate(-360deg);
+    }
+  }
+
+  @keyframes dashGrow {
+    from {
+      transform: scaleX(0);
+    }
+
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes dashSlide {
+    from {
+      opacity: 0;
+      transform: translateX(-12px);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes dashPop {
+    from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.92);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes dashFloat {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+
+  /* reduced motion: everything shown in its final position straight away, no animation */
+  @media (prefers-reduced-motion: reduce) {
+    .liveDot,
+    .feedDotNew,
+    .donut svg,
+    .donut svg path,
+    .dashBar > span,
+    .feedRow,
+    .toast {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+  }
+
   @media (min-width: 1024px) {
     .heroGrid {
       grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr);

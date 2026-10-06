@@ -8,6 +8,7 @@ import { PRODUCT_DETAILS, getProduct } from "@/lib/products-data";
 import { cn } from "@/lib/utils";
 import { PRODUCT_EXTRAS } from "./product-extras";
 import { HowDiagram, QrDashboard } from "./product-visuals";
+import { ReplayOnView } from "./replay-on-view";
 import styles from "./page.module.css";
 
 export function generateStaticParams() {
@@ -66,7 +67,14 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
           {extra.dashboard && (
             <Reveal delay={0.1}>
-              <QrDashboard data={extra.dashboard} />
+              {/* replays the dashboard animation each time it comes into view;
+                  the scan total and the 5 percentages count up from 0 */}
+              <ReplayOnView
+                playClassName={styles.dashPlay}
+                countClassNames={[styles.donutTotal, styles.dashRowValue]}
+              >
+                <QrDashboard data={extra.dashboard} />
+              </ReplayOnView>
             </Reveal>
           )}
         </div>

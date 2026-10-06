@@ -617,6 +617,217 @@
   }
 
   /* =========================================
+     SCROLL REVEAL (reveal-on-view.tsx): replays on every visit, hero stays static
+     The block fades and slides up when it comes into view; cards and rows inside follow one
+     after another (0.08s apart, starting 0.15s after the block). Leaving the screen resets it.
+     ========================================= */
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+      opacity 620ms cubic-bezier(0.4, 0, 0.2, 1) var(--reveal-delay, 0s),
+      transform 620ms cubic-bezier(0.4, 0, 0.2, 1) var(--reveal-delay, 0s);
+  }
+
+  .revealIn {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* inner cards and rows */
+  .reveal :is(
+      .problemRow,
+      .journeyStep,
+      .phase,
+      .cause,
+      .runRow,
+      .loopStep,
+      .playStep,
+      .startStep,
+      .careCard,
+      .toolList > li
+    ) {
+    --i: 0;
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 500ms cubic-bezier(0.4, 0, 0.2, 1),
+      transform 500ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition-delay: calc(var(--reveal-delay, 0s) + 0.15s + var(--i) * 0.08s);
+  }
+
+  .reveal :is(.problemRow, .journeyStep, .phase, .cause, .runRow, .loopStep, .playStep, .startStep, .careCard, .toolList > li):nth-child(2) {
+    --i: 1;
+  }
+
+  .reveal :is(.problemRow, .journeyStep, .phase, .cause, .runRow, .loopStep, .playStep, .startStep, .careCard, .toolList > li):nth-child(3) {
+    --i: 2;
+  }
+
+  .reveal :is(.problemRow, .journeyStep, .phase, .cause, .runRow, .loopStep, .playStep, .startStep, .careCard, .toolList > li):nth-child(4) {
+    --i: 3;
+  }
+
+  .reveal :is(.problemRow, .journeyStep, .phase, .cause, .runRow, .loopStep, .playStep, .startStep, .careCard, .toolList > li):nth-child(5) {
+    --i: 4;
+  }
+
+  .reveal :is(.problemRow, .journeyStep, .phase, .cause, .runRow, .loopStep, .playStep, .startStep, .careCard, .toolList > li):nth-child(6) {
+    --i: 5;
+  }
+
+  .revealIn :is(
+      .problemRow,
+      .journeyStep,
+      .phase,
+      .cause,
+      .runRow,
+      .loopStep,
+      .playStep,
+      .startStep,
+      .careCard,
+      .toolList > li
+    ) {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* reduced motion: everything shown straight away */
+  @media (prefers-reduced-motion: reduce) {
+    .reveal,
+    .reveal :is(
+        .problemRow,
+        .journeyStep,
+        .phase,
+        .cause,
+        .runRow,
+        .loopStep,
+        .playStep,
+        .startStep,
+        .careCard,
+        .toolList > li
+      ) {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  /* =========================================
+     TIMELINE ANIMATION (journey, phases, how we start), like the About page timeline:
+     step 1 shows with its section; then the line grows to the next step (0.4s) and that step
+     appears, one step every 0.6s. Uses the same .reveal / .revealIn switch, so it replays
+     on every visit. --k is the step number (0, 1, 2, 3).
+     ========================================= */
+
+  .journeyStep:nth-child(2),
+  .phase:nth-child(2),
+  .startStep:nth-child(2) {
+    --k: 1;
+  }
+
+  .journeyStep:nth-child(3),
+  .phase:nth-child(3),
+  .startStep:nth-child(3) {
+    --k: 2;
+  }
+
+  .journeyStep:nth-child(4),
+  .phase:nth-child(4),
+  .startStep:nth-child(4) {
+    --k: 3;
+  }
+
+  /* each step appears when the line reaches it (replaces the general 0.08s stagger; "li." makes
+     this win over that rule) */
+  .reveal li.journeyStep,
+  .reveal li.phase,
+  .reveal li.startStep {
+    transition-delay: calc(var(--reveal-delay, 0s) + 0.25s + var(--k, 0) * 0.6s);
+  }
+
+  /* journey: a soft green fill runs along the grey line from the first circle to the last
+     (4 steps → 3 gaps → 1.8s); phones draw it downwards, tablet up left → right */
+  .journey::after {
+    content: "";
+    position: absolute;
+    top: 26px;
+    bottom: 26px;
+    left: 26px;
+    width: 1px;
+    transform: scaleY(0);
+    transform-origin: top;
+    background-color: hsl(var(--primary) / 0.6);
+    transition: transform 1.8s linear calc(var(--reveal-delay, 0s) + 0.25s);
+  }
+
+  .revealIn .journey::after {
+    transform: none;
+  }
+
+  /* the filled (green) circle starts as an outline and fills when its step is reached */
+  .reveal .journeyIconActive {
+    background-color: hsl(var(--background));
+    color: hsl(79 61% 36%);
+    transition:
+      background-color 300ms ease,
+      color 300ms ease;
+    transition-delay: calc(var(--reveal-delay, 0s) + 0.6s + var(--k, 0) * 0.6s);
+  }
+
+  .revealIn .journeyIconActive {
+    background-color: hsl(var(--primary));
+    color: #121f2f;
+  }
+
+  /* phases: each line segment grows from its dot to the next one, after its card appears */
+  .reveal .phaseMarker::before {
+    transform: translateY(-50%) scaleX(0);
+    transform-origin: left;
+    transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition-delay: calc(var(--reveal-delay, 0s) + 0.35s + var(--k, 0) * 0.6s);
+  }
+
+  .revealIn .phaseMarker::before {
+    transform: translateY(-50%) scaleX(1);
+  }
+
+  /* how we start: each top bar draws left → right as its step appears */
+  .reveal .startStep::before {
+    transform: scaleX(0);
+    transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition-delay: calc(var(--reveal-delay, 0s) + 0.25s + var(--k, 0) * 0.6s);
+  }
+
+  .revealIn .startStep::before {
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal .journey::after,
+    .reveal .phaseMarker::before,
+    .reveal .startStep::before,
+    .reveal .journeyIconActive {
+      transition: none;
+    }
+
+    .journey::after,
+    .reveal .startStep::before {
+      transform: none;
+    }
+
+    .reveal .phaseMarker::before {
+      transform: translateY(-50%);
+    }
+
+    .reveal .journeyIconActive {
+      background-color: hsl(var(--primary));
+      color: #121f2f;
+    }
+  }
+
+  /* =========================================
      SHARED SECTION HEADING
      ========================================= */
 
@@ -1317,14 +1528,26 @@
     padding: 0;
   }
 
+  /* the bar on top is drawn as its own line (::before) so it can grow left → right */
   .startStep {
-    border-top: 3px solid hsl(var(--foreground) / 0.1);
-    padding-top: 1.5rem;
+    position: relative;
+    padding-top: calc(1.5rem + 3px);
+  }
+
+  .startStep::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    transform-origin: left;
+    background-color: hsl(var(--foreground) / 0.1);
   }
 
   /* the first step's bar is green */
-  .startStep:first-child {
-    border-top-color: hsl(var(--primary));
+  .startStep:first-child::before {
+    background-color: hsl(var(--primary));
   }
 
   .startNum {
@@ -1747,9 +1970,8 @@
       background-color 200ms var(--ease-brand);
   }
 
-  /* label left, arrow at the far right, as in the design */
+  /* label and arrow centred together in the button */
   .ctaPrimary {
-    justify-content: space-between;
     background-color: hsl(var(--primary));
     color: #121f2f;
   }
@@ -1912,6 +2134,17 @@
       right: 0;
       width: auto;
       height: 1px;
+    }
+
+    /* green fill runs left → right, ending at the last circle (3 of 4 columns + 3 gaps) */
+    .journey::after {
+      top: 26px;
+      bottom: auto;
+      left: 26px;
+      width: calc(75% + 0.75 * 1.5rem);
+      height: 1px;
+      transform: scaleX(0);
+      transform-origin: left;
     }
 
     .journeyStep {

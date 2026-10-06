@@ -28,11 +28,13 @@ import {
   X,
   type LucideIcon,
 } from "lucide-react";
-import { Reveal } from "@/components/marketing/reveal";
+// industry-page reveal: replays on every visit and staggers the cards inside (see reveal-on-view.tsx)
+import { Reveal } from "./reveal-on-view";
 import { ServiceIcon } from "@/components/marketing/service-icon";
 import { INDUSTRY_DETAILS, getIndustry, type IndustryDetail } from "@/lib/industries-data";
 import { getService, type IconName } from "@/lib/services-data";
 import { cn } from "@/lib/utils";
+import { HeroStats } from "./hero-stats";
 import styles from "./page.module.css";
 
 export function generateStaticParams() {
@@ -885,17 +887,8 @@ export default async function IndustryPage({ params }: { params: Promise<{ slug:
           </div>
 
           {page.stats ? (
-            <ul className={cn(styles.heroStats, page.statsAlign === "left" && styles.heroStatsLeft)}>
-              {page.stats.map((s, i) => (
-                <li key={s.label} className={styles.heroStat}>
-                  <span className={cn("display", styles.heroStatValue, i === 0 && styles.heroStatValueAccent)}>
-                    {s.value}
-                  </span>
-                  <span className={styles.heroStatLabel}>{s.label}</span>
-                  <span className={styles.heroStatSub}>{s.sub}</span>
-                </li>
-              ))}
-            </ul>
+            // numbers count up from 0 each time the row comes into view
+            <HeroStats stats={page.stats} left={page.statsAlign === "left"} />
           ) : page.features ? (
             <ul className={styles.heroFeatures}>
               {page.features.map(({ Icon, title, sub }) => (
