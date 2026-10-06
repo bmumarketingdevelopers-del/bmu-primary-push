@@ -75,7 +75,7 @@ export async function decideApproval(
     }
 
     await sendEmail({
-      to: process.env.EMAIL_INTERNAL ?? "hello@bmu.marketing",
+      to: process.env.EMAIL_INTERNAL ?? "buildmyuniversee@gmail.com",
       subject: `${approval.client.name} ${decision === "APPROVED" ? "approved" : "requested changes on"} "${title ?? approval.title}"`,
       html: `<p><strong>${approval.client.name}</strong> ${
         decision === "APPROVED" ? "approved" : "requested changes on"

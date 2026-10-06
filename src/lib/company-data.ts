@@ -4,10 +4,10 @@ export const COMPANY = {
   founded: 2019,
   headcount: 24,
   city: "Bengaluru",
-  address: "2nd Floor, 14th Main, HSR Layout Sector 6, Bengaluru 560102",
-  email: "hello@bmu.marketing",
-  phone: "+91 80 4718 2200",
-  whatsapp: "+91 98450 71100",
+  address: "376, Phase 9, Royal Park Residency Layout, JP Nagar 9th Phase, J. P. Nagar, Bengaluru, Karnataka 560108",
+  email: "buildmyuniversee@gmail.com",
+  phone: "+91 81054 91414",
+  whatsapp: "+91 81054 91414",
   hours: "Mon–Fri, 9:30am–6:30pm IST",
 };
 

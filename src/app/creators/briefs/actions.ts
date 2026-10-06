@@ -74,7 +74,7 @@ export async function respondToBrief(_prev: BriefState, formData: FormData): Pro
 
     // The agency needs to know without watching a dashboard.
     await sendEmail({
-      to: process.env.EMAIL_INTERNAL ?? "hello@bmu.marketing",
+      to: process.env.EMAIL_INTERNAL ?? "buildmyuniversee@gmail.com",
       subject: `${user.name ?? "A creator"} ${verb} "${briefTitle ?? briefId}"`,
       html: `<p><strong>${user.name ?? "A creator"}</strong> ${verb} the brief <strong>${briefTitle ?? briefId}</strong>.</p>${
         fee ? `<p>Quoted fee: <strong>${inr(fee)}</strong></p>` : ""

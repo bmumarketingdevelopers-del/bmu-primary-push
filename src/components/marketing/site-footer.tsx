@@ -15,7 +15,7 @@ export function SiteFooter() {
               AI-first growth partner for businesses and real estate. Strategy, creative, media and software from one team.
             </p>
             <ul className={styles.contact}>
-              <li className={styles.contactItem}><MapPin className={styles.contactIcon} /> Bengaluru, Karnataka</li>
+              <li className={styles.contactItem}><MapPin className={styles.contactIcon} /> 376, Phase 9, Royal Park Residency Layout, JP Nagar 9th Phase, J. P. Nagar, Bengaluru, Karnataka 560108</li>
               <li className={styles.contactItem}><Mail className={styles.contactIcon} /> buildmyuniversee@gmail.com</li>
               <li className={styles.contactItem}><Phone className={styles.contactIcon} /> +91 81054 91414</li>
             </ul>

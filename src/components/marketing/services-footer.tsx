@@ -45,7 +45,7 @@ export function ServicesFooter() {
               team.
             </p>
             <address className={styles.contact}>
-              <span>Bengaluru, Karnataka</span>
+              <span>376, Phase 9, Royal Park Residency Layout, JP Nagar 9th Phase, J. P. Nagar, Bengaluru, Karnataka 560108</span>
               <a href="mailto:buildmyuniversee@gmail.com" className={styles.contactLink}>buildmyuniversee@gmail.com</a>
               <a href="tel:+918105491414" className={styles.contactLink}>+91 81054 91414</a>
             </address>

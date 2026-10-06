@@ -27,6 +27,7 @@ export default function CaseStudiesPage() {
         <div aria-hidden className={styles.heroGrid} />
         <div className={cn("container", styles.heroInner)}>
           <div className={styles.heroCopy}>
+            <span className="eyebrow">Case studies</span>
             <h1 className={cn("display", styles.heroTitle)}>
               Ideas are easy. Making them work is harder.
             </h1>
