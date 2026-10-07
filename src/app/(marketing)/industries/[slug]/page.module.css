@@ -536,6 +536,85 @@
     color: #121f2f;
   }
 
+  /* ---- restaurants map animation (restaurant-visual.tsx): the query types itself, then a red
+     route draws along the roads to the café while a car drives its tip. The drawing and the
+     car's position are set frame by frame in restaurant-visual.tsx; this is just their look. */
+
+  /* blinking text cursor while typing; hidden once the route starts */
+  .mapsCaret {
+    display: inline-block;
+    margin-left: 1px;
+    height: 1em;
+    width: 1.5px;
+    vertical-align: -2px;
+    background-color: #e6ebf0;
+    animation: mapsCaretBlink 1s steps(1) infinite;
+  }
+
+  .mapsCaretDone {
+    display: none;
+  }
+
+  .mapsRoute {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    pointer-events: none;
+  }
+
+  /* hidden (fully "undrawn") until the code takes over */
+  .mapsRoute path {
+    fill: none;
+    stroke: #ef4444;
+    stroke-width: 3px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    filter: drop-shadow(0 0 3px rgb(239 68 68 / 0.6));
+  }
+
+  /* the car: a small red badge with a white car, riding the tip of the route */
+  .mapsCar {
+    position: absolute;
+    z-index: 3;
+    left: 0;
+    top: 0;
+    display: grid;
+    height: 20px;
+    width: 20px;
+    place-items: center;
+    border-radius: 9999px;
+    background-color: #ef4444;
+    color: #fff;
+    box-shadow: 0 0 0 3px rgb(239 68 68 / 0.25);
+    opacity: 0;
+  }
+
+  .mapsCar svg {
+    height: 12px;
+    width: 12px;
+  }
+
+  .mapsRouting .mapsCar {
+    opacity: 1;
+  }
+
+  @keyframes mapsCaretBlink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  /* reduced motion: no blinking cursor (the code shows the route and car at the café at once) */
+  @media (prefers-reduced-motion: reduce) {
+    .mapsCaret {
+      animation: none;
+    }
+  }
+
   /* floating "table scans" chip, hanging off the panel's bottom-left corner */
   .scanChip {
     position: absolute;

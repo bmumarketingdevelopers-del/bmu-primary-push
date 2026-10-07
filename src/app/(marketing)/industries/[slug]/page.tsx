@@ -23,7 +23,6 @@ import {
   ShieldCheck,
   Star,
   Users,
-  Utensils,
   Video,
   X,
   type LucideIcon,
@@ -35,6 +34,7 @@ import { INDUSTRY_DETAILS, getIndustry, type IndustryDetail } from "@/lib/indust
 import { getService, type IconName } from "@/lib/services-data";
 import { cn } from "@/lib/utils";
 import { HeroStats } from "./hero-stats";
+import { RestaurantVisual } from "./restaurant-visual";
 import styles from "./page.module.css";
 
 export function generateStaticParams() {
@@ -1326,76 +1326,6 @@ export default async function IndustryPage({ params }: { params: Promise<{ slug:
         </div>
       </section>
     </>
-  );
-}
-
-/** Restaurants: a Google Maps style search where the client is the top result. */
-function RestaurantVisual() {
-  return (
-    <div className={styles.visual} aria-hidden="true">
-      <div className={styles.mapsPanel}>
-        <div className={styles.mapsSearch}>
-          <Search />
-          best cafe near me
-        </div>
-
-        <div className={styles.mapsMap}>
-          <svg viewBox="0 0 320 120" preserveAspectRatio="none" className={styles.mapsRoads}>
-            <path d="M0 40 L320 12" />
-            <path d="M0 96 L320 70" />
-            <path d="M70 0 L120 120" />
-            <path d="M210 0 L250 120" />
-          </svg>
-          <span className={styles.mapsBlock} />
-          <MapPin className={styles.mapsPin} style={{ left: "24%", top: "26%" }} />
-          <MapPin className={styles.mapsPin} style={{ left: "12%", top: "62%" }} />
-          <MapPin className={styles.mapsPin} style={{ left: "77%", top: "60%" }} />
-          <span className={styles.mapsPinMain} style={{ left: "50%", top: "40%" }}>
-            <MapPin />
-          </span>
-        </div>
-
-        <div className={cn(styles.mapsResult, styles.mapsResultTop)}>
-          <span className={styles.mapsTopBadge}>Top result</span>
-          <span className={cn(styles.mapsLogo, styles.mapsLogoTop)}>
-            <Utensils />
-          </span>
-          <span className={styles.mapsInfo}>
-            <span className={styles.mapsName}>The Green Table</span>
-            <span className={styles.mapsMeta}>
-              <span className={styles.mapsRating}>4.8</span>
-              <span className={styles.mapsStars}>★★★★★</span>
-              (1,240) · Open now · 0.8 km
-            </span>
-          </span>
-          <span className={styles.mapsDirections}>Directions</span>
-        </div>
-
-        <div className={cn(styles.mapsResult, styles.mapsResultDim)}>
-          <span className={styles.mapsLogo}>
-            <Utensils />
-          </span>
-          <span className={styles.mapsInfo}>
-            <span className={styles.mapsName}>Café Aroma</span>
-            <span className={styles.mapsMeta}>
-              <span>4.1</span>
-              <span className={cn(styles.mapsStars, styles.mapsStarOff)}>★★★★★</span>
-              (312) · Open now · 1.4 km
-            </span>
-          </span>
-        </div>
-      </div>
-
-      <div className={styles.scanChip}>
-        <span className={styles.scanIcon}>
-          <ReceiptText />
-        </span>
-        <span>
-          <span className={styles.scanTitle}>312 table scans today</span>
-          <span className={styles.scanSub}>Reviews routed to Google</span>
-        </span>
-      </div>
-    </div>
   );
 }
 
