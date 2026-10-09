@@ -422,8 +422,70 @@
     }
   }
 
-  /* ---- phones (under 768px): cards stacked one per row (default above), plus: */
+  /* dots under the cards: phones only (hidden from tablet up, see the phone section) */
+  .planDots {
+    display: none;
+  }
+
+  /* ---- phones (under 768px): the three cards swipe sideways, plus: */
   @media (max-width: 767px) {
+    /* swipeable row like the landing page Services cards: one card + the next peeking,
+       snapping to each card; bleeds to the screen edge (cancels the .container padding) */
+    .planGrid {
+      --bleed: 1.25rem;
+
+      display: flex;
+      gap: 0.75rem;
+      margin-inline: calc(var(--bleed) * -1);
+      padding-inline: var(--bleed);
+      padding-block: 0.25rem 0.5rem;
+      scroll-padding-inline: var(--bleed);
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      overscroll-behavior-x: contain;
+      touch-action: pan-x pan-y;
+      scrollbar-width: none;
+    }
+
+    .planGrid::-webkit-scrollbar {
+      display: none;
+    }
+
+    .planGrid > .plan {
+      flex: 0 0 calc((100% - 0.75rem * 0.15) / 1.15);
+      min-width: 0;
+      scroll-snap-align: start;
+    }
+
+    .planDots {
+      margin-top: 0.75rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .planDot {
+      display: block;
+      height: 6px;
+      width: 6px;
+      padding: 0;
+      border: 0;
+      border-radius: 999px;
+      background-color: hsl(var(--muted-foreground) / 0.3);
+      cursor: pointer;
+      transition:
+        width 200ms ease,
+        background-color 200ms ease;
+    }
+
+    .planDotActive {
+      width: 18px;
+      background-color: hsl(var(--primary));
+    }
+
     /* a little less padding so more of each card fits on screen */
     .plan {
       padding: 1.35rem 1.25rem 1.25rem;

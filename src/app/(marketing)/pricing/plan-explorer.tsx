@@ -69,6 +69,39 @@ const sessionsLabel = (n: number) => `${n} ${n === 1 ? "session" : "sessions"}`;
 export function PlanExplorer({ service, plans }: { service: PlanService; plans: Plan[] }) {
   const [open, setOpen] = React.useState(false);
   const listId = React.useId();
+
+  /* Phones: the three cards are a swipeable row (like the landing page Services cards), with dots
+     under it. On tablet/desktop the row is a normal 3-column grid and this does nothing visible. */
+  const trackRef = React.useRef<HTMLDivElement>(null);
+  const [active, setActive] = React.useState(0);
+
+  // Which card is nearest the start of the row
+  const closestCard = (track: HTMLElement) => {
+    const cards = Array.from(track.children) as HTMLElement[];
+    const first = cards[0]?.offsetLeft ?? 0;
+    let best = 0;
+    cards.forEach((c, i) => {
+      if (Math.abs(c.offsetLeft - first - track.scrollLeft) < Math.abs(cards[best].offsetLeft - first - track.scrollLeft))
+        best = i;
+    });
+    return best;
+  };
+
+  React.useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const onScroll = () => setActive(closestCard(track));
+    track.addEventListener("scroll", onScroll, { passive: true });
+    return () => track.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const goTo = (i: number) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const cards = Array.from(track.children) as HTMLElement[];
+    track.scrollTo({ left: cards[i].offsetLeft - cards[0].offsetLeft, behavior: "smooth" });
+    setActive(i);
+  };
   const expandable = Boolean(service.features);
 
   return (
@@ -88,7 +121,7 @@ export function PlanExplorer({ service, plans }: { service: PlanService; plans: 
         )}
       </div>
 
-      <div id={listId} className={styles.planGrid}>
+      <div id={listId} ref={trackRef} className={styles.planGrid}>
         {plans.map((plan, i) => {
           const price = service.prices[i];
           const features = service.features?.[i];
@@ -195,6 +228,20 @@ export function PlanExplorer({ service, plans }: { service: PlanService; plans: 
             </div>
           );
         })}
+      </div>
+
+      {/* phones only: one dot per card, the current one green and wide; tap to slide to it */}
+      <div className={styles.planDots}>
+        {plans.map((plan, i) => (
+          <button
+            key={plan.name}
+            type="button"
+            aria-label={`Show ${service.name} ${plan.name} plan`}
+            aria-current={active === i ? "true" : undefined}
+            className={cn(styles.planDot, active === i && styles.planDotActive)}
+            onClick={() => goTo(i)}
+          />
+        ))}
       </div>
     </div>
   );
