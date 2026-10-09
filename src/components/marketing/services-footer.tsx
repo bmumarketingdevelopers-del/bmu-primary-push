@@ -1,18 +1,19 @@
 import Link from "next/link";
+import { Instagram, Linkedin, Mail, MapPin, Phone } from "lucide-react";
 import { PRODUCT_DETAILS, productHref } from "@/lib/products-data";
-import { FOOTER_SERVICE_LINKS } from "@/lib/nav";
+import { FOOTER_NAV, FOOTER_SERVICE_LINKS } from "@/lib/nav";
 import { Logo } from "./logo";
 import { cn } from "@/lib/utils";
 import styles from "./services-footer.module.css";
 
 const PRODUCT_LINKS = PRODUCT_DETAILS.map((p) => ({ href: productHref(p), label: p.name }));
 
-const COMPANY_LINKS = [
-  { href: "/case-studies", label: "Case studies" },
-  { href: "/pricing", label: "Pricing" },
-  { href: "/resources", label: "Resources" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
+// Same Company links as the main footer (site-footer), so both footers list the same pages
+const COMPANY_LINKS = FOOTER_NAV.find((col) => col.title === "Company")?.links ?? [];
+
+const SOCIAL = [
+  { Icon: Instagram, label: "Instagram", href: "https://www.instagram.com/bmu.marketing?stkn=MTl4ajc4MDZwdGpiMQ==" },
+  { Icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/company/buildmyuniversee/" },
 ];
 
 // A link without an href (a coming-soon product) is listed as plain text
@@ -44,11 +45,35 @@ export function ServicesFooter() {
               AI-first growth partner for businesses and real estate. Strategy, creative, media and software from one
               team.
             </p>
+            {/* icons, colours and social buttons as in the main footer (site-footer) */}
             <address className={styles.contact}>
-              <span>376, Phase 9, Royal Park Residency Layout, JP Nagar 9th Phase, J. P. Nagar, Bengaluru, Karnataka 560108</span>
-              <a href="mailto:buildmyuniversee@gmail.com" className={styles.contactLink}>buildmyuniversee@gmail.com</a>
-              <a href="tel:+918105491414" className={styles.contactLink}>+91 81054 91414</a>
+              <span className={styles.contactItem}>
+                <MapPin className={styles.contactIcon} aria-hidden="true" />
+                376, Phase 9, Royal Park Residency Layout, JP Nagar 9th Phase, J. P. Nagar, Bengaluru, Karnataka 560108
+              </span>
+              <a href="mailto:buildmyuniversee@gmail.com" className={cn(styles.contactItem, styles.contactLink)}>
+                <Mail className={styles.contactIcon} aria-hidden="true" />
+                buildmyuniversee@gmail.com
+              </a>
+              <a href="tel:+918105491414" className={cn(styles.contactItem, styles.contactLink)}>
+                <Phone className={styles.contactIcon} aria-hidden="true" />
+                +91 81054 91414
+              </a>
             </address>
+            <div className={styles.social}>
+              {SOCIAL.map(({ Icon, label, href }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className={styles.socialLink}
+                >
+                  <Icon className={styles.socialIcon} />
+                </a>
+              ))}
+            </div>
           </div>
 
           <div className={styles.navGrid}>
