@@ -1,72 +1,450 @@
 @layer reset, base, helpers, ui, components;
 
 @layer components {
-  .cellIcon {
-    margin-left: auto;
-    margin-right: auto;
-    height: 1rem;
-    width: 1rem;
+  /* =========================================
+     NEW PLANS: category title + Monthly/One Time toggle, then each service's
+     Starter / Growth (navy, "Most chosen") / Premium cards. Desktop design; phones just stack.
+     ========================================= */
+
+  .plans {
+    padding-bottom: calc(var(--space-section) * 1.25);
   }
 
-  .cellIncluded {
-    color: hsl(var(--primary));
+  .category + .category {
+    margin-top: 5rem;
   }
 
-  .cellExcluded {
-    color: hsl(var(--muted-foreground) / 0.5);
-  }
-
-  .cellText {
-    display: block;
+  .categoryTitle {
     text-align: center;
+    font-size: clamp(24px, 2.4vw, 32px);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
   }
 
-  .comparison {
-    border-block: 1px solid hsl(var(--border));
+  .toggle {
+    margin: 1.25rem auto 0;
+    display: flex;
+    width: fit-content;
+    gap: 4px;
+    border-radius: 9999px;
+    background-color: hsl(var(--muted));
+    padding: 4px;
+  }
+
+  .toggleOption {
+    border-radius: 9999px;
+    padding: 0.5rem 1.6rem;
+    font-size: 12px;
+    font-weight: 600;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .toggleActive {
     background-color: hsl(var(--card));
+    color: hsl(var(--foreground));
+    box-shadow: var(--shadow-sm);
   }
 
-  .comparisonTitle {
-    margin-bottom: 3rem;
+  /* One Time: visible but not usable yet */
+  .toggleOption[aria-disabled="true"] {
+    cursor: not-allowed;
+    opacity: 0.75;
   }
 
-  .faqGrid {
+  .service {
+    margin-top: 2.75rem;
+  }
+
+  .serviceTitle {
+    font-size: clamp(24px, 2.2vw, 32px);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  .planGrid {
+    margin-top: 1.25rem;
     display: grid;
-    gap: 4rem;
+    gap: 1.25rem;
   }
 
-  @media (min-width: 1024px) {
-    .faqGrid {
-      grid-template-columns: 0.8fr 1.2fr;
+  .plan {
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    padding: 1.6rem 1.75rem 1.5rem;
+  }
+
+  .planTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .planName {
+    font-size: 20px;
+    line-height: 1.2;
+  }
+
+  .planBadge {
+    border-radius: 9999px;
+    background-color: hsl(var(--primary));
+    padding: 3px 10px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+
+  .planDesc {
+    margin-top: 0.6rem;
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .planPrice {
+    margin-top: 0.75rem;
+    font-size: clamp(24px, 2.2vw, 30px);
+    line-height: 1.1;
+  }
+
+  /* ---- shoot option cards (social media management): without-shoot price, thin line,
+     with-shoot price; each with its 6-month total underneath */
+  .planShoot {
+    margin-top: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .planShootRow + .planShootRow {
+    margin-top: 0.75rem;
+    border-top: 1px solid hsl(var(--border));
+    padding-top: 0.75rem;
+  }
+
+  .planFeatured .planShootRow + .planShootRow {
+    border-top-color: rgb(255 255 255 / 0.18);
+  }
+
+  .planShootPrice {
+    font-size: clamp(20px, 1.8vw, 24px);
+    line-height: 1.15;
+  }
+
+  .planShootLabel {
+    margin-left: 0.4rem;
+    font-size: 12.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .planShootSix {
+    margin-top: 2px;
+    font-size: 12px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .planFeatured .planShootLabel,
+  .planFeatured .planShootSix {
+    color: #c6d0da;
+  }
+
+  /* two "Start …" buttons side by side (without / with shoot) */
+  .planBtnPair {
+    margin-top: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+
+  .planBtnPair .planBtn {
+    margin-top: 0;
+  }
+
+  /* ₹ in the big prices: the display font has no ₹ of its own, so the borrowed one is
+     oversized; shrink it to the digits' height and keep it on the same baseline */
+  .rupee {
+    margin-right: 0.04em;
+    font-size: 0.78em;
+    font-weight: 800;
+    vertical-align: 0.04em;
+  }
+
+  /* "From" before a starting price, smaller than the amount */
+  .planFrom {
+    font-size: 0.55em;
+    letter-spacing: 0;
+  }
+
+  /* pale-green "Now @ …/6months" box (or "One-time project"): price bold, old price struck through */
+  .planNow {
+    margin-top: 0.75rem;
+    margin-bottom: 1.25rem;
+    /* plain inline text so "/6months" sits right after the crossed-out price, as in Figma */
+    display: inline-block;
+    align-self: flex-start;
+    border-radius: 4px;
+    background-color: #ecfccb;
+    padding: 0.6rem 1rem;
+    /* "Now @" and "/6months": Albert Sans SemiBold 12, as in the Figma design */
+    font-size: 12px;
+    font-weight: 600;
+    /* fixed dark text: the box stays pale green in dark mode too */
+    color: #121f2f;
+  }
+
+  .planNow strong {
+    font-size: 15px;
+    font-weight: 800;
+  }
+
+  /* crossed-out price stays small and regular weight */
+  .planNow s {
+    font-size: 10px;
+    font-weight: 400;
+    color: #5c6874;
+  }
+
+  .planBtn {
+    margin-top: auto;
+    display: flex;
+    height: 2.6rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    font-size: 13.5px;
+    font-weight: 600;
+    color: hsl(var(--foreground));
+    text-decoration: none;
+    transition:
+      border-color 200ms var(--ease-brand),
+      filter 200ms var(--ease-brand);
+  }
+
+  .planBtn:hover {
+    border-color: hsl(var(--primary));
+  }
+
+  /* Growth: navy card, light text, dark "Now" box, green button */
+  .planFeatured {
+    border-color: transparent;
+    background-color: #121f2f;
+    color: #fff;
+  }
+
+  /* dark mode: every "Now @" / one-time / per-shoot box looks like the Growth card's dark box */
+  :global(.dark) .planNow {
+    background-color: rgb(255 255 255 / 0.08);
+    color: #fff;
+  }
+
+  :global(.dark) .planNow s {
+    color: #93a2b1;
+  }
+
+  /* dark mode: the page is navy too, so the Growth card gets a green edge to stand out */
+  :global(.dark) .planFeatured {
+    border-color: hsl(var(--primary) / 0.55);
+    box-shadow: 0 0 0 1px hsl(var(--primary) / 0.15), 0 12px 32px rgb(0 0 0 / 0.35);
+  }
+
+  .planFeatured .planDesc {
+    color: #c6d0da;
+  }
+
+  .planFeatured .planNow {
+    background-color: rgb(255 255 255 / 0.08);
+    color: #fff;
+  }
+
+  .planFeatured .planNow s {
+    color: #93a2b1;
+  }
+
+  .planBtnFeatured {
+    border-color: hsl(var(--primary));
+    background-color: hsl(var(--primary));
+    color: #fff;
+  }
+
+  .planBtnFeatured:hover {
+    filter: brightness(1.08);
+  }
+
+  /* ---- "Explore" expands the service in place (plan-explorer.tsx): all three cards grow to
+     show what each plan includes, ✕ next to the title collapses it again */
+
+  .serviceHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .serviceClose {
+    display: grid;
+    height: 40px;
+    width: 40px;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 9999px;
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    color: hsl(var(--foreground));
+    cursor: pointer;
+    animation: startLabel 300ms var(--ease-brand) both;
+    transition:
+      border-color 200ms var(--ease-brand),
+      background-color 200ms var(--ease-brand);
+  }
+
+  .serviceClose:hover {
+    border-color: hsl(var(--primary));
+  }
+
+  .serviceClose svg {
+    height: 18px;
+    width: 18px;
+  }
+
+  /* the feature list slides open/closed (0 → full height) */
+  .planMore {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 450ms var(--ease-brand);
+  }
+
+  .serviceOpen .planMore {
+    grid-template-rows: 1fr;
+  }
+
+  .planMoreInner {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* what each plan includes: a divider, then small green square bullets */
+  .planFeatures {
+    margin: 0 0 1.5rem;
+    border-top: 1px solid hsl(var(--border));
+    padding: 1.25rem 0 0;
+    list-style: none;
+  }
+
+  .planFeatured .planFeatures {
+    border-top-color: rgb(255 255 255 / 0.12);
+  }
+
+  .planFeatures li {
+    position: relative;
+    padding-left: 1.1rem;
+    font-size: 13px;
+    line-height: 1.5;
+    color: hsl(var(--foreground));
+  }
+
+  .planFeatures li + li {
+    margin-top: 0.55rem;
+  }
+
+  .planFeatures li::before {
+    content: "";
+    position: absolute;
+    top: 0.5em;
+    left: 0;
+    height: 7px;
+    width: 7px;
+    background-color: hsl(var(--primary));
+  }
+
+  .planFeatured .planFeatures li {
+    color: #e6ebf0;
+  }
+
+  /* button() inherits the same look as the links */
+  button.planBtn {
+    width: 100%;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  /* "Start with …": the new label slides in and a green glow keeps pulsing while the section is open */
+  .planBtnStart {
+    animation: startGlow 1.6s ease-out 0.3s infinite;
+  }
+
+  .planBtnStart span {
+    display: inline-block;
+    animation: startLabel 450ms var(--ease-brand) 0.15s both;
+  }
+
+  @keyframes startGlow {
+    0% {
+      box-shadow: 0 0 0 0 rgb(141 188 47 / 0.65);
+    }
+
+    100% {
+      box-shadow: 0 0 0 12px rgb(141 188 47 / 0);
     }
   }
-}
 
-/* Overrides passed into other components via `className`. */
+  @keyframes startLabel {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
 
-/**
- * The plan comparison is the one table on the marketing site that cannot
- * shrink to a phone — four columns of feature text. It scrolls inside its
- * own box so the page itself never moves sideways.
- */
-.tableWrap {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  background-color: hsl(var(--background));
-}
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
 
-.featureHead {
-  width: 40%;
-}
+  @media (prefers-reduced-motion: reduce) {
+    .planMore {
+      transition: none;
+    }
 
-.centerHead {
-  text-align: center;
-}
+    .planBtnStart,
+    .planBtnStart span {
+      animation: none;
+    }
+  }
 
-.featureCell {
-  font-weight: 500;
-}
+  @media (min-width: 768px) {
+    .planGrid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
 
-.faqList {
-  border-top: 1px solid hsl(var(--border));
+  /* ---- phones (under 768px): cards stacked one per row (default above), plus: */
+  @media (max-width: 767px) {
+    /* a little less padding so more of each card fits on screen */
+    .plan {
+      padding: 1.35rem 1.25rem 1.25rem;
+    }
+
+    /* expanded section is long on phones: keep the title and ✕ pinned just under the menu bar
+       (76px) while scrolling through the three cards, so it can be closed from anywhere */
+    .serviceOpen .serviceHead {
+      position: sticky;
+      z-index: 5;
+      top: 76px;
+      margin-inline: -0.5rem;
+      padding: 0.6rem 0.5rem;
+      background-color: hsl(var(--background));
+    }
+  }
+
+  /* laptops and up: each plan's description stays on one line */
+  @media (min-width: 1280px) {
+    .planDesc {
+      white-space: nowrap;
+    }
+  }
 }

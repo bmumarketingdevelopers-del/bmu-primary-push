@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { ArrowRight, Check, CheckCircle2, ChevronDown, ChevronRight } from "lucide-react";
+import { ArrowRight, Check, CheckCircle2, ChevronDown, ChevronRight, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -44,12 +44,71 @@ function useIsPhone() {
   );
 }
 
+// The page's query string (read once in the browser; empty while rendering on the server)
+const noSubscribe = () => () => {};
+const useSearch = () =>
+  React.useSyncExternalStore(
+    noSubscribe,
+    () => window.location.search,
+    () => "",
+  );
+
 export function ContactPageForm() {
   const [state, setState] = React.useState<"idle" | "sending" | "sent" | "error">("idle");
-  // Empty until the visitor picks something; the field is optional
-  const [need, setNeed] = React.useState("");
-  // Starts on the first band, as the old native select did
-  const [budget, setBudget] = React.useState<string>(BUDGET_BANDS[0]);
+
+  // Coming from a Pricing plan ("Start with …"), the link carries ?need=…&plan=…&price=…:
+  // "What do you need first?" shows that plan's service and "Monthly budget" its exact price,
+  // both locked. Only valid values are used; any other visit gets the normal dropdowns.
+  const search = useSearch();
+  const prefill = React.useMemo(() => {
+    const params = new URLSearchParams(search);
+    const n = params.get("need");
+    const plan = params.get("plan");
+    const price = params.get("price");
+    const validPlan = plan === "Starter" || plan === "Growth" || plan === "Premium";
+    const validPrice = price !== null && /^\d{1,3}(,\d{2,3})*$/.test(price);
+    // one-time projects (e.g. Complete Branding): "₹38,000 one-time", "From ₹1,42,500 one-time"
+    const oneTime = params.get("type") === "one-time";
+    const from = params.get("from") === "1" ? "From " : "";
+    // social media plans: "₹23,800 / month without shoot", "₹33,200 / month with shoot (1 session)"
+    const shoot = params.get("shoot");
+    const sessions = Number(params.get("sessions"));
+    const shootText =
+      shoot === "without"
+        ? " without shoot"
+        : shoot === "with" && Number.isInteger(sessions) && sessions > 0 && sessions < 10
+          ? ` with shoot (${sessions} ${sessions === 1 ? "session" : "sessions"})`
+          : "";
+    // per-shoot prices (business video shoots): "₹11,400 per shoot"
+    const perShoot = params.get("type") === "per-shoot";
+    // per-session prices (podcast shoots): "₹14,200 per session"
+    const perSession = params.get("type") === "per-session";
+    // per-campaign prices (brand collaborations, experiential ads): "₹38,000 per campaign"
+    const perCampaign = params.get("type") === "per-campaign";
+    const amount = oneTime
+      ? `${from}₹${price} one-time`
+      : perShoot
+        ? `${from}₹${price} per shoot`
+        : perSession
+          ? `${from}₹${price} per session`
+          : perCampaign
+            ? `${from}₹${price} per campaign`
+            : `₹${price} / month${shootText}`;
+    return {
+      need: n && NEED_LABELS.has(n) ? n : null,
+      lockedBudget: validPlan && validPrice ? `${amount} · ${plan} plan` : null,
+    };
+  }, [search]);
+
+  const [needChoice, setNeed] = React.useState<string | null>(null);
+  const [budgetChoice, setBudget] = React.useState<string | null>(null);
+  const lockedBudget = prefill.lockedBudget;
+  // Coming from a plan locks the service too (the plan's own service, can't be changed here)
+  const lockedNeed = lockedBudget && prefill.need ? prefill.need : null;
+  // Empty until picked (or pre-filled); the field is optional
+  const need = lockedNeed ?? needChoice ?? prefill.need ?? "";
+  // The plan's own price when locked; otherwise the visitor's pick, starting on the first band
+  const budget = lockedBudget ?? budgetChoice ?? BUDGET_BANDS[0];
   const isPhone = useIsPhone();
   // Phones only: the service whose sub-services are expanded in the list
   const [expanded, setExpanded] = React.useState<string | null>(null);
@@ -108,74 +167,57 @@ export function ContactPageForm() {
           </Label>
           {/* The hidden input keeps `need` in the submitted form data */}
           <input type="hidden" name="need" value={need} />
-          <DropdownMenu.Root modal={false}>
-            <DropdownMenu.Trigger asChild>
-              <button type="button" id="need" className={styles.cfSelect}>
-                {need ? (
-                  <span className={styles.cfSelectText}>{NEED_LABELS.get(need) ?? need}</span>
-                ) : (
-                  <span className={cn(styles.cfSelectText, styles.cfPlaceholder)}>Select a service</span>
-                )}
-                <ChevronDown className={styles.cfSelectChevron} aria-hidden="true" />
-              </button>
-            </DropdownMenu.Trigger>
-            <DropdownMenu.Portal>
-              <DropdownMenu.Content className={styles.cfMenu} align="start" sideOffset={6}>
-                {NEED_GROUPS.map((g) =>
-                  g.options.length && isPhone ? (
-                    // Phones: tap a service to expand its sub-services in place
-                    <React.Fragment key={g.value}>
-                      <DropdownMenu.Item
-                        className={cn(
-                          styles.cfMenuItem,
-                          (expanded === g.value || need.startsWith(`${g.value} - `)) && styles.cfMenuItemActive,
-                        )}
-                        onSelect={(e) => {
-                          e.preventDefault(); // keep the menu open
-                          setExpanded((cur) => (cur === g.value ? null : g.value));
-                        }}
-                      >
-                        {g.label}
-                        <ChevronRight
-                          className={cn(styles.cfMenuChevron, expanded === g.value && styles.cfMenuChevronOpen)}
-                          aria-hidden="true"
-                        />
-                      </DropdownMenu.Item>
-                      {expanded === g.value && (
-                        <DropdownMenu.RadioGroup value={need} onValueChange={setNeed}>
-                          {g.options.map((o) => (
-                            <DropdownMenu.RadioItem
-                              key={o.value}
-                              value={o.value}
-                              className={cn(styles.cfMenuItem, styles.cfMenuNested)}
-                            >
-                              {o.label}
-                              <DropdownMenu.ItemIndicator className={styles.cfMenuCheck}>
-                                <Check />
-                              </DropdownMenu.ItemIndicator>
-                            </DropdownMenu.RadioItem>
-                          ))}
-                        </DropdownMenu.RadioGroup>
-                      )}
-                    </React.Fragment>
-                  ) : g.options.length ? (
-                    // Hover (or tap) a service to open its sub-services beside the list
-                    <DropdownMenu.Sub key={g.value}>
-                      <DropdownMenu.SubTrigger
-                        className={cn(styles.cfMenuItem, need.startsWith(`${g.value} - `) && styles.cfMenuItemActive)}
-                      >
-                        {g.label}
-                        <ChevronRight className={styles.cfMenuChevron} aria-hidden="true" />
-                      </DropdownMenu.SubTrigger>
-                      <DropdownMenu.Portal>
-                        <DropdownMenu.SubContent
-                          className={cn(styles.cfMenu, styles.cfSubMenu)}
-                          sideOffset={6}
-                          alignOffset={-6}
+          {lockedNeed ? (
+            // Came from a Pricing plan: that plan's service, shown locked (can't be changed here)
+            <>
+              <div id="need" className={cn(styles.cfSelect, styles.cfLocked)} aria-disabled="true">
+                <span className={styles.cfSelectText}>{NEED_LABELS.get(lockedNeed) ?? lockedNeed}</span>
+                <Lock className={styles.cfSelectChevron} aria-hidden="true" />
+              </div>
+              <span className={styles.cfLockedNote}>Set by the plan you chose</span>
+            </>
+          ) : (
+            <DropdownMenu.Root modal={false}>
+              <DropdownMenu.Trigger asChild>
+                <button type="button" id="need" className={styles.cfSelect}>
+                  {need ? (
+                    <span className={styles.cfSelectText}>{NEED_LABELS.get(need) ?? need}</span>
+                  ) : (
+                    <span className={cn(styles.cfSelectText, styles.cfPlaceholder)}>Select a service</span>
+                  )}
+                  <ChevronDown className={styles.cfSelectChevron} aria-hidden="true" />
+                </button>
+              </DropdownMenu.Trigger>
+              <DropdownMenu.Portal>
+                <DropdownMenu.Content className={styles.cfMenu} align="start" sideOffset={6}>
+                  {NEED_GROUPS.map((g) =>
+                    g.options.length && isPhone ? (
+                      // Phones: tap a service to expand its sub-services in place
+                      <React.Fragment key={g.value}>
+                        <DropdownMenu.Item
+                          className={cn(
+                            styles.cfMenuItem,
+                            (expanded === g.value || need.startsWith(`${g.value} - `)) && styles.cfMenuItemActive,
+                          )}
+                          onSelect={(e) => {
+                            e.preventDefault(); // keep the menu open
+                            setExpanded((cur) => (cur === g.value ? null : g.value));
+                          }}
                         >
+                          {g.label}
+                          <ChevronRight
+                            className={cn(styles.cfMenuChevron, expanded === g.value && styles.cfMenuChevronOpen)}
+                            aria-hidden="true"
+                          />
+                        </DropdownMenu.Item>
+                        {expanded === g.value && (
                           <DropdownMenu.RadioGroup value={need} onValueChange={setNeed}>
                             {g.options.map((o) => (
-                              <DropdownMenu.RadioItem key={o.value} value={o.value} className={styles.cfMenuItem}>
+                              <DropdownMenu.RadioItem
+                                key={o.value}
+                                value={o.value}
+                                className={cn(styles.cfMenuItem, styles.cfMenuNested)}
+                              >
                                 {o.label}
                                 <DropdownMenu.ItemIndicator className={styles.cfMenuCheck}>
                                   <Check />
@@ -183,24 +225,52 @@ export function ContactPageForm() {
                               </DropdownMenu.RadioItem>
                             ))}
                           </DropdownMenu.RadioGroup>
-                        </DropdownMenu.SubContent>
-                      </DropdownMenu.Portal>
-                    </DropdownMenu.Sub>
-                  ) : (
-                    // A service without sub-services is picked directly
-                    <DropdownMenu.RadioGroup key={g.value} value={need} onValueChange={setNeed}>
-                      <DropdownMenu.RadioItem value={g.value} className={styles.cfMenuItem}>
-                        {g.label}
-                        <DropdownMenu.ItemIndicator className={styles.cfMenuCheck}>
-                          <Check />
-                        </DropdownMenu.ItemIndicator>
-                      </DropdownMenu.RadioItem>
-                    </DropdownMenu.RadioGroup>
-                  ),
-                )}
-              </DropdownMenu.Content>
-            </DropdownMenu.Portal>
-          </DropdownMenu.Root>
+                        )}
+                      </React.Fragment>
+                    ) : g.options.length ? (
+                      // Hover (or tap) a service to open its sub-services beside the list
+                      <DropdownMenu.Sub key={g.value}>
+                        <DropdownMenu.SubTrigger
+                          className={cn(styles.cfMenuItem, need.startsWith(`${g.value} - `) && styles.cfMenuItemActive)}
+                        >
+                          {g.label}
+                          <ChevronRight className={styles.cfMenuChevron} aria-hidden="true" />
+                        </DropdownMenu.SubTrigger>
+                        <DropdownMenu.Portal>
+                          <DropdownMenu.SubContent
+                            className={cn(styles.cfMenu, styles.cfSubMenu)}
+                            sideOffset={6}
+                            alignOffset={-6}
+                          >
+                            <DropdownMenu.RadioGroup value={need} onValueChange={setNeed}>
+                              {g.options.map((o) => (
+                                <DropdownMenu.RadioItem key={o.value} value={o.value} className={styles.cfMenuItem}>
+                                  {o.label}
+                                  <DropdownMenu.ItemIndicator className={styles.cfMenuCheck}>
+                                    <Check />
+                                  </DropdownMenu.ItemIndicator>
+                                </DropdownMenu.RadioItem>
+                              ))}
+                            </DropdownMenu.RadioGroup>
+                          </DropdownMenu.SubContent>
+                        </DropdownMenu.Portal>
+                      </DropdownMenu.Sub>
+                    ) : (
+                      // A service without sub-services is picked directly
+                      <DropdownMenu.RadioGroup key={g.value} value={need} onValueChange={setNeed}>
+                        <DropdownMenu.RadioItem value={g.value} className={styles.cfMenuItem}>
+                          {g.label}
+                          <DropdownMenu.ItemIndicator className={styles.cfMenuCheck}>
+                            <Check />
+                          </DropdownMenu.ItemIndicator>
+                        </DropdownMenu.RadioItem>
+                      </DropdownMenu.RadioGroup>
+                    ),
+                  )}
+                </DropdownMenu.Content>
+              </DropdownMenu.Portal>
+            </DropdownMenu.Root>
+          )}
         </div>
 
         <div className={styles.cfField}>
@@ -209,28 +279,39 @@ export function ContactPageForm() {
           </Label>
           {/* Same green dropdown as "What do you need first?"; the hidden input keeps `budget` in the form data */}
           <input type="hidden" name="budget" value={budget} />
-          <DropdownMenu.Root modal={false}>
-            <DropdownMenu.Trigger asChild>
-              <button type="button" id="budget" className={styles.cfSelect}>
-                <span className={styles.cfSelectText}>{budget}</span>
-                <ChevronDown className={styles.cfSelectChevron} aria-hidden="true" />
-              </button>
-            </DropdownMenu.Trigger>
-            <DropdownMenu.Portal>
-              <DropdownMenu.Content className={styles.cfMenu} align="start" sideOffset={6}>
-                <DropdownMenu.RadioGroup value={budget} onValueChange={setBudget}>
-                  {BUDGET_BANDS.map((b) => (
-                    <DropdownMenu.RadioItem key={b} value={b} className={styles.cfMenuItem}>
-                      {b}
-                      <DropdownMenu.ItemIndicator className={styles.cfMenuCheck}>
-                        <Check />
-                      </DropdownMenu.ItemIndicator>
-                    </DropdownMenu.RadioItem>
-                  ))}
-                </DropdownMenu.RadioGroup>
-              </DropdownMenu.Content>
-            </DropdownMenu.Portal>
-          </DropdownMenu.Root>
+          {lockedBudget ? (
+            // Came from a Pricing plan: the plan's own price, shown locked (can't be changed here)
+            <>
+              <div id="budget" className={cn(styles.cfSelect, styles.cfLocked)} aria-disabled="true">
+                <span className={styles.cfSelectText}>{lockedBudget}</span>
+                <Lock className={styles.cfSelectChevron} aria-hidden="true" />
+              </div>
+              <span className={styles.cfLockedNote}>Set by the plan you chose</span>
+            </>
+          ) : (
+            <DropdownMenu.Root modal={false}>
+              <DropdownMenu.Trigger asChild>
+                <button type="button" id="budget" className={styles.cfSelect}>
+                  <span className={styles.cfSelectText}>{budget}</span>
+                  <ChevronDown className={styles.cfSelectChevron} aria-hidden="true" />
+                </button>
+              </DropdownMenu.Trigger>
+              <DropdownMenu.Portal>
+                <DropdownMenu.Content className={styles.cfMenu} align="start" sideOffset={6}>
+                  <DropdownMenu.RadioGroup value={budget} onValueChange={setBudget}>
+                    {BUDGET_BANDS.map((b) => (
+                      <DropdownMenu.RadioItem key={b} value={b} className={styles.cfMenuItem}>
+                        {b}
+                        <DropdownMenu.ItemIndicator className={styles.cfMenuCheck}>
+                          <Check />
+                        </DropdownMenu.ItemIndicator>
+                      </DropdownMenu.RadioItem>
+                    ))}
+                  </DropdownMenu.RadioGroup>
+                </DropdownMenu.Content>
+              </DropdownMenu.Portal>
+            </DropdownMenu.Root>
+          )}
         </div>
 
         <div className={cn(styles.cfField, styles.cfWide)}>

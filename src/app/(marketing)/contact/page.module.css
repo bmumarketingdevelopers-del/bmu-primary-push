@@ -533,6 +533,19 @@
     transform: rotate(180deg);
   }
 
+  /* Monthly budget locked to the chosen Pricing plan: greyed, not clickable, lock icon */
+  .cfLocked {
+    cursor: not-allowed;
+    background-color: hsl(var(--muted));
+    color: hsl(var(--foreground) / 0.75);
+  }
+
+  .cfLockedNote {
+    display: block;
+    font-size: 11.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
   .cfInput:focus-visible,
   .cfTextarea:focus-visible,
   .cfSelect:focus-visible,
