@@ -126,13 +126,13 @@ export function PlanExplorer({ service, plans }: { service: PlanService; plans: 
                 </p>
               )}
               {price.withShoot ? null : price.oneTime ? (
-                <p className={styles.planNow}>One-time project</p>
+                <p className={styles.planNow}>ONE-TIME PROJECT</p>
               ) : price.perShoot ? (
-                <p className={styles.planNow}>Per shoot</p>
+                <p className={styles.planNow}>PER SHOOT</p>
               ) : price.perSession ? (
-                <p className={styles.planNow}>Per session · {price.perSession}</p>
+                <p className={styles.planNow}>PER SESSION · {price.perSession.toUpperCase()}</p>
               ) : price.perCampaign ? (
-                <p className={styles.planNow}>Per campaign</p>
+                <p className={styles.planNow}>PER CAMPAIGN</p>
               ) : (
                 <p className={styles.planNow}>
                   Now @ <strong>₹{price.now}</strong> <s>₹{price.was}</s>/6months

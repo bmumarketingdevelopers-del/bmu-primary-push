@@ -146,7 +146,9 @@ const SOCIAL_MEDIA: { name: string; features: [string[], string[], string[]] }[]
 
 // A service with `features` ([Starter, Growth, Premium] lists) expands on "Explore".
 // `need` is its "What do you need first?" option on the Contact form (pre-filled from the plan).
-const CATEGORIES: { title: string; services: PlanService[] }[] = [
+// `oneTime` selects the category's "One Time" tab instead of "Monthly Retainers";
+// `noToggle` hides the tabs (a category that mixes one-time and monthly services)
+const CATEGORIES: { title: string; oneTime?: boolean; noToggle?: boolean; services: PlanService[] }[] = [
   {
     title: "Marketing & Visibility",
     services: [
@@ -347,6 +349,8 @@ const CATEGORIES: { title: string; services: PlanService[] }[] = [
   },
   {
     title: "Brand & Design",
+    // mixes one-time (branding, logo) and monthly (graphic designing) services: no tabs
+    noToggle: true,
     services: [
       {
         // one-time project prices (no monthly fee or 6-month price); Premium starts "From"
@@ -471,6 +475,8 @@ const CATEGORIES: { title: string; services: PlanService[] }[] = [
   },
   {
     title: "Web & AI",
+    // all one-time projects
+    oneTime: true,
     services: [
       {
         // one-time project prices (match the brochure); Premium starts "From"
@@ -626,6 +632,8 @@ const CATEGORIES: { title: string; services: PlanService[] }[] = [
   },
   {
     title: "Content & Production",
+    // mixes monthly (video editing) with per-shoot and per-session services: no tabs
+    noToggle: true,
     services: [
       {
         // prices match the brochure
@@ -735,6 +743,8 @@ const CATEGORIES: { title: string; services: PlanService[] }[] = [
   },
   {
     title: "UGC & Creator Marketing",
+    // mixes monthly UGC services with per-campaign services: no tabs
+    noToggle: true,
     services: [
       {
         // prices match the brochure
@@ -974,15 +984,27 @@ export default function PricingPage() {
             <div key={category.title} className={styles.category}>
               <h2 className={cn("display", styles.categoryTitle)}>{category.title}</h2>
 
-              {/* "One Time" is shown but switched off until its prices are ready */}
-              <div className={styles.toggle} role="tablist" aria-label={`${category.title} pricing`}>
-                <span role="tab" aria-selected="true" className={cn(styles.toggleOption, styles.toggleActive)}>
-                  Monthly Retainers
-                </span>
-                <span role="tab" aria-selected="false" aria-disabled="true" className={styles.toggleOption}>
-                  One Time
-                </span>
-              </div>
+              {/* the category's own mode is selected; the other is shown but switched off */}
+              {!category.noToggle && (
+                <div className={styles.toggle} role="tablist" aria-label={`${category.title} pricing`}>
+                  <span
+                    role="tab"
+                    aria-selected={!category.oneTime}
+                    aria-disabled={category.oneTime || undefined}
+                    className={cn(styles.toggleOption, !category.oneTime && styles.toggleActive)}
+                  >
+                    Monthly Retainers
+                  </span>
+                  <span
+                    role="tab"
+                    aria-selected={Boolean(category.oneTime)}
+                    aria-disabled={!category.oneTime || undefined}
+                    className={cn(styles.toggleOption, category.oneTime && styles.toggleActive)}
+                  >
+                    One Time
+                  </span>
+                </div>
+              )}
 
               {/* each service's 3 cards; services with feature lists open the focused view */}
               {category.services.map((service) => (
