@@ -94,9 +94,24 @@ export function ContactPageForm() {
           : perCampaign
             ? `${from}₹${price} per campaign`
             : `₹${price} / month${shootText}`;
+    // Coming from a Bundle ("Proceed with custom bundles" / "Custom Quote"), the link carries
+    // ?bundle=…&plan=…&price=…&once=…&addon=…: "What do you need first?" is locked to the bundle, its plan
+    // and add-ons, "Monthly budget" to that plan's price (+ its one-time fee, when it has one)
+    const bundleName = params.get("bundle");
+    const validBundle =
+      bundleName !== null && /^[A-Za-z ]{2,40}$/.test(bundleName) && validPlan && validPrice;
+    const addOns = params.getAll("addon").filter((a) => /^[A-Za-z ,&]{2,40}$/.test(a));
+    const once = params.get("once");
+    const onceText = once && /^\d{1,3}(,\d{2,3})*$/.test(once) ? ` + ₹${once} one-time` : "";
     return {
       need: n && NEED_LABELS.has(n) ? n : null,
-      lockedBudget: validPlan && validPrice ? `${amount} · ${plan} plan` : null,
+      lockedBudget: validBundle
+        ? `₹${price} / month${onceText} · ${plan} plan`
+        : validPlan && validPrice
+          ? `${amount} · ${plan} plan`
+          : null,
+      bundle: validBundle ? `${bundleName} bundle · ${plan}` : null,
+      bundleAddOns: validBundle ? addOns : [],
     };
   }, [search]);
 
@@ -104,7 +119,9 @@ export function ContactPageForm() {
   const [budgetChoice, setBudget] = React.useState<string | null>(null);
   const lockedBudget = prefill.lockedBudget;
   // Coming from a plan locks the service too (the plan's own service, can't be changed here)
-  const lockedNeed = lockedBudget && prefill.need ? prefill.need : null;
+  // A bundle locks it to the bundle, plan and add-ons, e.g. "Founder Brand bundle · Starter + Production"
+  const bundleNeed = prefill.bundle ? [prefill.bundle, ...prefill.bundleAddOns].join(" + ") : null;
+  const lockedNeed = bundleNeed ?? (lockedBudget && prefill.need ? prefill.need : null);
   // Empty until picked (or pre-filled); the field is optional
   const need = lockedNeed ?? needChoice ?? prefill.need ?? "";
   // The plan's own price when locked; otherwise the visitor's pick, starting on the first band
@@ -168,13 +185,22 @@ export function ContactPageForm() {
           {/* The hidden input keeps `need` in the submitted form data */}
           <input type="hidden" name="need" value={need} />
           {lockedNeed ? (
-            // Came from a Pricing plan: that plan's service, shown locked (can't be changed here)
+            // Came from a Pricing plan or a Bundle: shown locked (can't be changed here).
+            // A bundle shows its name in the field and its add-ons in the line underneath.
             <>
               <div id="need" className={cn(styles.cfSelect, styles.cfLocked)} aria-disabled="true">
-                <span className={styles.cfSelectText}>{NEED_LABELS.get(lockedNeed) ?? lockedNeed}</span>
+                <span className={styles.cfSelectText}>
+                  {lockedNeed === bundleNeed ? prefill.bundle : (NEED_LABELS.get(lockedNeed) ?? lockedNeed)}
+                </span>
                 <Lock className={styles.cfSelectChevron} aria-hidden="true" />
               </div>
-              <span className={styles.cfLockedNote}>Set by the plan you chose</span>
+              <span className={styles.cfLockedNote}>
+                {lockedNeed !== bundleNeed
+                  ? "Set by the plan you chose"
+                  : prefill.bundleAddOns.length
+                    ? `With add-ons: ${prefill.bundleAddOns.join(" + ")}`
+                    : "Set by the bundle you chose"}
+              </span>
             </>
           ) : (
             <DropdownMenu.Root modal={false}>
@@ -280,13 +306,19 @@ export function ContactPageForm() {
           {/* Same green dropdown as "What do you need first?"; the hidden input keeps `budget` in the form data */}
           <input type="hidden" name="budget" value={budget} />
           {lockedBudget ? (
-            // Came from a Pricing plan: the plan's own price, shown locked (can't be changed here)
+            // Came from a Pricing plan or a Bundle plan: its own price, shown locked
             <>
               <div id="budget" className={cn(styles.cfSelect, styles.cfLocked)} aria-disabled="true">
                 <span className={styles.cfSelectText}>{lockedBudget}</span>
                 <Lock className={styles.cfSelectChevron} aria-hidden="true" />
               </div>
-              <span className={styles.cfLockedNote}>Set by the plan you chose</span>
+              <span className={styles.cfLockedNote}>
+                {!prefill.bundle
+                  ? "Set by the plan you chose"
+                  : prefill.bundleAddOns.length
+                    ? "Set by the bundle plan you chose · add-ons quoted separately"
+                    : "Set by the bundle plan you chose"}
+              </span>
             </>
           ) : (
             <DropdownMenu.Root modal={false}>

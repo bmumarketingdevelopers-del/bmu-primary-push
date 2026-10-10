@@ -7,6 +7,8 @@ type NavLink = { href: string; label: string; description?: string };
 export type NavItem = {
   href: string;
   label: string;
+  /** Hides the dropdown's "View all …" link (when the items already cover the main page). */
+  hideViewAll?: boolean;
   children?: (NavLink & {
     /** Opens beside the link on hover (desktop) and nests under it in the mobile menu. */
     submenu?: { href: string; label: string; items: NavLink[] };
@@ -54,7 +56,16 @@ export const MAIN_NAV: NavItem[] = [
   // { href: "/portfolio", label: "Work" },
   { href: "/case-studies", label: "Case studies" },
   // { href: "/store", label: "Store" },
-  { href: "/pricing", label: "Pricing" },
+  // Pricing opens a menu like Products, with its two pages as items (no extra "View all" link)
+  {
+    href: "/pricing",
+    label: "Pricing",
+    hideViewAll: true,
+    children: [
+      { href: "/pricing", label: "View Pricing plan" },
+      { href: "/bundles", label: "View Bundles plan" },
+    ],
+  },
   { href: "/resources", label: "Resources" },
   { href: "/about", label: "About" },
 ];

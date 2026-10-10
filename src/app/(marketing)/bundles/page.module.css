@@ -1,0 +1,847 @@
+@layer reset, base, helpers, ui, components;
+
+@layer components {
+  /* =========================================
+     HERO: dark band under the header, centred
+     ========================================= */
+
+  .hero {
+    position: relative;
+    overflow: hidden;
+    margin-top: -76px;
+    padding-top: 76px;
+    color: #fff;
+    background-image: var(--grad-hero);
+  }
+
+  /* faint grid, fading out towards the edges */
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgb(255 255 255 / 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(255 255 255 / 0.04) 1px, transparent 1px);
+    background-size: 58px 58px;
+    mask-image: radial-gradient(ellipse 70% 80% at 50% 40%, #000, transparent);
+    pointer-events: none;
+  }
+
+  .heroInner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 3rem;
+    padding-bottom: 3.5rem;
+    text-align: center;
+  }
+
+  /* small green slanted dash, used in the eyebrow and the perks */
+  .dash {
+    display: inline-block;
+    height: 4px;
+    width: 18px;
+    flex-shrink: 0;
+    transform: skewX(-20deg);
+    background-color: hsl(var(--primary));
+  }
+
+  .heroEyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.75rem;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: hsl(79 61% 58%);
+  }
+
+  .heroTitle {
+    margin-top: 1.5rem;
+    font-size: clamp(32px, 5vw, 60px);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  .heroTitleMuted {
+    color: #8b96a3;
+  }
+
+  .heroLede {
+    margin-top: 1.5rem;
+    max-width: 62ch;
+    font-size: clamp(14.5px, 1.2vw, 16px);
+    line-height: 1.65;
+    color: #b4c2cf;
+  }
+
+  /* phones: let the lede wrap naturally */
+  .ledeBreak {
+    display: none;
+  }
+
+  .heroActions {
+    margin-top: 1.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.9rem;
+  }
+
+  .btnPrimary,
+  .btnOutline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1.25rem;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition:
+      filter 200ms var(--ease-brand),
+      background-color 200ms var(--ease-brand);
+  }
+
+  .btnPrimary {
+    background-color: hsl(var(--primary));
+    color: #121f2f;
+  }
+
+  .btnPrimary:hover {
+    filter: brightness(1.08);
+  }
+
+  .btnPrimary svg {
+    height: 16px;
+    width: 16px;
+  }
+
+  .btnOutline {
+    border: 1px solid rgb(255 255 255 / 0.45);
+    color: #fff;
+  }
+
+  .btnOutline:hover {
+    background-color: rgb(255 255 255 / 0.08);
+  }
+
+  /* three perks in one translucent strip, split by thin lines */
+  .perks {
+    margin-top: 4.5rem;
+    display: grid;
+    width: 100%;
+    border: 1px solid rgb(255 255 255 / 0.12);
+    background-color: rgb(255 255 255 / 0.04);
+    list-style: none;
+    padding: 0;
+    text-align: left;
+  }
+
+  .perk {
+    display: grid;
+    gap: 0.4rem;
+    padding: 1.4rem 1.75rem;
+  }
+
+  .perk + .perk {
+    border-top: 1px solid rgb(255 255 255 / 0.12);
+  }
+
+  .perkTitle {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .perkBody {
+    font-size: 13px;
+    color: #9fb0c0;
+  }
+
+  /* =========================================
+     BUNDLES: eight cards
+     ========================================= */
+
+  .sectionTitle {
+    text-align: center;
+    font-size: clamp(24px, 2.4vw, 32px);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .grid {
+    margin-top: 2.5rem;
+    display: grid;
+    column-gap: 1.5rem;
+  }
+
+  /* cards in a row share the same row lines (title + text + chips, plans, saving),
+     so the plans and price boxes start at the same height in every card */
+  .card {
+    position: relative;
+    display: grid;
+    grid-row: span 3;
+    grid-template-rows: subgrid;
+    row-gap: 0;
+    align-content: start;
+    margin-bottom: 1.5rem;
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    padding: 2.5rem 1.75rem 1.5rem;
+  }
+
+  .select {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background-color: hsl(var(--primary));
+    padding: 2px 5px 2px 7px;
+    font-family: var(--font-display-stack);
+    font-size: 8px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #fff;
+    border: 0;
+    cursor: pointer;
+    transition: filter 200ms var(--ease-brand);
+  }
+
+  .select:hover {
+    filter: brightness(1.1);
+  }
+
+  .select:focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 2px;
+  }
+
+  .select svg {
+    height: 10px;
+    width: 10px;
+    transition: transform 200ms var(--ease-brand);
+  }
+
+  .select[data-state="open"] svg {
+    transform: rotate(180deg);
+  }
+
+  /* SELECT dropdown: the three plans with their price */
+  .selectMenu {
+    z-index: 60;
+    min-width: 220px;
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    padding: 0.35rem;
+    box-shadow: 0 12px 32px -12px rgb(0 0 0 / 0.25);
+    animation: selectMenuIn 160ms var(--ease-brand);
+  }
+
+  @keyframes selectMenuIn {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+  }
+
+  .selectMenuItem {
+    display: grid;
+    gap: 2px;
+    padding: 0.55rem 0.75rem;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .selectMenuItem[data-highlighted] {
+    background-color: hsl(var(--primary) / 0.12);
+  }
+
+  .selectMenuName {
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: hsl(var(--foreground));
+  }
+
+  .selectMenuPrice {
+    font-size: 12px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .cardTitle {
+    font-size: clamp(19px, 1.6vw, 22px);
+    line-height: 1.25;
+  }
+
+  .cardDesc {
+    margin-top: 0.75rem;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .chips {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+  }
+
+  .chip {
+    border: 1px solid hsl(var(--border));
+    padding: 0.35rem 0.6rem;
+    font-size: 12px;
+    color: hsl(var(--foreground));
+  }
+
+  .plans {
+    margin-top: 1.25rem;
+    border-top: 2px solid hsl(var(--border));
+    list-style: none;
+    padding: 0;
+  }
+
+  /* monthly-only plan: name + line left, price box right */
+  .plan {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding-top: 0.75rem;
+  }
+
+  .planName {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #9aa3ad;
+  }
+
+  .planDesc {
+    display: block;
+    margin-top: 2px;
+    font-size: 10px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .priceBox {
+    display: grid;
+    flex-shrink: 0;
+    justify-items: end;
+    gap: 2px;
+    border: 1px solid hsl(var(--border));
+    border-radius: 8px;
+    padding: 0.45rem 0.75rem;
+  }
+
+  .price {
+    font-size: 16px;
+    line-height: 1.15;
+    color: hsl(var(--foreground));
+  }
+
+  /* ₹ sized to the digits */
+  .rupee {
+    margin-right: 0.04em;
+    font-size: 0.82em;
+    font-weight: 800;
+    vertical-align: 0.04em;
+  }
+
+  .unit {
+    margin-left: 2px;
+    font-size: 10px;
+    color: #9aa3ad;
+  }
+
+  /* monthly-only cards: every price box in a card takes the width of the widest one */
+  .plans:has(.priceBox) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .plans:has(.priceBox) .plan {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+  }
+
+  .priceSix {
+    font-size: 10px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* monthly + one-time plan: one line of prices, a 6-month line underneath */
+  .planSplit {
+    display: block;
+    padding: 0.85rem 0 0.75rem;
+  }
+
+  .planSplit + .planSplit {
+    border-top: 1px solid hsl(var(--border));
+  }
+
+  .planSplitRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.35rem 0.75rem;
+  }
+
+  .planPrices {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+  }
+
+  .plus {
+    margin-left: 0.6rem;
+  }
+
+  /* monthly + one-time rows: slightly smaller prices so the longest row stays on one line */
+  .planSplit .price {
+    font-size: 14.5px;
+  }
+
+  .planLine {
+    margin-top: 0.3rem;
+    text-align: right;
+    font-size: 10px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .saving {
+    align-self: start;
+    margin-top: 1rem;
+    font-family: var(--font-display-stack);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: hsl(79 61% 42%);
+  }
+
+  /* =========================================
+     SELECT OVERLAY: full screen over the Bundles page
+     ========================================= */
+
+  .overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background-color: hsl(var(--background));
+    animation: overlayIn 380ms var(--ease-brand) both;
+  }
+
+  @keyframes overlayIn {
+    from {
+      opacity: 0;
+      transform: translateY(32px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* top bar: "Selected bundle" + close, stays in view while scrolling */
+  .overlayBar {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    border-bottom: 1px solid hsl(var(--border));
+    background-color: hsl(var(--background) / 0.92);
+    backdrop-filter: blur(8px);
+  }
+
+  .overlayBarInner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 64px;
+  }
+
+  .overlayClose {
+    display: grid;
+    place-items: center;
+    height: 42px;
+    width: 42px;
+    border: 1px solid hsl(var(--border));
+    border-radius: 999px;
+    background: transparent;
+    color: hsl(var(--foreground));
+    cursor: pointer;
+    transition: background-color 200ms var(--ease-brand);
+  }
+
+  .overlayClose:hover {
+    background-color: hsl(var(--muted));
+  }
+
+  .overlayClose svg {
+    height: 18px;
+    width: 18px;
+  }
+
+  .overlayBody {
+    padding-top: 2.5rem;
+    padding-bottom: 4rem;
+  }
+
+  /* the chosen bundle, centred */
+  .selectedCard {
+    margin-inline: auto;
+    max-width: 620px;
+  }
+
+  .selectedCard .card {
+    margin-bottom: 0;
+  }
+
+  /* overlay: the chosen plan stands out, the other two fade back */
+  .planChosen {
+    margin-inline: -0.75rem;
+    padding-inline: 0.75rem;
+    padding-bottom: 0.75rem;
+    background-color: hsl(var(--primary) / 0.08);
+    box-shadow: inset 3px 0 0 hsl(var(--primary));
+  }
+
+  .planChosen .priceBox {
+    border-color: hsl(var(--primary));
+  }
+
+  .planDimmed {
+    opacity: 0.4;
+  }
+
+  /* ---- Add-ons ---- */
+
+  .addOns {
+    margin-top: 4.5rem;
+  }
+
+  .addOnsTitle {
+    text-align: center;
+    font-size: clamp(30px, 3.4vw, 46px);
+  }
+
+  .addOnsLede {
+    margin: 1.75rem auto 0;
+    max-width: 82ch;
+    text-align: center;
+    font-size: clamp(14.5px, 1.2vw, 17px);
+    line-height: 1.6;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .addOnGrid {
+    margin-top: 2.5rem;
+    display: grid;
+    gap: 1.5rem 2.5rem;
+  }
+
+  .addOnCard {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    padding: 1.4rem 1.75rem 1.25rem;
+  }
+
+  .addOnTitle {
+    font-size: 17px;
+  }
+
+  .addOnList {
+    margin-top: 1.25rem;
+    margin-bottom: 1.75rem;
+    display: grid;
+    gap: 0.85rem;
+    list-style: none;
+    padding: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* green square bullets */
+  .addOnList li {
+    position: relative;
+    padding-left: 1.4rem;
+  }
+
+  .addOnList li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.45em;
+    height: 9px;
+    width: 9px;
+    background-color: hsl(var(--primary));
+  }
+
+  /* added cards get a green outline */
+  .addOnCardAdded {
+    border-color: hsl(var(--primary));
+    box-shadow: inset 0 0 0 1px hsl(var(--primary));
+  }
+
+  /* bottom row of an add-on card: Custom Quote left, Add right */
+  .addOnActions {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .addBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border: 1px solid hsl(var(--primary));
+    background-color: hsl(var(--primary));
+    padding: 0.4rem 1.1rem;
+    font-size: 12.5px;
+    color: #fff;
+    cursor: pointer;
+    transition:
+      filter 200ms var(--ease-brand),
+      background-color 200ms var(--ease-brand),
+      color 200ms var(--ease-brand);
+  }
+
+  .addBtn:hover {
+    filter: brightness(1.08);
+  }
+
+  .addBtn svg {
+    height: 14px;
+    width: 14px;
+  }
+
+  /* added: light green, click again to remove */
+  .addBtnAdded {
+    background-color: hsl(var(--primary) / 0.12);
+    color: hsl(79 61% 34%);
+  }
+
+  :global(.dark) .addBtnAdded {
+    color: hsl(79 61% 62%);
+  }
+
+  .quoteBtn {
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--muted));
+    padding: 0.4rem 0.7rem;
+    font-size: 12.5px;
+    color: hsl(var(--foreground));
+    text-decoration: none;
+    transition: background-color 200ms var(--ease-brand);
+  }
+
+  .quoteBtn:hover {
+    background-color: hsl(var(--primary) / 0.15);
+  }
+
+  /* ---- Priced add-ons ---- */
+
+  .pricedTitle {
+    margin-top: 3.5rem;
+    font-size: clamp(16px, 1.4vw, 19px);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .pricedList {
+    margin-top: 1.75rem;
+    list-style: none;
+    padding: 0;
+    border-top: 1px solid hsl(var(--border));
+  }
+
+  .pricedRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid hsl(var(--border));
+    padding: 1rem 0.25rem;
+    font-size: 14px;
+    font-weight: 500;
+    color: hsl(var(--foreground));
+  }
+
+  .pricedPrice {
+    flex-shrink: 0;
+    font-size: 14px;
+  }
+
+  .addOnsNote {
+    margin-top: 1.25rem;
+    display: flex;
+    gap: 1rem;
+    font-size: 12.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .addOnsNoteLabel {
+    flex-shrink: 0;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: hsl(var(--foreground));
+  }
+
+  /* ---- Your selection: bundle + added add-ons ---- */
+
+  .selection {
+    margin-top: 3rem;
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    padding: 1.25rem 1.5rem;
+  }
+
+  .selectionTitle {
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .selectionList {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+    list-style: none;
+    padding: 0;
+  }
+
+  .selectionChip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid hsl(var(--primary));
+    background-color: hsl(var(--primary) / 0.1);
+    padding: 0.4rem 0.5rem 0.4rem 0.75rem;
+    font-size: 13px;
+    font-weight: 600;
+    color: hsl(var(--foreground));
+  }
+
+  .selectionBundle {
+    padding-right: 0.75rem;
+    background-color: hsl(var(--primary));
+    color: #fff;
+  }
+
+  .selectionPlus {
+    font-weight: 700;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .selectionRemove {
+    display: grid;
+    place-items: center;
+    height: 20px;
+    width: 20px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: hsl(var(--muted-foreground));
+    cursor: pointer;
+  }
+
+  .selectionRemove:hover {
+    background-color: hsl(var(--foreground) / 0.1);
+    color: hsl(var(--foreground));
+  }
+
+  .selectionRemove svg {
+    height: 13px;
+    width: 13px;
+  }
+
+  .selectionHint {
+    margin-top: 0.75rem;
+    font-size: 12.5px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .proceedWrap {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .proceedBtn {
+    display: inline-block;
+    border-radius: 6px;
+    background-color: hsl(var(--primary));
+    padding: 0.8rem 3.5rem;
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #fff;
+    text-decoration: none;
+    transition: filter 200ms var(--ease-brand);
+  }
+
+  .proceedBtn:hover {
+    filter: brightness(1.08);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .overlay {
+      animation: none;
+    }
+  }
+
+  /* =========================================
+     TABLET / LAPTOP
+     ========================================= */
+
+  @media (min-width: 640px) {
+    .grid,
+    .addOnGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 768px) {
+    .ledeBreak {
+      display: inline;
+    }
+
+    .perks {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .perk + .perk {
+      border-top: 0;
+      border-left: 1px solid rgb(255 255 255 / 0.12);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .grid,
+    .addOnGrid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+}

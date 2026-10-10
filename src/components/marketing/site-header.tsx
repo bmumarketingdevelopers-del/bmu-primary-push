@@ -85,9 +85,11 @@ export function SiteHeader({
                           )}
                         </div>
                       ))}
-                      <Link href={item.href} className={cn(styles.dropdownLink, styles.dropdownAll)}>
-                        View all {item.label.toLowerCase()} →
-                      </Link>
+                      {!item.hideViewAll && (
+                        <Link href={item.href} className={cn(styles.dropdownLink, styles.dropdownAll)}>
+                          View all {item.label.toLowerCase()} →
+                        </Link>
+                      )}
                     </div>
                   </div>
                 )}
